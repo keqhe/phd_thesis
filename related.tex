@@ -1,0 +1,138 @@
+\chapter{Related Work}
+\label{chap:related}
+In this chapter, we discuss various efforts in the area of network diagnosis.
+We first discuss the technologies used for network diagnosis. We
+then discuss network diagnostic solutions built based 
+on these supporting technologies. Finally, we discuss network diagnostic
+algorithms that can be used in network diagnostic solutions.
+
+
+\section{Supporting Technologies}
+On end hosts, we have various utilities such as ping,
+traceroute and tcpdump~\cite{traceroute, tcpdump}. Ping and traceroute
+check reachability in the network, and tcpdump captures
+packet traces and prints packet contents.
+RFC 4898~\cite{rfc4898} proposes to record extended performance statistics
+for TCP, including TCP states and various counters (e.g., bytes, retransmissions).
+
+On switches (both virtual and physical), the industry has standards such as
+sFlow, NetFlow and Switched Port Analyzer (SPAN)~\cite{sflow, netflow, span}. 
+sFlow samples packets and 
+delivers the samples to a server. NetFlow enables a switch to collect statistics
+about packets (e.g., IP address, port and protocol) and deliver the statistics to 
+a server. SPAN is port mirroring; it enables a switch to duplicate traffic
+of one port to another. In the current OpenFlow standard~\cite{openflow}, each switch rule has
+its own statistics (e.g., packet count, drops), which helps the network operator
+to monitor the routing status.
+
+SNMP~\cite{snmp} is widely used in network management systems to monitor network-attached devices.
+The protocol defines the format of the management data between network devices
+and the SNMP manager. 
+
+All these technologies provide detailed information in the network. These tools
+do not point out problems in the network directly. They rely on the network
+operator's experience to judge the problem based on the information.
+These technologies usually form the foundation of network diagnostic solutions
+(as described in the next section and our VND and \Name).
+\section{Network Diagnostic Solutions}
+\subsection{Solutions for Network Stacks}
+SNAP~\cite{snap} is designed based on RFC 4898. SNAP collects TCP statistics and socket-call logs.
+By observing abnormal behaviors of a TCP flow (e.g., delayed ACK), the operator
+can narrow down the scope of a fault; by correlating multiple TCP flows on their faulty time,
+the operator can find common application misconfigurations.
+
+In X-Trace~\cite{xtrace}, the authors proposed inserting metadata into packets of application tasks. 
+The metadata is 
+preserved as the packets traverse different network layers. By observing whether
+the metadata arrives at each layer successfully, the operator knows whether
+a certain layer is functioning correctly.
+
+In NeST~\cite{nest}, the authors proposed instrumenting the network stack. 
+States are defined for each component in the network stack based on whether
+they are processing or waiting for messages. NeST uses a dependency graph
+of components and the components' states to infer the stalled component.
+
+Compared with these solutions, our \Name has two differences. First, PerfSight
+is designed for cloud networks instead of traditional networks.
+%In the cloud networks, PerfSight monitors more components than the traditional networks. 
+%Not only do the cloud networks have more components, but also the components are much more heterogeneous 
+The cloud networks have more components and the components are much more
+heterogeneous (i.e., blocking/nonblocking middleboxes). 
+Second, X-Trace and NeST target the availability issue. They can check whether
+a layer/component is processing and delivering packets. \Name targets performance
+problems, whose symptoms are not as obvious as availability problems.
+
+\subsection{Solutions for Traditional Networks}
+HSA and Anteater~\cite{hsa, anteater} model switch forwarding behaviors and packet headers. 
+The model can describe the way in which packets traverse a network device. The authors proposed 
+network invariants, such as reachability and loop-free, and used the model
+to check these invariants.
+
+Libra~\cite{libra} similarly checks network invariants. It targets networks on a large scale.
+In Libra, the authors proposed a map-reduce algorithm to check the network invariants.
+
+Compared with our approaches, VND uses packet traces to perform diagnosis directly,
+%provides interfaces that can integrate with these models,
+and \Name targets a different scope (i.e., performance problems).
+\subsection{Solutions for Software-Defined Networks}
+OFRewind~\cite{ofrewind} introduced a proxy between the SDN controller and 
+the switches. The proxy records the control messages in the SDN network, and 
+provides the replay functionality. By replaying the control messages, the network
+problem can reappear, enabling the operator to debug the system.
+
+NetSight~\cite{netsight} is a network-wide wireshark. NetSight collects all packet histories
+in the network (optimized by compression), and uses regular expressions as interfaces to filter
+packets of interest. The authors designed four applications based on the interfaces. 
+The applications check network invariants or profile various network components (e.g., a path or a device).
+
+Frenetic~\cite{frenetic} provides an abstraction layer to operate OpenFlow switches based on the 
+OpenFlow syntax. This layer enables the operator to specify packets of 
+interest and perform operations such as group and split. 
+
+VeriFlow and NetPlumber~\cite{veriflow, netplumber} are two solutions use to monitor network invariants lively. 
+They add a proxy between the SDN controller and the switches in the network. The proxy
+intercepts the control messages. Both solutions model the switch forwarding behaviors
+and use their models to check network invariants such as reachability, loop-free and
+consistency.
+
+NICE~\cite{nice} aims to find bugs in SDN controller applications. It leverages symbolic execution
+to perform model checking. During the symbolic execution, the states in the controller
+are used to check the network invariants. 
+
+In all these solutions, VeriFlow, NetPlumber and NICE solve problems in the network 
+control plane, which is a different scope compared with our works. OFRewind, NetSight and
+Frenetic have similarities with our VND approach. Our VND design considers the cloud environment,
+and its interfaces retain the abstractions (i.e., a tenant only has views
+of its own virtual network). VND's SQL interface provides more operations than NetSight and 
+OFRewind, therefore, it simplifies tenants' operations. Compared with Frenetic, VND's view 
+comprises is the
+entire network instead of a single switch, so the tenant can debug the entire virtual network
+comprehensively.
+
+\section{Network Diagnostic Algorithms}
+Another set of research literature discusses network diagnostic algorithms.
+In these works, the network is usually viewed as a topology composed of nodes and links. 
+These works aims to use misbehavior symptoms to locate faulty nodes or links.
+These algorithms can be integrated with VND as diagnostic applications, 
+but they do not discuss the operational feasibility in virtual networks.
+\Name instruments deeply into the software data plane at a finer granularity.
+These diagnostics algorithms are as follows.
+
+In netDiagnoser and Max-Coverage~\cite{netdiagnoser, maxcoverage}, the end-to-end path reachability is monitored. The links that 
+have the most intersections with the problematic path are suspected to be the root cause links.
+In SCORE~\cite{score}, the links in a topology are put into groups if they share the same risk of failure
+(e.g., links may share a fiber). SCORE observes the ill-performing links and uses a greedy
+algorithm to determine the most suspectable group(s). 
+Shrink~\cite{shrink} uses a similar model as SCORE,
+but it uses a Bayesian model to infer the root cause group. In~\cite{codebook}, the authors
+proposed using a codebook for troubleshooting. The two-dimension codebook has multiple symptoms 
+as rows and a set of known problems as columns. Each problem is marked with one or several
+symptoms. New problems are matched in the codebook
+to find the problem with the most similar symptoms. 
+In NetMedic and Sherlock~\cite{netmedic, sherlock}, 
+the network topology is viewed
+as a Bayesian network, and the faulty probability is computed by historical statistics. In the
+case of a network problem, the root case is determined by the probability and the Bayesian network.
+
+
+

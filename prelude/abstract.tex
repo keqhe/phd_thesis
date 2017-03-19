@@ -1,0 +1,82 @@
+% abstract.tex
+%
+% This file has the abstract for the withesis style documentation
+%
+% Eric Benedict, Aug 2000
+%
+% It is provided without warranty on an AS IS basis.
+
+%\noindent       % Don't indent this paragraph.
+%This is not a thesis or dissertation and Master \TeX nician is not a
+%degree granted at the University of Wisconsin-Madison.
+
+%\vspace*{0.5em}
+%\noindent       % Don't indent this paragraph.
+%This explains the basics for using \LaTeX\ to typeset a dissertation,
+%thesis or masters project or preliminary report for the University of 
+%Wisconsin-Madison. Chapter
+%1 talks briefly about the thesis formatting at UW-Madison.  Chapter 2 gives
+%an overview of the ``essentials'' of \LaTeX{} and was written by Jon Warbrick.
+%Chapter 3 talks about figures and tables and what a {\em float} is.  Chapter 4
+%briefly introduces the {\sc Bib}\TeX{} program.  And finally, Chapter 5 discusses
+%some of the details for using the {\tt withesis} style file.  The material in
+%Chapters 2-4 basically are a review of fundamental \LaTeX{} usage and form
+%a reasonable basic tutorial.%
+
+%\vspace*{0.5em}
+%\noindent       % Don't indent this paragraph.
+%The style discussed in this manual was originally written by Dave Kraynie and
+%edited by James Darrell McCauley as the {\tt puthesis} style for Purdue
+%University's theses.  This style was modified to form the {\tt withesis} style. This
+%manual is largely based on a similar manual by James Darrell McCauley and Scott Hucker.
+%Permission to use, copy, modify and distribute this software and its documentation
+%for any purpose and without fee is here by granted.  This software and its documentation
+%is provided ``as is'' without any express or implied warranty.
+
+Cloud outage can result in bad user experiences for cloud tenants and revenue loss to the provider. 
+This makes cloud network diagnostic solutions invaluable.
+Despite the various existing network diagnostic solutions, few of them are designed 
+specifically for cloud networks. Current state-of-the-art cloud network diagnosis falls short 
+in three aspects: (1) there is no clear way to distinguish whether an observed problem is in the 
+tenant's virtual network or in the provider's infrastructure. As a result, 
+the interaction between tenants and the provider leads to a longer problem-solving time 
+and higher maintenance costs; (2) for cloud tenants, there are only rudimentary troubleshooting 
+tools (e.g., ping, VM monitoring) that can be deployed. However, diagnosing a distributed 
+system with these tools depends heavily on skill and experience, which is not always 
+feasible for tenants; (3) for the cloud provider, new trends such as network function 
+virtualization make the infrastructure more complex than the traditional network, 
+which could lead to new problems arising. Thus, the provider requires new diagnostic tools to help
+cover this range of problems.
+
+In this thesis, we design two systems for cloud network diagnosis: (A) \emph{VND: a Virtual Network 
+Diagnostic Service.} VND is a service offered by the provider to its tenants.
+Using VND, a tenant can determine whether a problem is in its virtual network or not; 
+VND's interfaces also simplify tenants' troubleshooting operations. A tenant could use VND to 
+collect, parse and query its packet traces. Here, the trace collection cooperates within
+%interface is designed in 
+the tenant's view of its own virtual network without exposing the cloud infrastructure. 
+Trace parse and query interfaces are design to ease the tenant's troubleshooting operations. 
+VND provides a SQL interface for tenants to perform diagnosis. We show several typical 
+network diagnostic use cases where troubleshooting solutions can be easily implemented using VND. 
+We also measure VND's overhead and show its feasibility.
+(B) \emph{PerfSight: Performance Diagnosis for Software Data Planes.}
+Increasingly, modern network data planes have 
+complex software involved in packet processing (e.g., virtual switches, VM hypervisors and software middleboxes).
+%For example, network virtualization introduces virtual switches and VM hypervisors; network function virtualization introduces various software middleboxes. 
+We refer to these software parts as the software data plane. We argue that there are at least three new
+classes of performance problems that arise in software data planes: bottlenecks, contentions and bugs. 
+We propose 
+a system named PerfSight to target these three problems. PerfSight instruments the software 
+data plane, gathers basic statistics (e.g., packet count, byte count, I/O time) and analyzes the 
+statistics comprehensively. We obtained two key insights by running PerfSight: (1) packet drop is the best 
+indicator of bottlenecks, and location of packet drop can give information on the resources in contention 
+(e.g. CPU, network bandwidth); (2) software middlebox's states can be defined by basic statistics, 
+and these states propagate in the network in certain patterns. These patterns can be used 
+to infer which middlebox has performance bugs. 
+%We also some case studies on how PerfSight can help with cloud management.
+Our evaluation shows \Name introduces little overhead to the existing system, and thus it is 
+feasible to deploy.
+
+Together, we believe VND and \Name provide diagnostic solutions to both tenants and the provider. 
+They form an integral basis for cloud network diagnosis.
+%make a complement for cloud network diagnosis. 

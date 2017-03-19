@@ -1,0 +1,123 @@
+% prelude.tex
+%   - titlepage
+%   - dedication
+%   - acknowledgments
+%   - table of contents, list of tables and list of figures
+%   - nomenclature
+%   - abstract
+%============================================================================
+
+
+\clearpage\pagenumbering{roman}  % This makes the page numbers Roman (i, ii, etc)
+
+
+
+% TITLE PAGE
+%   - define \title{} \author{} \date{}
+\title{Towards Systematic Diagnosis for Cloud Networks}
+\author{Wenfei Wu}
+\date{}
+%   - The default degree is ``Doctor of Philosophy''
+%     (unless the document style msthesis is specified
+%      and then the default degree is ``Master of Science'')
+%     Degree can be changed using the command \degree{}
+\degree{Doctor of Philosophy}
+%   - The default is dissertation, unless the document style
+%     msthesis was specified in which case it becomes thesis.
+%     If msthesis is specified for the MS margins, you can
+%     still have a dissertation if you specify \disseration
+%\disseration
+%   - for a masters project report, specify \project
+%\project
+%   - for a preliminary report, specify \prelim
+%\prelim
+%   - for a masters thesis, specify \thesis
+\thesis
+%   - The default department is ``Electrical Engineering''
+%     The department can be changed using the command \department{}
+\department{Computer Sciences}
+%   - once the above are defined, use \maketitle to generate the titlepage
+\oralexamdate{9/29/2015}
+\committeeone{Srinivasa A. Akella, Associate Professor, Computer Science}
+\committeetwo{Remzi H. Arpaci-Dusseau, Professor, Computer Science}
+\committeethree{Michael M. Swift, Associate Professor, Computer Science}
+\committeefour{Shan Lu, Associate Professor, Computer Science, University of Chicago}
+\committeefive{Xinyu Zhang, Assistant Professor, Electrical and Computer Engineering}
+\date{2015}
+
+
+\maketitle
+
+% COPYRIGHT PAGE
+%   - To include a copyright page use \copyrightpage
+\copyrightpage
+
+% DEDICATION
+\begin{dedication}
+\emph{To my parents.}
+\end{dedication}
+
+% ACKNOWLEDGMENTS
+\begin{acknowledgments}
+
+Pursuing a Ph.D. at the University of Wisconsin-Madison has been one of the most wonderful experiences of my life. I would like to take this opportunity to thank the people who guided, inspired, and accompanied me to go through this memorable experience.
+ 
+First and foremost, I would like to thank my adviser Professor Aditya Akella. In addition to teaching me how to conduct research, his enthusiasm and focus on research set a good example for me. I am especially grateful for his support and patience during my difficulties research.
+ 
+I would like to thank the members of my thesis committee, Remzi Arpaci-Dusseau, Michael Swift, Shan Lu, and Xinyu Zhang. Their valuable suggestions and comments greatly improved this thesis.
+ 
+I would like to thank my mentors during my several internships, Chuanxiong GPO, Yoshio Turner, Michael Schlansker, Anees Shaikh, Guohui Wang, Alex Tessmer, and Li Erran Li. I appreciate the industrial internship 
+experience I gained while working with them, particularly the chance to learn about and solve practical problems.
+ 
+I would like to thank my fellow graduate students and postdocs, Ashok Anand, Theophuius Benson, Shan-Hsiang Shen, Aaron Gember-Jacobson, Robert Grandl, Junaid Khalid, Chaithan Prakash, David Tran-Lam, Raajay Vishwanathan, Xiaoyang Gao, Ramakrishnan Durairajan, and Brent Stephens. Working with these brilliant people is a great gift to me. I am also quite fortunate to have great friends around me, who constantly supported and cheered me: Keqiang He, Linhai Song, Yizheng Chen, Ao Ma, Yupu Zhang, Lanyue Lu, and Suli Yang.
+ 
+Last but not least, I would like to thank my family. My parents always stand behind me with their love, support, and encouragement, and have been great sources of inspiration throughout the highs and lows of my Ph.D. work. I would also like to thank my relatives, who inspired and supported me.
+
+\end{acknowledgments}
+
+% CONTENTS, TABLES, FIGURES
+\tableofcontents
+\listoftables
+\listoffigures
+
+% NOMENCLATURE
+%\begin{nomenclature}
+%\begin{description}
+%\item{\makebox[0.75in][l]{\TeX}}
+%       \parbox[t]{5in}{a typesetting system by Donald Knuth~\cite{knuth}.  It
+%       also refers to the ``plain'' format.  The proper pronounciation
+%       rhymes with ``heck'' and ``peck'' and does not sound like
+%       ``hex'' or ``Rex.''\\}
+%
+%\item{\makebox[0.75in][l]{\LaTeX}}  
+%        \parbox[t]{5in}{a set of \TeX{} macros originally written by Leslie 
+%        Lamport~\cite{lamport}.  The proper pronunciation is 
+%        {\tt l\={a}$\cdot$tek'} and not {\tt l\={a}'$\cdot$teks} (see above).\\}
+%
+%\item{\makebox[0.75in][l]{{\sc Bib}\TeX}} 
+%         \parbox[t]{5in}{a bibliography generation program by Oren 
+%                Patashnik~\cite{lamport}
+%                that can be used with either plain \TeX{} or \LaTeX{}.\\}
+%
+%\item{\makebox[0.75in][l]{$C_1$}} Constant 1
+%
+%\item{\makebox[0.75in][l]{$V$}}    Voltage 
+%
+%\item{\makebox[0.75in][l]{\$}}     US Dollars
+%\end{description}
+%\end{nomenclature}
+
+
+\advisorname{Aditya Akella}
+\advisortitle{Associate Professor}
+% ABSTRACT
+%\begin{umiabstract}
+%  \input{prelude/abstract}
+%\end{umiabstract}
+
+\begin{abstract}
+  \input{prelude/abstract}
+\end{abstract}
+
+
+\clearpage\pagenumbering{arabic} % This makes the page numbers Arabic (1, 2, etc)

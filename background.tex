@@ -1,0 +1,126 @@
+\chapter{Background and Approach}
+\label{chap:background}
+
+Network diagnosis has been a research topic ever since the appearance of networking systems. 
+A number of network diagnostic solutions have been proposed to solve network problems. 
+These approaches provide visibility to network internal states~\cite{sflow, netflow, ndb, ofrewind}, 
+locate faulty components in networks~\cite{snap, xtrace, netdiagnoser}, 
+and verify network-wide invariants~\cite{veriflow, hsa, anteater}.
+
+Cloud infrastructures have gained wide deployment and acceptance in recent years. The cloud networks are more complex than traditional networks, have two roles involved in network management, and lacks visibility of their internal states. These properties make the existing diagnostic approaches difficult to deploy. For example, due to security issue, tenants do not have access to the infrastructure, and thus cannot collect state information in the network or perform diagnosis. In the cloud, network virtualization introduces several software components without providing enough visibility. Thus cloud operators lack a means of understanding how packets traverse the networks and cannot diagnose these software components efficiently.
+
+In this chapter, we describe our methodology for collecting network problem logs from various sources, and analyzing and summarizing problems in different planes in cloud networks (Section~\ref{sec:back:data}). Then we briefly describe our approaches to solving these problems (Section~\ref{sec:back:approach}). 
+
+\section{Cloud Network Problems}
+\label{sec:back:data}
+\subsection{Data Set}
+{\bf Device inventory/configurations and trouble ticket logs.}
+We collected this set of data from a large online service provider (OSP)~\cite{mpa}. A device inventory records the vendor, model, location, and role (switch, router, load balancer, etc.) of every device in their deployment, and the network it belongs to. Device configuration snapshots are taken whenever device configurations are changed. When users report network problems, or monitoring systems raise alarms, a trouble ticket is created in an incident management system. The ticket is used to track the duration, symptoms, and diagnosis of the problem. In total we collected device configurations and ticket logs from over 850 networks over a period spanning 17 months.
+
+{\bf Bug and outage reports.} We collected the software bug tracks of several software components in the software data plane. The software includes KVM, OVS, balance, MySQL, 
+and NFS~\cite{kvmbugs, ovsbugs, balancebugs, mysqlbugs, nfsbugs}. We collected 57 bugs in total. We also collected the outage reports of Microsoft Azure and Amazon Web Service, resulting in 9 outage reports~\cite{awsoutages, azureoutages}.
+
+
+\subsection{Analysis}
+We categorize the records in our data set according to the planes where the problem of a record belongs to. We find management problems in application planes, performance problems in data planes, and consistency issues in control planes. In this thesis, we focus on application and data plane issues, and leave the control plane issues for future works.
+
+\paragraph{Application Plane.}
+In public clouds, the application plane runs tenants' virtual networks. As described in 
+Section~\ref{sec:intro:organization}, virtualization abstracts the underlying details, so the virtual
+networks are isolated from the operator and from each other. To set up a virtual cluster,
+a tenant needs to input the virtual network topology (VMs, middleboxes and 
+virtual links), configure network function services 
+and deploy its own applications. However, among these inputs, the tenant only has access 
+to its own VMs. That is, the tenant lacks the necessary visibility to perform troubleshooting.
+For example, if a network flow which is designed to traverse a network service (e.g., cache) 
+fails to get through, there is no way for the tenant to discover whether there is a misconfiguration
+in the network service or a fault in the underlying switch fabric drops packets
+\footnote{Traceroute does not work. Because the tenant's packets are encapsulated while 
+traversing the network, the inner packet's TTL is not changed.}. 
+
+The solutions currently deployed in tenant VMs are usually simple point tools (e.g., ping, 
+VM resource monitoring). To diagnose a distributed system with these tools requires strong
+skills and experiences, which is not always applicable for cloud tenants.
+Tenants can also ask for help from the cloud provider's customer service. However, this takes
+extra time and typically incurs additional costs to both parties, which hinders the agility of the cloud computing.
+%More crucially, each virtual resource may map to multiple physical resources, i.e., a virtual link may map to multiple physical links or a network service may be implemented by several middlebox instances (e.g. distributed firewall). The abnormal behaviors in the application plane does not help to locate the precise point of the problem.  When a problem arises, there is no way today to systematically obtain the relevant data from the appropriate locations and expose them to the tenant in a meaningful way to facilitate diagnosis.
+\paragraph{Data Plane.}
+In the cloud infrastructure, a part of the network data plane is implemented in software, e.g.,
+software middleboxes and virtual switches. The software data plane is more complex than
+the traditional network stack and presents new challenges in fault diagnosis. We argue that software data planes
+are much more vulnerable to network problems due to three reasons.
+
+First, the more number of software components (compared with the traditional network stack) increases 
+the risk of problems and the difficulty to locate a problem. In current implementation, when a packet 
+is dropped while traversing the software data plane, there is little clue as to where it is dropped.
+Second, the software components run on a shared computing platform (i.e., the physical machine), because of
+which they potentially could contend for computing resources (e.g., CPU, memory, disk). 
+To make things worse, some contentions
+are implicit, which makes the detection trickier. For example, network traffic and memory
+traffic both go through the bus, but there is no way to detect their contention.
+Third, packet processing in middleboxes is usually stateful and middleboxes may logically depend
+on each other. As a result, problems arising in one middlebox may propagate along the end-to-end path
+to other middleboxes, which complicates root cause diagnosis. 
+
+\section{Our Approaches}
+\label{sec:back:approach}
+In this section, we first focus on the management problem in application planes. 
+We propose a virtual network diagnostic service offered by the cloud provider 
+to tenants, namely \emph{VND.} With VND, a tenant can determine whether a problem is in its virtual 
+network, and the tenant can also perform systematic diagnosis to its own virtual network.
+Then we target performance problems in data planes with the goal of aiding the cloud operator
+to diagnose and fix them. To this end, we design a new system, called \Name. 
+%which can solve the new arising performance problems in the software data plane.
+
+\paragraph{VND: Virtual Network Diagnostic Service.} The
+Virtual Network Diagnostic service enables a
+cloud provider to offer sophisticated virtual network diagnosis as a
+service to its tenants. When diagnosing a fault, a tenant 
+uses VND interfaces to perform trace collection, trace parsing and trace 
+analysis. 
+%VND exposes trace collection, trace parsing and trace query interfaces to cloud tenants. 
+In trace collection, a tenant specifies a set of flows to be gathered in its virtual network;
+then the setting is translated and deployed in the infrastructure and packet traces are collected.
+In trace parsing, the tenant submits packet header fields of its interest so that 
+those fields are extracted and stored in tables. 
+In the trace query, VND provides a SQL interface to tenants for them to analyze their trace
+and to perform meaningful diagnosis. 
+
+In the whole troubleshooting process, the trace collection interface 
+retains the existing virtualization abstraction without
+leaking information of the infrastructure and other tenants' virtual networks, 
+while the trace parsing and query interfaces provide a more systematic view of the virtual network
+and  simplify tenants' troubleshooting operations.
+%VND controls appropriate software switches to collect the traces required by the tenant; 
+VND distributes trace collection, parsing, storage and query to improve scalability; 
+VND also leverages the current SDN switch design to avoid interfering with the existing network rules 
+(e.g. routing).
+We give several use cases to show how VND helps troubleshooting and cloud network management.
+\paragraph{\Name: Performance Diagnosis for Software Data Planes.}
+We first identify three classes of performance problems that may arise in software data plane.
+They are resource mis-allocation, contention and performance bugs. 
+We address the challenges in solving them.
+Then we design a general system, called \Name, for accurate and quick
+diagnosis of these performance problems. 
+
+In \Name, we decouple information collection and problem analysis.
+To collect traffic information in the software data plane, we view it as
+a \emph{pipeline of elements}, where an element is a logical unit that 
+reads traffic from or writes traffic to another element via buffers or function calls.
+For each element, we instrument it to collect statistics such as 
+packet count, byte count and I/O time. 
+%We the design interfaces to collect the statistics gathered from the software data plane.
+
+Based on the statistics, we develop applications to diagnose the three
+performance problems. By identifying the exact packet drop location, 
+we can infer whether
+an element is facing resource limitation or whether elements are contending
+for some resources; by inferring the middlebox states based on statistics, 
+we can narrow down the root cause middlebox in the virtual topology.
+
+The \Name design keeps the statistics light-weight so that little
+overhead is introduced into the existing system. The interface
+design also makes it easy to extend to add custom statistics. Our \Name
+diagnostic applications also accurately detect performance problems.
+
+

@@ -1,0 +1,209 @@
+% thesis.tex
+%
+% This file is root file for an example thesis written using the
+% University of Wisconsin-Madison LaTeX Style file.
+%
+% It is provided without warranty on an AS IS basis.
+
+
+%=====================================================================
+% Document Style
+%=====================================================================
+% Choose only one of the following document classes:
+%
+% for a 12 Point UW PhD Thesis without Margin Check
+\documentclass[10pt]{withesis}
+%
+% for a 10 Point UW PhD Thesis with Margin Check
+%\documentclass[10pt,margincheck]{withesis}
+%
+% The margincheck option flags lines which overflow their hbox with a black
+%  box at the end of the line.  This usually (but not always) indicates a
+%  margin violation on the right margin.  Left margin violations aren't
+%  indicated and if the margin violation is large enough, there isn't room
+%  for the black box to be visiable.  
+%
+% This option can be also used in conjunction with the msthesis option.
+%
+% or for a 12 Point UW Masters Thesis
+%\documentclass[12pt,msthesis]{withesis}
+%
+% or for a 10 Point UW Masters Thesis
+%\documentclass[10pt,msthesis]{withesis}
+%
+% The msthesis option changes the page margins from 1" all around
+% (the PhD format) to 1.25" left and 1" remaining margins (MS format).
+% The defaults for degree and thesis are changed to be MS and thesis.
+% These defaults can be overridden if the margins for the MS thesis
+% are desired for other documents.
+
+% To include optional packages, use the \usepackage command.
+%  The package epsfig is used to bring in the Encapsulated PostScript
+%    figures into the document.
+%  The package times is used to change the fonts to Times Roman; however
+%    because the times typewriter font looks odd, the original LaTeX
+%    Computer Modern font is kept for the typewriter font using
+%      \renewcommand{\ttdefault}{cmtt}
+%    Note that Times Roman is a PostScript font and therefore, the document
+%    cannot be correctly viewed from the *.dvi file.  It should be converted
+%    to a *.ps file first and then viewed with a PostScript previewer...
+
+\usepackage{geometry}
+\geometry{margin=1.2in}
+
+\usepackage{epsfig}
+\usepackage{times}
+
+
+\usepackage{mathptmx} % Times Roman font in math mode, too
+\usepackage{caption} % see http://www.ctex.org/documents/packages/float/caption.pdf
+
+\usepackage{auto-pst-pdf}
+\usepackage{graphics}
+\usepackage{epstopdf}
+\usepackage{color}
+\usepackage{multirow}
+
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+
+\usepackage{authblk}
+
+%\usepackage[usenames,dvipsnames]{color}
+%\usepackage[breaklinks=true,colorlinks=true,plainpages=false,citecolor=blue,urlcolor=blue,filecolor=blue]{hyperref}
+\usepackage[hidelinks]{hyperref}
+\usepackage{times}
+\usepackage{subfigure}
+%\usepackage[normal]{subfigure}
+\usepackage{url}
+\usepackage{xspace}
+%\usepackage[table,xcdraw]{xcolor}
+\usepackage{xcolor}
+%\usepackage[normalem]{ulem}
+\usepackage{ulem}
+\usepackage{textcomp,upquote,listings}
+%\usepackage{listings}
+\usepackage{algorithm}
+%\usepackage[noend]{algpseudocode}
+\usepackage{algpseudocode}
+\usepackage{capt-of}
+
+\usepackage{rotating}
+\usepackage{pdflscape}
+%\usepackage{subfig}
+
+\newcommand{\algrule}[1][.2pt]{\par\vskip.2\baselineskip\hrule height #1\par\vskip.2\baselineskip}
+\newcommand{\eg}{{e.g.}\xspace}
+\newcommand{\cf}{{cf.}\xspace}
+\newcommand{\ie}{{i.e.}\xspace}
+\newcommand{\etal}{{et al.}\xspace}
+
+\newcommand{\cut}[1]{}
+
+\renewcommand{\ttdefault}{cmtt}
+
+%========================================================================
+%  Draft Control Commands:
+%========================================================================
+%
+% \psdraft causes the \psfig or \epsfig commands to draw a box and label
+% the box with the postscript file name instead of reading in the full
+% postscript figure.  This can save time and toner when printing drafts.
+%
+%\psdraft
+%
+%
+% \psfull causes the inclusion of the postscript figures.
+%\psfull
+%
+%
+%\pagestyle{thesisdraft} causes the footer text to become:
+% DRAFT: Do Not Distribute        <time><Date>        <input file name>
+%
+%\pagestyle{thesisdraft}
+%
+%\pagestyle{thesis} causes the header and footers to be the correct format
+%
+%\pagestyle{thesis}
+%
+%
+%  The page margins can be marked with a post-script box using the
+%  \draftmargins command.  This command uses dvips's end-of-page hook
+%  This is only visible in the *.ps file (NOT the *.dvi file)!
+%
+%\draftmargins
+%
+%
+%  The word ``DRAFT'' can be diagonally printed across the page using
+%  the \draftscreen command.  This command uses dvip's beginning-of-page
+%  hook.  This is only visible in the *.ps file (NOT the *.dvi file)!
+%
+%\draftscreen
+
+
+%=======================================================================
+% Remove the following lines if appendix tables or figures are present.
+% The suppress writing the auxiliary information which appears in the
+% list of tables or list of figures.
+%
+\noappendixtables                % Don't have appendix tables
+\noappendixfigures               % Don't have appendix figures
+
+
+%=======================================================================
+% End of Preamble, start of document
+%
+
+\lstset{basicstyle=\ttfamily,
+  showstringspaces=false,
+  lineskip={-2pt},
+  upquote=true
+%  commentstyle=\color{red},
+%  keywordstyle=\color{blue}
+}
+
+\newcommand{\Name}{{PerfSight}\xspace}
+\newcommand{\revise}[2]{#2}
+\renewcommand{\emph}[1]{\textit{#1}}
+\oralexamdate{9/29/2015}
+\committeeone{Srinivasa A. Akella, Associate Professor, Computer Science}
+\committeetwo{Remzi H. Arpaci-Dusseau, Professor, Computer Science}
+\committeethree{Michael M. Swift, Associate Professor, Computer Science}
+\committeefour{Shan Lu, Associate Professor, Computer Science, University of Chicago}
+\committeefive{Xinyu Zhang, Assistant Professor, Electrical and Computer Engineering}
+\date{2015}
+
+\title{Towards Systematic Diagnosis for Cloud Networks}
+\author{Wenfei Wu}
+\advisorname{Aditya Akella}
+\advisortitle{Associate Professor}
+
+\begin{document}
+
+%\newgeometry{left=1in,right=1in,bottom=1in,top=1in}
+% Choose your bibliography style
+% plain is the basic style, others include ieeetr, siam, asm, etc
+%\bibliographystyle{plain}
+
+\begin{umiabstract}
+
+Cloud outage can result in bad user experiences and revenue loss. However, few of existing network diagnostic solutions are designed specifically for cloud networks. They fall short in three aspects: (1) the unclarified way to distinguish problems in tenants’ virtual networks and the provider's infrastructure increases the time and costs that are spent on the interaction between the two roles. (2) For cloud tenants, leveraging rudimentary tools inside virtual networks to diagnose distributed systems is difficult, where the diagnosis depends heavily on experience which is not always feasible. (3) For the cloud provider, new trends that increase the complexity of the infrastructure causes new problems arising, which requires new diagnostic tools to cover this range.
+
+We design two systems for cloud network diagnosis: (A) \emph{VND: a Virtual Network Diagnostic Service.} VND is a service offered by the provider to its tenants. A tenant could use VND's interfaces to collect, parse and query its packet traces, and then conduct diagnosis. The trace collection interface keeps cloud's abstraction, and trace parse and query interfaces simplify the tenant's diagnostic operations. We show that several typical network diagnostic solutions can be easily implemented using VND. We also measure VND's overhead and show its feasibility. (B) \emph{PerfSight: Performance Diagnosis for Software Data Planes.} The increasing amount of software in modern network data planes leads to at least three new classes of performance problems: bottlenecks, contentions and bugs. We propose PerfSight to target these problems. PerfSight instruments the software data plane, and gathers and analyzes basic statistics comprehensively. We obtained two key insights by running PerfSight: (1) packet drop is the best indicator of bottlenecks, and location of packet drop can reveal physical resources in contention; (2) basic statistics define software middlebox's states, which propagate in the network following certain patterns. These patterns can be used to infer the root-cause middlebox with performance bugs. Our evaluation shows PerfSight introduces little overhead to the existing system, and thus it is feasible to deploy.
+
+Together, we believe VND and PerfSight provide diagnostic solutions to both tenants and the provider. They form an integral basis for cloud network diagnosis.
+
+
+
+\end{umiabstract}
+
+%\begin{appendices}               % Start of the Appendix Chapters.  If there is only
+                                 % one Appendix Chapter, then use \begin{appendix}
+%\include{code}                   % Including computer code listings
+%\include{bibref}                 % a BibTeX reference
+%\include{math}                   % Complex Equations from the UW Math Department
+%\include{acro}                   % A discussion on generating PDF files.
+%\end{appendices}                 % End of the Appendix Chapters.  ibid on \end{appendix}
+%\include{vita}                  % Optional Vita, use \begin{vita} vita text \end{vita}
+\end{document}
