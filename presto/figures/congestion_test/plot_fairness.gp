@@ -54,9 +54,9 @@ set yrange [0.5:1]
 
 ###use ejr jain metric
 plot \
-"fair_index.dat" using 1:5 title "ECMP" w lp ls 1 pointsize 2, \
-"fair_index.dat" using 1:11 title "MPTCP" w lp ls 2 pointsize 2, \
-"fair_index.dat" using 1:9 title "Presto" w lp ls 3 pointsize 2
+"fair_index.dat" using 1:5 title "ECMP" w lp ls 1 pointsize 2.5, \
+"fair_index.dat" using 1:11 title "MPTCP" w lp ls 2 pointsize 2.5, \
+"fair_index.dat" using 1:9 title "Presto" w lp ls 3 pointsize 2.5
 
 
 ###if you want to distinguish ejr and khe jain metric

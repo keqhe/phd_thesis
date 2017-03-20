@@ -8,7 +8,7 @@ All tests are run on the topology in Figure~\ref{macro_evaluation_topology}.
 \begin{figure}[!t]
         \centering
   \includegraphics[width=0.45\textwidth]{presto/figures/macro/stride/macro_compare_tput_witherrbar.pdf}
-        \caption{Elephant flow's throughputs of ECMP, MPTCP, Presto and Optimal in Shuffle, Random, Stride and Random Bijection workloads.}
+        \caption{Elephant flow throughput for ECMP, MPTCP, Presto and Optimal in shuffle, random, stride and random bijection workloads.}
         \label{macro_evaluation_tput}
 \end{figure}
 
@@ -30,7 +30,7 @@ All tests are run on the topology in Figure~\ref{macro_evaluation_topology}.
 	\end{subfigure}
         %\begin{subfigure}[b]{0.225\textwidth}
         %        \centering
-	%	\includegraphics[width=\textwidth]{./figures/macro/random/macro_compare_fct_random_mice.pdf}
+	%	\includegraphics[width=\textwidth]{presto/figures/macro/random/macro_compare_fct_random_mice.pdf}
         %	\caption{Random}
         %	\label{macro_evaluation_fct_random}
 	%\end{subfigure}
@@ -59,15 +59,14 @@ upon MPTCP by 17-28\%.
 %17\% (random).
 %In all the workloads, Presto's throughput outperforms MPTCP.
 
-Figure~\ref{macro_evaluation_fct} shows the mice flow completion time (FCT) in
-the workloads. 
+Figure~\ref{macro_evaluation_fct} shows a CDF of the mice flow completion time (FCT) for each workload.
 The stride and random bijection workloads are non-blocking, and hence the latency of Presto
 closely tracks Optimal: the 99.9$^{th}$ percentile FCT for Presto is within 350 $\mu$s for these workloads.
 MPTCP and ECMP suffer from congestion, and therefore the tail FCT is much worse than Presto: ECMP's 99.9$^{th}$ percentile
 FCT is over 7.5x worse ($\sim$11ms) and MPTCP experiences timeout (because of higher loss
-rates and the fact that small sub-flow window sizes from small flows can increase the chances of timeout~\cite{dc-mptcp}).\footnote{We used the Linux default (200ms) and trimmed graphs for clarity}
+rates and the fact that small sub-flow window sizes from small flows can increase the chances of timeout~\cite{dc-mptcp}). We used the Linux default timeout (200 ms) and trimmed graphs for clarity.
 The difference in the random and shuffle workloads is less pronounced (we omit random due to space constraints).
-In these workloads elephant flows can collide on the last hop output port,
+In these workloads elephant flows can collide on the last-hop output port,
 and therefore mice FCT is mainly determined by queuing latency. In shuffle, the 99.9$^{th}$ percentile FCT for ECMP, Presto and Optimal
 are all within 10\% (MPTCP again experiences TCP timeout) and in random, the 99.9$^{th}$ percentile FCT of Presto is within 25\% of Optimal while ECMP's 
 is 32\% worse than Presto.
@@ -173,7 +172,7 @@ is shown in Table~\ref{macro_evaluation_MSR_trace_driven}.
 Compared with ECMP, Presto has similar performance at the 50$^{th}$ percentile but reduces the 99$^{th}$ and 99.9$^{th}$ percentile FCT by 56\% and 60\%, respectively. 
 Note MPTCP is omitted because its performance was quite unstable in workloads
 featuring a large number of small flows.
-The average throughput (not shown) for Presto tracks Optimal (within 2\%), and improves upon ECMP by over 10\%.
+The average elephant throughput (not shown) for Presto tracks Optimal (within 2\%), and improves upon ECMP by over 10\%.
 
 
 \begin{table}[!htb]
@@ -196,7 +195,7 @@ The average throughput (not shown) for Presto tracks Optimal (within 2\%), and i
 
  \hline
 \end{tabular}
-\caption{FCT comparison (normalized to ECMP) with ECMP load balanced north-south traffic.}
+\caption{FCT comparison (normalized to ECMP) with ECMP load balanced north-south traffic. Optimal means all the hosts are attached to a single  switch.}
 	\label{macro_evaluation_north_south_traffic}
 \end{center}
 \end{table}
@@ -249,11 +248,11 @@ Presto when %under different stages of loss recovery when
 the link between spine switch S1 and leaf switch L1 goes down.
 Three stages are defined: symmetry (the link is up), failover (hardware fast-failover moves traffic from S1 to S2), and weighted (the controller
 learns of the failure and prunes the tree with the bad link).
+Workload L1-->L4 is when each node connected to L1 sends to one node in L4 (L4-->L1 is the opposite).
 Despite the asymmetry in the topology, Presto still achieves reasonable average throughput at 
 each stage.
 Figure~\ref{failover_compare_sockperf_bijection} shows the round trip time of
 each stage in a random bijection workload. 
-Workload L1->L4 is when each node connected to L1 sends to one node in L4 (L4->L1 is the opposite).
 Due to the fact that the network is no longer non-blocking after the link failure,
 failover and weighted multipathing stages have larger round trip time.
 

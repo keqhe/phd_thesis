@@ -1,8 +1,9 @@
 \section{Microbenchmarks}
 \label{sec:micro}
 
-We first evaluate the effectiveness of Presto over a series of microbenchmarks. Using 
-canonical topologies, we investigate (i) Presto's effectiveness in preventing the small segment
+We first evaluate the effectiveness of Presto over a series of microbenchmarks: %. Using 
+%canonical topologies, we investigate 
+(i) Presto's effectiveness in preventing the small segment
 flooding problem and reordering, (ii) Presto's CPU overhead, (iii) Presto's ability to scale
 to multiple paths, (iv) Presto's ability to handle congestion, (v) comparison to flowlet
 switching, and (vi) comparison to local, per-hop load balancing.
@@ -52,27 +53,27 @@ switching, and (vi) comparison to local, per-hop load balancing.
 
 \tightparagraph{Presto's GRO Combats Reordering}
 To examine Presto's ability to handle packet reordering, we perform a simple experiment
-on topology shown in Figure~\ref{micro_congestion_topology}.
+on the topology shown in Figure~\ref{micro_congestion_topology}.
 %we compare the extent of TCP reordering, TCP segment size distribution, throughput and receiver side CPU usage 
 %using official GRO and Presto GRO. 
 Here two servers attached to leaf switch L1 
 send traffic to their own receivers attached to leaf switch L2
-by spreading 64KB flowcells over the two network paths. 
+by spreading flowcells over two network paths. 
 %Because these two flows share the same two paths 
 %so packet reordering can happen at the receiver side.
 This setup can cause reordering for each flow, so 
 we compare Presto's GRO to
 an unmodified GRO, denoted "Official GRO". 
 The amount of reordering exposed to TCP is presented in Figure~\ref{gro_effectiveness_on_reordering}.
-To quantify packet reordering, we show a CDF of the {\em out-of-order segment count}:~\ie{},
+To quantify packet reordering, we show a CDF of the {\em out-of-order segment count}: ~\ie{},
 the number of segments from other flowcells between the first packet and last packet of each flowcell. A value of zero
 means there is no reordering and larger values mean more reordering. The figure shows Presto's GRO can completely mask reordering
 while official GRO incurs significant reordering. As shown in Section~\ref{sec:background}, reordering can
 also cause smaller segments to be pushed up the networking stack, causing significant processing overhead.
 Figure~\ref{gro_effectiveness_on_pktsize} shows the received TCP segment size distribution.  Presto's GRO
 pushes up large segments, while the official GRO pushes up many small segments.
-The average TCP throughputs in official GRO and Presto GRO are 4.6Gbps (with 86\% CPU utilization) and 
-9.3Gbps (with 69\% CPU utilization), respectively. Despite the fact that official GRO only obtains 
+The average TCP throughputs in official GRO and Presto GRO are 4.6 Gbps (with 86\% CPU utilization) and 
+9.3 Gbps (with 69\% CPU utilization), respectively. Despite the fact that official GRO only obtains 
 about half the throughput of Presto's GRO, it still incurs more than 24\% higher CPU overhead. 
 Therefore, an effective scheme must deal with both reordering and small segment overhead.
 %\eric{interesting that stride on big testbed w/ official GRO had same numbers: 4.6 Gbps and similar overhead}
@@ -88,7 +89,7 @@ Therefore, an effective scheme must deal with both reordering and small segment 
 We investigate Presto's CPU usage by
 running the stride workload on a 2-tier Clos network as shown in Figure~\ref{macro_evaluation_topology}. 
 For comparison, official GRO is run with the stride workload using a non-blocking switch (so there
-is no reordering). Note both official GRO and Presto GRO can achieve 9.3Gbps.  
+is no reordering). Note both official GRO and Presto GRO can achieve 9.3 Gbps.  
 The receiver CPU usage is sampled every 2 seconds over a 400 second interval, and
 the time-series is shown in Figure~\ref{micro_compare_cpu}. 
 %implying that the network utilization is 93% in both cases. 
@@ -99,7 +100,7 @@ At the receiver, Presto needs one {\tt memcpy} to rewrite the shadow MAC back to
 also incurs slight overhead because multiple segments are now kept per flow. The overhead
 of the latter is reduced because these segments are largely kept in reverse sorted order, which means {\tt merge}
 on an incoming packet is usually $\mathcal{O}(1)$. The insertion sort is done at the beginning of each {\tt flush} event over a small
-number of mostly in-order segments, which easily amortizes overhead because it is called infrequently compared to {\tt merge}.
+number of mostly in-order segments, which amortizes overhead because it is called infrequently compared to {\tt merge}.
 
 %%%%%scalability test figures %%%%
 \begin{figure}[t]
@@ -221,21 +222,24 @@ Presto does no worse in terms of latency (Figure~\ref{micro_congestion_test_late
 The long tail latency for MPTCP is caused by its higher loss rates.
 Both Presto and MPTCP have greatly improved fairness compared with ECMP (Figure~\ref{micro_congestion_test_fairness}).
 
-\begin{figure}[t]
+\begin{figure}[!t]
         \centering
   \includegraphics[width=0.45\textwidth]{presto/figures/flowlets/flowlet_switching/flowlet_presto_compare_sockperf.pdf}
-        \caption{Round trip time comparison of Flowlet switching~\cite{flowlet,conga} and Presto in Stride workload. 
+        \caption{Round trip time comparison of flowlet switching and Presto in Stride workload. 
 		The throughputs of Flowlet switching with 100 $\mu\text{s}$ gap, 500 $\mu\text{s}$ gap and Presto 
-		are 4.3Gbps, 7.6Gbps and 9.3Gbps respectively. }
+		are 4.3 Gbps, 7.6 Gbps and 9.3 Gbps respectively. }
         \label{micro_flowlet_rtt_compare}
 \end{figure}
 
 
 \tightparagraph{Comparison to Flowlet Switching}
-We implemented a flowlet load-balancing scheme in OVS that detects
-inactivity gaps and then schedules flowlets over disjoint paths in a round robin fashion
-(Presto does this over flowcells instead of flowlets).
+We first implemented a flowlet load-balancing scheme in OVS that detects
+inactivity gaps and then schedules flowlets over disjoint paths in a round robin fashion.
+%(Presto does this over flowcells instead of flowlets).
 The receiver for flowlets uses official GRO.
+Our flowlet scheme is not a direct reflection of CONGA because (i) it is not 
+congestion-aware and (ii) the flowlets are determined in the software edge
+instead of the networking hardware.
 Presto is compared to 500 $\mu$s and 100 $\mu$s inactivity timers in
 the stride workload on the 2-tier Clos network (Figure~\ref{macro_evaluation_topology}).
 The throughput of the schemes are 9.3 Gbps (Presto), 7.6 Gbps (500 $\mu$s), and 4.3 Gbps (100 $\mu$s).
@@ -259,7 +263,7 @@ schemes, Presto decreases 99.9$^{th}$ percentile latency by 2x-3.6x.
 
 
 %%%%presto 2 mods (ecmp and shaodw MAC) compare
-\begin{figure}[t]
+\begin{figure}[!t]
         \centering
   \includegraphics[width=0.45\textwidth]{presto/figures/presto_compare_2modes/presto_compare_2mods.pdf}
         \caption{Round trip time comparison between Presto + shadow MAC and Presto + ECMP.
@@ -281,11 +285,11 @@ have ECMP hash on flowcell ID and thus provide per-hop load balancing.
 %(\todo{this requires TCP stack allocates the new TCP option before sending to vSwitch}) and 
 %encode chunk ID into TCP source port field. Because chunk ID is incremental, ECMP randomly maps chunks into multiple paths. 
 We compare Presto + shadow MAC with Presto + ECMP using a stride workload on our testbed. 
-Presto + shadow MAC's average throughput is 9.3Gbps while Presto + ECMP's is 8.9Gbps.
+Presto + shadow MAC's average throughput is 9.3 Gbps while Presto + ECMP's is 8.9 Gbps.
 The round trip time CDF is shown in Figure~\ref{micro_presto_2mods}. 
 Presto + shadow MAC gives better latency performance compared with Presto + ECMP. 
 The performance difference comes from the fact that Presto + shadow MAC provides 
 better fine-grained flowcell load balancing because 
 randomization in per-hop multipathing can lead to corner cases where
 a large fraction of flowcells get sent to the same link over a small timescale by multiple flows. This transient congestion
-can lead to increased buffer occupancy and higher delays in the network.
+can lead to increased buffer occupancy and higher delays.

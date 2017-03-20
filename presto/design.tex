@@ -64,9 +64,12 @@ trees by having each spanning tree route through a unique spine switch. Figure~\
 shows an example with four spine switches and four corresponding disjoint spanning trees.
 When there are $\gamma$ links between each spine and leaf switch in a 2-tier Clos network,
 the controller can allocate $\gamma$ spanning trees per spine switch.
-Note that 2-tier Clos networks are scalable because they easily support a large number
-of hosts with only a few high density spine switches~\cite{conga}.
-In general, the controller ensures links in the network are equally covered
+Note that 2-tier Clos networks cover the overwhelming 
+majority of enterprise datacenter deployments and can
+support tens of thousands of physical servers~\cite{conga}.
+%are scalable because they easily support a large number
+%of hosts with only a few high density spine switches~\cite{conga}.
+The controller ensures links in the network are equally covered
 by the allocated spanning trees.
 %~\keqiang{An example (similar to CONGA's example to convince people that 2-tier spine-leaf architecture is enough for most deployments).
 %Let's use leaf switches with 48 10G ports and 12 40G uplinks. Combined with spine switches with 100s of 40G ports, 
@@ -74,7 +77,7 @@ by the allocated spanning trees.
 %In such a network, each 10G server can have 12 shadow MACs (there are only 12 disjoint spanning trees in the network)}
 
 Once the spanning trees are created, the controller assigns a unique forwarding label
-for each vSwitch in every spanning tree and installs them into the network.
+for each vSwitch in every spanning tree and installs the relevant forwarding rules into the network.
 Forwarding labels can be implemented in a variety of ways using
 technologies commonly deployed to forward on labels,
 such as MPLS~\cite{casado2012fabric}, VXLAN~\cite{conga,nv-mtd}, or IP encapsulation~\cite{drb}. 
@@ -88,7 +91,24 @@ Note Shadow MACs are extremely scalable on
 existing chipsets because they utilize the large L2 forwarding table. For example,
 Trident II-based switches~\cite{trident2,smart-table,arista} have 288k L2 table entries and 
 thus 8-way multipathing (\ie{}, each vSwitch has 8 disjoint spanning trees)
-can scale up to 36,000 physical servers.
+can scale up to 36,000 physical servers. 
+%\textcolor{blue}{which covers an overwhelming fraction of enterprise deployments~\cite{conga}.
+To increase scalability, shadow MAC tunnels can be implemented from 
+edge switch to edge switch instead of from vSwitch to vSwitch. Switch-to-switch
+tunneling has been proposed in previous works such as MOOSE~\cite{moose} and NetLord~\cite{netlord}. 
+Tunneling requires $\mathcal{O}(|switches|\times|paths|)$ rules instead of
+$\mathcal{O}(|vSwitches|\times|paths|)$ rules. All 
+shadow MAC labels can route to a destination 
+edge switch that forwards the packet to the correct destination by forwarding on 
+L3 information.
+
+Finally, we note that shadow MACs are also compatible with network virtualization 
+(both L2 and L3 address space virtualization). 
+Tunneling techniques such as VXLAN encapsulate packets in Ethernet frames, 
+which means shadow MACs should still allow path selection 
+in virtualized environments by modifying outer Ethernet headers.
+VXLAN hardware offload is supported in modern NICs and has little
+performance overhead~\cite{vxlan-bench}.
 %\eric{cite?}~\keqiang{CONGA says 20000+ is okay for an overwhelming fraction of enterprise deployments, seems to be true 
 %after reading fat-tree and some googling}
 
@@ -115,6 +135,21 @@ can scale up to 36,000 physical servers.
 % MTU size change is bad?
 %chunkID insertion into packet
 %make clear this is all done in OVS: blurb or two about advantages
+\begin{algorithm}[t]
+\caption{Pseudo-code of flowcell creation}
+\label{alg:flowcell}
+\begin{algorithmic}[1]
+\IF{bytecount + len(skb) $>$ {\emph {threshold}}}
+\STATE bytecount $\leftarrow$ len(skb)
+\STATE current\_mac $\leftarrow$ (current\_mac + 1) \% {\emph {total\_macs}}
+\STATE flowcellID $\leftarrow$ flowcellID + 1
+\ELSE
+\STATE bytecount $\leftarrow$ bytecount + len(skb)
+\ENDIF
+\STATE skb $\leftarrow$ update(skb, current\_mac, flowcellID)
+\STATE sendToNIC(skb)
+\end{algorithmic}
+\end{algorithm}
 After the controller installs the shadow MAC forwarding rules into the network, it creates a mapping
 from each physical destination MAC address to a list of corresponding shadow MAC addresses. These mappings
 provide a way to send traffic to a specific destination over different spanning trees. 
@@ -137,14 +172,17 @@ Sending each 64 KB worth of flowcells over a different path in the network can c
 be carefully addressed.
 To assist with reordering at the receiver (Presto's mechanisms for combatting reordering are detailed in the next section), 
 the sender also includes a sequentially increasing {\em flowcell ID} into each segment.
-For example, 
-in our setup the controller installs forwarding rules solely on the destination MAC address.
-ARP is handled in a centralized manner, so
+%For example, 
+In our setup the controller installs forwarding rules solely on the destination MAC address and
+ARP is handled in a centralized manner. Therefore,
 the source MAC address can be used to hold the flowcell ID. Other options are possible, 
-\eg{}, some schemes include load balancing metadata in the reserved bits of the VXLAN header~\cite{nvo3}.\footnote{In our
+\eg{}, some schemes include load balancing metadata in the reserved bits of the VXLAN header~\cite{nvo3}
+and implementations could also stash flowcell IDs into large IPv6 header fields.\footnote{In our
 implementation, TCP options hold the flowcell ID for simplicity and ease of debugging.}
 Note that since the flowcell ID and the shadow MAC address are modified before a segment is handed to the NIC,
 the TSO algorithm in the NIC replicates these values to all derived MTU-sized packets.
+The pseudo-code of flowcell creation is presented in Algorithm~\ref{alg:flowcell}.
+Since this code executes in the vSwitch, retransmitted TCP packets run through this code for each retransmission.
 
 \begin{algorithm}[t]
 \caption{Pseudo-code of Presto GRO {\tt flush} function}
@@ -163,6 +201,9 @@ the TSO algorithm in the NIC replicates these values to all derived MTU-sized pa
 \STATE f.lastFlowcell $\leftarrow$ getFlowcell(S)
 \STATE f.expSeq $\leftarrow$ S.endSeq
 \STATE pushUp(S)
+\ELSIF{f.expSeq > S.startSeq}
+\STATE f.lastFlowcell $\leftarrow$ getFlowcell(S)
+\STATE pushUp(S)
 \ELSIF{timeout(S)}
 \STATE f.lastFlowcell $\leftarrow$ getFlowcell(S)
 \STATE f.expSeq $\leftarrow$ S.endSeq
@@ -178,16 +219,16 @@ the TSO algorithm in the NIC replicates these values to all derived MTU-sized pa
 
 \subsection{Receiver}
 The main challenge at the receiver is dealing with reordering that can occur when different flowcells
-are sent over different paths. The high level goal of our receiver implementation is
+are sent over different paths. The high-level goal of our receiver implementation is
 to mitigate the effects of the small segment flooding problem by (i) not so aggressively pushing
 up segments if they cannot be merged with an incoming packet and (ii) ensuring that segments
-pushed up are delivered in order.
+pushed up are delivered in-order.
 
 \tightparagraph{Mitigating Small Segment Flooding} Let's use Figure~\ref{gro-break} as a motivating example 
 on how to combat the small segment flooding problem. Say a polling event has occurred, and the driver retrieves
-9 packets from the NIC ($P_0$-$P_8$). The driver calls the GRO handler, which tries to merge consecutive packets
+9 packets from the NIC ($P_0$-$P_8$). The driver calls the GRO handler, which merges consecutive packets
 into larger segments. The first three packets ($P_0$-$P_2$) are merged into a segment, call it $S_1$ (note: in practice
-$S_1$ already contains in order packets received before $P_0$).
+$S_1$ already contains in-order packets received before $P_0$).
 When $P_5$ arrives, a new segment $S_2$, containing $P_5$, should be created. Instead of pushing up $S_1$ (as is done currently),
 both segments should be kept.
 Then, when $P_3$ is received, it can be merged into $S_1$. Similarly, $P_6$ can be merged into $S_2$. This process
@@ -208,18 +249,18 @@ of the polling event, a {\tt flush} function is called that pushes up all segmen
 % that are not "too new" (\ie{}, segments that were just created near the end of the polling
 %event and haven't had many packets merged into them).
 
-Our GRO algorithm makes the following high-level changes. First, multiple segments can be
-kept per flow, and each flow contains a doubly linked list of its segments (called {\tt segment\_list}). 
-To ensure the merging process is fast each linked list is kept in a hash table (keyed on flow).
+Our GRO algorithm makes the following changes. First, multiple segments can be
+kept per flow in a doubly linked list (called {\tt segment\_list}). 
+To ensure the merging process is fast, each linked list is kept in a hash table (keyed on flow).
 When an incoming packet cannot be merged with any existing segment, the existing
 segments are kept and a new segment is created from the packet.
 New segments are added to the head of the linked list so that merging subsequent packets is typically $\mathcal{O}(1)$.
 When the merging is completed over all packets in the batch, the {\tt flush} function is called. 
 The {\tt flush} function decides whether to push segments up or to keep them. Segments may 
-be kept so reordered packets still in flight have enough time to arrive and can then be placed in order
+be kept so reordered packets still in flight have enough time to arrive and can then be placed in-order
 before being pushed up. 
 Reordering can cause the linked lists to become slightly out-of-order, so
-at the beginning of {\tt flush} an insertion sort is run to help easily decide if segments are in order.
+at the beginning of {\tt flush} an insertion sort is run to help easily decide if segments are in-order.
 %\eric{this is likely too long and too repetitive with section 2. keqiang, please go over to check for
 %correctness. we need to figure out the write level of detail to go into here. we also need
 %to say what the impact of using sMACs is here... how are flows decided? i'm also missing
@@ -229,8 +270,8 @@ The pseudo-code of our {\tt flush} function is presented in Algorithm~\ref{alg:g
 For each flow, our algorithm keeps track of the next expected in-order
 sequence number ({\tt f.expSeq}) and the corresponding flowcell ID
 of the most recently received in-order sequence number ({\tt f.lastFlowcell}).
-The {\tt flush} function iterates over 
-the sorted segments ($S$), from lowest sequence number to highest sequence number, in the {\tt segment\_list} (line 2).
+When the merging is completed, the {\tt flush} function iterates over 
+the sorted segments ($S$), from lowest sequence number to highest sequence number in the {\tt segment\_list} (line 2).
 The rest of the code is presented in the subsections that follow.
 
 
@@ -238,7 +279,8 @@ The rest of the code is presented in the subsections that follow.
 In the case of no loss or reordering, our algorithm keeps pushing up segments and updating state. Lines 3-5
 deal with segments from the same flowcell ID, so we just need to update {\tt f.expSeq} each time. Lines 
 6-10 represent the case when the current flowcell ID is fully received and we start to receive the
-next flowcell ID. The problem, however, is when there is 
+next flowcell ID.
+The problem, however, is when there is 
 a gap that appears between the sequence numbers of the segments. When a gap is encountered,
 it isn't clear if it is caused from reordering or from loss. If the gap is due to reordering,
 our algorithm should be conservative and try to wait to receive the packets that "fill in the gap" 
@@ -250,12 +292,12 @@ segments immediately so that TCP can react to the loss as quickly as possible.
 %all packets within a chunk are routed on the same shadow MAC address, it is highly likely all packets
 %within the same chunk will traverse the same network path
 To solve this problem, we leverage the fact that all packets carrying the same flowcell ID traverse the 
-same path and should be in order.
+same path and should be in-order.
 This means incoming sequence numbers can be monitored to check for
 gaps. A sequence number gap within the same flowcell ID is assumed to be a loss, and not reordering,
 so those packets are pushed up immediately (lines 3-5).
-Note that because a flowcell consists of many packets (a 64KB flowcell consists
-of roughly 42 1500 byte packets), when there is a loss, it is likely that it occurs within flowcell boundaries. 
+Note that because a flowcell consists of many packets (a 64 KB flowcell consists
+of roughly 42 1500 byte packets), when there is a loss it is likely that it occurs within flowcell boundaries. 
 The corner case, when a gap occurs on the flowcell boundary, leads us to the next design question.
 
 \tightparagraph{How to Handle Gaps at Flowcell Boundaries?}
@@ -266,9 +308,10 @@ to loss promptly. Previous approaches that deal with reordering typically employ
 timeout (10ms)~\cite{drb}. 
 Setting the timeout artificially high can handle reordering, but hinders TCP when the gap is
 due to loss. 
-Setting a lower timeout is difficult because it depends on many dynamic factors such as delays between
-segments at the sender, amount of network congestion in different paths, and traffic patterns (multiple flows 
-received at the same NIC affect inter-arrival time). 
+Setting a low timeout is difficult because many dynamic factors, such as delays between
+segments at the sender, network congestion, and traffic patterns (multiple flows 
+received at the same NIC affect inter-arrival time), can cause large variations.
+%XXXERICLEFTHERE
 %because there are often many causes for variations in delay: 
 %the sender (senders often have delays between segments), the network (different
 %queue lengths from congestion over different paths), and the traffic patterns (multiple flows received at the same NIC affect
@@ -281,8 +324,20 @@ detected on flowcell boundaries.
 Here $\alpha$ is an empirical parameter that allows for timeouts to grow. As a further optimization, if a segment
 has timed out, but a packet has been merged into that segment in the last $\frac{1}{\beta} * EWMA$ time interval, then 
 the segment is still held in hopes of preventing reordering. We find $\alpha$ and $\beta$
-work over a wide range of parameters and set both of them to 2 in our experiments. A timeout firing is dealt with in lines 11-15.
+work over a wide range of parameters and set both of them to 2 in our experiments. A timeout firing is dealt with in lines 14-18.
 %\eric{take out GRO\_LIST.full()?}
+
+
+%\textcolor{blue}{
+\tightparagraph{How to Handle Retransmissions?} Retransmitted TCP packets are pushed up immediately in order to allow the TCP stack to react without delay. 
+If the flowcell ID of the retransmission is the same as the expected flowcell ID, then 
+the retransmission will be pushed up immediately because its sequence number will be $\leq f.expSeq$. 
+If the flowcell ID is larger
+than the expected flowcell ID (when the first packet of a flowcell is a retransmission), then the packet is pushed up (line 13). 
+If a retransmitted packet has a smaller flowcell ID than the next expected flowcell ID (a stale packet),
+then it will be pushed up immediately (line 20). 
+Note we ensure overflow is handled properly in all cases.
+
 
 %\tightparagraph{How to handle shadow MACs with OVS?}
 %~\keqiang{Can we take this paragraph out, just feel that it breaks the flow of this paper}
@@ -333,13 +388,13 @@ scarce on-chip SRAM/TCAM entries, we can push the weighted load balancing entire
 
 As an added optimization, Presto can leverage any fast failover features that 
 the network supports, such as BGP fast external failover, MPLS fast reroute, or OpenFlow failover groups. Fast failover detects port failure and can move corresponding traffic
-to a predetermined backup port.\footnote{Hardware failover latency ranges from several to tens of milliseconds~\cite{ipblog-failover,huawei-failover}}
+to a predetermined backup port. Hardware failover latency ranges from several to tens of milliseconds~\cite{ipblog-failover,huawei-failover}.
 This ensures traffic is moved away from the failure rapidly and the network
 remains connected when redundant links are available.
 % and contains redundant links~\keqiang{like Facebook's "protection ring"~\cite{farrington2013facebook}}. 
 Moving to backup links causes imbalance in the network,
 so Presto relies on the controller learning of the network change, computing weighted multipath schedules, and
-disseminating the schedules to the vSwitches. 
+disseminating the schedules to the edge vSwitches. 
 
 %\subsection{Non-SDN Environments}
 %Instead of using shadow MACs, Presto can be implemented in non-SDN environments in the following manner. First,

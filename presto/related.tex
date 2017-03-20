@@ -6,10 +6,11 @@ We summarize the related work into three categories: datacenter traffic load bal
 %Load balancing in datacenter networks has been the focus of several studies.
 MPTCP~\cite{mptcp,dc-mptcp} is a transport protocol that uses subflows to 
 transmit over multiple paths.
-CONGA~\cite{conga} and Juniper VCF~\cite{juniper-vcf} employ congestion-aware flowlet switching~\cite{flowlet} on
-specialized switch chipsets to effectively load balance the network.
-RPS~\cite{packetspray} and DRB~\cite{drb} perform per-packet load balancing on symmetric 1 Gbps networks
+CONGA~\cite{conga} and Juniper VCF~\cite{juniper-vcf} both employ congestion-aware flowlet switching~\cite{flowlet} on
+specialized switch chipsets to load balance the network.
+RPS~\cite{packetspray} and DRB~\cite{drb} evaluate per-packet load balancing on symmetric 1 Gbps networks
 at the switch and end-host, respectively.
+The CPU load and feasibility of end-host-based per-packet load balancing for 10+ Gbps networks remains open.
 %Per-packet load balancing can incur significant end-host overhead for DRB
 %if not resorting to jumbo frames.
 %Packet reordering problem is not well considered in both RPS and DRB.
@@ -21,15 +22,17 @@ Fastpass~\cite{fastpass} employs a centralized arbiter to schedule path selectio
 As compared to these schemes, Presto is the only one that proactively load-balances at line rate for fast networks
 in a near uniform fashion without requiring additional infrastructure or changes
 to network hardware or transport layers. Furthermore, to the best of our knowledge, Presto is
-the first work to explore the interactions of fine-grained load balancing with in-built 
-segment offload (TSO and LRO) capabilities used in fast networks.
+the first work to explore the interactions of fine-grained load balancing with built-in
+segment offload capabilities used in fast networks.
+%\textcolor{blue}{~\cite{eden} also advocates to implement network functions such as load balancing 
+%at datacenter end hosts.}
 
 {\bf Reducing Tail Latency}
 %Detail~\cite{detail} summarizes the causes of long tails of flow completion time---
 %1)packet loss and retransmissions,
 %2)absence of flow prioritization and 3)uneven load balancing.
 %Reducing tail latencies of small mice flows has also been actively studied.
-Detail~\cite{detail} is a cross-layer network stack designed to reduce the tail of flow completion times.
+DeTail~\cite{detail} is a cross-layer network stack designed to reduce the tail of flow completion times.
 %link layer uses port buffer occupancy to construct lossless fabric,
 %network layer performs per-packet adaptive load balancing based on port buffer occupancy,
 %transport layer relies upon congestion notifications
@@ -39,7 +42,7 @@ Detail~\cite{detail} is a cross-layer network stack designed to reduce the tail 
 %Detail modified many layers (including the switch) and is hard to deploy using
 %current hardware and network stack.
 DCTCP~\cite{dctcp} is a transport protocol that uses the portion of marked packets 
-by ECN to adaptively adjust TCP's congestion window to reduce switch buffer occupancy.
+by ECN to adaptively adjust sender's TCP's congestion window to reduce switch buffer occupancy.
 %Thus, DCTCP can reduce switch buffer occupancy and reduce flow completion time.
 HULL~\cite{hull} uses Phantom Queues and congestion notifications to cap link utilization and prevent congestion.
 %HULL uses packet pacing to combat with traffic burstiness in order to leave "bandwidth headroom".
@@ -48,6 +51,18 @@ the tail latencies of mice flows by uniformly spreading traffic in
 fine-grained units.
 %We share the overall goal of reducing mice tail latencies, but instead explore how
 %fine-grained load balancing can provide a solution.
+QJUMP~\cite{qjump} utilizes priority levels to 
+allow latency-sensitive flows to "jump-the-queue" over low priority flows.
+PIAS~\cite{pias} uses priority queues to mimic the Shortest Job First principle to reduce FCTs.
+%solve the network interference problem caused by elephant and mice flows 
+%for datacenter networks. High priority packets are rate-limited 
+%at the end-host and can "jump-the-queue" over packets with 
+%lower priorities. PIAS~\cite{pias} mimics the Shortest Job First (SJF) 
+%principle to reduce flow completion times. It gradually decreases 
+%the priority level assigned to a flow based on its flow size.
+%Presto is complementary and could be applied on each priority level.
+%DIBS~\cite{dibs} detours packets of a congested switch port to a randomly 
+%picking neighboring switch to reduce packet drops.
 Last, a blog post by Casado and Pettit~\cite{vmware} summarized
 four potential ways to deal with elephants and mice, with one advocating
 to turn elephants into mice at the edge. 

@@ -9,7 +9,7 @@ throughput-sensitive flows for video, big data analytics, or VM
 migration.
 Load balancing the network is crucial to ensure operational efficiency
 and suitable application performance.
-Unfortunately, popular flow-hashing-based load balancing schemes,
+Unfortunately, popular load balancing schemes based on flow hashing,
 \eg{}, ECMP, cause congestion when hash collisions
 occur~\cite{hedera,dc-mptcp,planck,vmware,detail,packetspray,drb} and
 perform poorly in asymmetric topologies~\cite{conga,wcmp}.
@@ -19,17 +19,17 @@ problems of ECMP.
 Centralized schemes, such as Hedera~\cite{hedera} and
 Planck~\cite{planck}, collect network state and reroute elephant flows
 when collisions occur.
-These approaches are fundamentally reactive to congestion, and are
-very coarse-grained due to the large time constants of their control
+These approaches are fundamentally reactive to congestion and are
+very coarse-grained due to the large time constraints of their control
 loops~\cite{hedera} or require extra network
 infrastructure~\cite{planck}.
-Transport layer solutions such MPTCP~\cite{mptcp}, can
+Transport layer solutions such as MPTCP~\cite{mptcp} can
 react faster but require widespread adoption and are difficult to
 enforce in multi-tenant datacenters where customers often deploy
-customized virtual machines (VMs).
+customized VMs.
 %Also, our experiments in Section~\ref{sec:micro}, ~\ref{sec:eval} and 
 %CONGA~\cite{conga} show MPTCP has brittle performance in many workloads. 
-In-network reactive distributed load balancing schemes, e.g.,
+In-network reactive distributed load balancing schemes, \eg{},
 CONGA~\cite{conga} and Juniper VCF~\cite{juniper-vcf}, can be
 effective but require specialized networking hardware.
 %~\cite{conga,juniper-vcf,detail,packetspray}.
@@ -44,7 +44,7 @@ The shortcomings of the above approaches cause us to re-examine the design space
 Conceptually, ECMP's flaws are not internal to its operation but are caused by asymmetry in network topology (or capacities) and variation in flow sizes. {\em In a symmetric network topology
 where all flows are ``mice'', ECMP should provide near optimal load balancing}; indeed, prior work~\cite{conga,flowlet} has shown the traffic imbalance ECMP imposes across links goes down with an increase in the number of flows and a reduction in the variance of the flow size distribution. 
 
-Can we leverage this insight to design a good proactive load balancing scheme without requiring special purpose hardware or modifications to end-point transport? The system we propose answers this in the affirmative. It relies on the datacenter network's {\em software edge} to transform arbitrary sized flows into a large number of near uniformly sized small sub-flows, and to proactively spread those uniform data units over the network in a balanced fashion. Our scheme is fast (works at 10+ Gbps), and doesn't require network stack configurations that may not be widely supported outside the datacenter (such as increasing MTU sizes). We piggyback on recent trends where several network functions, \eg{}, firewalls and application-level load balancers, are moving into hypervisors and software virtual switches on end-hosts~\cite{nv-mtd,ovs-extending}. Our paper makes a strong case for moving network load balancing functionality out of the datacenter network hardware and into the software-based edge.
+Can we leverage this insight to design a good proactive load balancing scheme without requiring special purpose hardware or modifications to end-point transport? The system we propose answers this in the affirmative. It relies on the datacenter network's {\em software edge} to transform arbitrary sized flows into a large number of near uniformly sized small sub-flows and proactively spreads those uniform data units over the network in a balanced fashion. Our scheme is fast (works at 10+ Gbps) and doesn't require network stack configurations that may not be widely supported outside the datacenter (such as increasing MTU sizes). We piggyback on recent trends where several network functions, \eg{}, firewalls and application-level load balancers, are moving into hypervisors and software virtual switches on end-hosts~\cite{nv-mtd,ovs-extending,eden}. Our paper makes a strong case for moving network load balancing functionality out of the datacenter network hardware and into the software-based edge.
 
 % we really need expensive (and often fragile) congestion-aware reactive techniques like~\cite{hedera,mptcp,conga} to achieve load balancing in datacenter networks, or can we achieve a similar level of functionality by
 % %1) adding symmetry to network 
@@ -87,7 +87,7 @@ Several challenges arise when employing the edge to load balance the network
 on a sub-flow level. Software is slower than hardware, so operating at 10+ Gbps speeds means
 algorithms must be simple, light-weight, and take advantage of optimizations in
 the networking stack and offload features in the NIC. Any sub-flow level load balancing should also be 
-robust against reordering.
+robust against reordering because packets from the same flow can be routed over different network paths which can cause out-of-order delivery.
 %Due to variations in the end host networking stack~\cite{bullettrains},
 %obtaining the "ground truth" of packet timing characteristics on the wire is difficult~\keqiang{vSwitch is below TCP/IP, 
 %so what vSwitch observes is close to "groud truth". Undertand that you want to make a soft argument on flowlet here}. 
@@ -127,7 +127,7 @@ resilient to hardware or link failures and be adaptive to network asymmetry.
 %resilient to hardware or link failures, adaptive to network asymmetry.
 
 To this end, we build a proactive load balancing system called Presto.
-Presto utilizes vSwitches to break flows into discrete units of packets, called 
+Presto utilizes edge vSwitches to break each flow into discrete units of packets, called 
 {\em flowcells}, and distributes them evenly 
 to near-optimally load balance the network. 
 Presto uses the maximum TCP Segment Offload (TSO) size (64 KB) as flowcell granularity, 
@@ -156,8 +156,8 @@ Our paper makes the following contributions:
 \begin{enumerate}
 
 \item We design and implement a system, called Presto, that near-optimally load balances
-links in the network. We show that such a system can be built with no changes to the transport
-layer or network hardware, and scales to 10+ Gbps networking speeds.
+links in the network. We show such a system can be built with no changes to the transport
+layer or network hardware and scales to 10+ Gbps networking speeds.
 %Presto  
 %improves throughput, latency and fairness in the network and reduces flow completion time tail latencies
 %for mice flows.
@@ -166,13 +166,15 @@ layer or network hardware, and scales to 10+ Gbps networking speeds.
 %ensure our approach scales to network speeds higher than 1 Gbps.
 Our approach makes judicious use of middleware
 already implemented in most hypervisors today: Open vSwitch and the TCP receive offload engine in the OS
-(Generic Receive Offload, GRO, in the Linux kernel).\footnote{Also known as Receive Segment Coalescing (RSC)~\cite{ms-rsc}, or in hardware, Large Receive Offload (LRO)~\cite{grossman2005large}} 
+(Generic Receive Offload, GRO, in the Linux kernel).
+%\footnote{Also known as Receive Segment Coalescing (RSC)~\cite{ms-rsc} in Windows,
+%or in hardware, Large Receive Offload (LRO)~\cite{grossman2005large}}
 
 %We show our approach can work in both SDN and non-SDN environments.
 \item We uncover the importance of GRO on performance when packets are reordered.
 At network speeds of 10+ Gbps, current GRO algorithms are unable to sustain line rate under 
 severe reordering due to extreme computational overhead, and hence 
-per-packet load-balancing approaches~\cite{drb,packetspray} need to be reconsidered. We
+per-packet load balancing approaches~\cite{drb,packetspray} need to be reconsidered. We
 improve GRO to prevent reordering while ensuring computational overhead is limited.
 %Our scheme can distinguish loss from reordering and adapt to prevailing network conditions.
 %These techniques are criticial to ensure we minimize the time waiting for lost packets, while
@@ -181,6 +183,9 @@ We argue
 GRO is the most natural place to handle reordering because it can mask
 reordering in a light-weight manner while simultaneously limiting CPU overhead by having a direct impact
 on the segment sizes pushed up the networking stack.
+In addition, our scheme distinguishes loss from reordering and adapts to prevailing network conditions
+to minimize the time to recover lost packets.
+
 %Need to sell this more: this is the only place we should really do it because it has
 %direct impact on packet sizes, and thus CPU overhead. We also need to talk about mechanisms
 %we create to distinguish loss from reordering.

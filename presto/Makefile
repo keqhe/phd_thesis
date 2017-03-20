@@ -1,6 +1,6 @@
 latexfile = paper
 bibfile = refer
-classfile = usenix.sty
+classfile = acmcopyright.sty
 figures = figures/*
 
 SHELL=/bin/bash

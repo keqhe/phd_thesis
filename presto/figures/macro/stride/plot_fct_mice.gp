@@ -33,11 +33,11 @@ set style line 3 lt rgb "#5060D0" lw 2 pt 2
 set style line 4 lt rgb "#F25900" lw 2 pt 9
 set style line 5 lt rgb "#000000" lw 2 pt 14
 
-set style line 1 lt rgb "#1b9e77" lw 15 pt 1
-set style line 2 lt rgb "#d95f02" lw 15 pt 6
-set style line 3 lt rgb "#7570b3" lw 15 pt 2
-set style line 4 lt rgb "#e7298a" lw 15 pt 9
-set style line 5 lt rgb "#636363" lw 15 pt 12
+set style line 1 lt rgb "#1b9e77" lw 12 pt 1
+set style line 2 lt rgb "#d95f02" lw 12 pt 6
+set style line 3 lt rgb "#7570b3" lw 12 pt 2
+set style line 4 lt rgb "#e7298a" lw 12 pt 9
+set style line 5 lt rgb "#636363" lw 12 pt 12
 
 set output "macro_compare_fct_stride_mice.pdf"
 
@@ -51,10 +51,10 @@ set xrange [0:10]
 #set yrange [0:10000]
 #set rmargin 5
 
-plot "mice.ecmp.fct.cdf"  using ($1/1000):2 title "ECMP" w lp ls 1 pointinterval 200 ,\
-"mice.mptcp.fct.cdf" using ($1/1000):2 title "MPTCP" w lp ls 2 pointinterval 200, \
-"mice.presto.fct.cdf"  using ($1/1000):2 title "Presto" w lp ls 3 pointinterval 200, \
-"mice.optimal.fct.cdf"  using ($1/1000):2 title "Optimal" w lp ls 4 pointinterval 200
+plot "mice.ecmp.fct.cdf"  using ($1/1000):2 title "ECMP" w lp ls 1 pointinterval 700 pointsize 2,\
+"mice.mptcp.fct.cdf" using ($1/1000):2 title "MPTCP" w lp ls 2 pointinterval 300 pointsize 2, \
+"mice.presto.fct.cdf"  using ($1/1000):2 title "Presto" w lp ls 3 pointinterval 200 pointsize 2, \
+"mice.optimal.fct.cdf"  using ($1/1000):2 title "Optimal" w lp ls 4 pointinterval 200 pointsize 2
 #"OnePara_64KB_Delta55/ping.txt.cdf"  title "64K,55us" w lp ls 3 linewidth 4 pointsize 2, \
 #"OnePara_64KB_Delta215/ping.txt.cdf"  title "64K,215us" w lp ls 4 linewidth 4 pointsize 2
 #"ecmp_tput.cdf"  title "ecmp" w lp ls 5 linewidth 4 pointsize 2

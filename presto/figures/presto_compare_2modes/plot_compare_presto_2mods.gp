@@ -34,11 +34,11 @@ set style line 4 lt rgb "#F25900" lw 2 pt 9
 set style line 5 lt rgb "#8A2BE2" lw 2 pt 12
 set style line 6 lt rgb "#DAA520" lw 2 pt 15
 
-set style line 1 lt rgb "#1b9e77" lw 15 pt 1
-set style line 2 lt rgb "#d95f02" lw 15 pt 6
-set style line 3 lt rgb "#7570b3" lw 15 pt 2
-set style line 4 lt rgb "#e7298a" lw 15 pt 9
-set style line 5 lt rgb "#636363" lw 15 pt 12
+set style line 1 lt rgb "#1b9e77" lw 10 pt 1
+set style line 2 lt rgb "#d95f02" lw 10 pt 6
+set style line 3 lt rgb "#7570b3" lw 10 pt 2
+set style line 4 lt rgb "#e7298a" lw 10 pt 9
+set style line 5 lt rgb "#636363" lw 10 pt 12
 
 set output "presto_compare_2mods.pdf"
 
@@ -55,8 +55,8 @@ set xtics 0.5
 
 ###use ejr jain metric
 plot \
-"presto_sockperf_ecmp2.cdf" using ($1/1000):2 title "Presto(ECMP)" w lp ls 1 pointinterval 100, \
-"presto_sockperf_shadow_stride.cdf" using ($1/1000):2 title "Presto(Shadow MAC)" w lp ls 2 pointinterval 100
+"presto_sockperf_ecmp2.cdf" using ($1/1000):2 title "Presto(ECMP)" w lp ls 3 pointinterval 100 pointsize 1.2, \
+"presto_sockperf_shadow_stride.cdf" using ($1/1000):2 title "Presto(Shadow MAC)" w lp ls 4 pointinterval 100 pointsize 1.2
 #"presto_sockperf_ecmp.cdf" using ($1/1000):2 title "ecmp" w lp ls 3 pointinterval 100, \
 #"presto_sockperf_ecmp2.cdf" using ($1/1000):2 title "ecmp2" w lp ls 4 pointinterval 100
 

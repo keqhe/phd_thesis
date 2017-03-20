@@ -64,7 +64,7 @@ set key horizontal outside
 
 #plot 'scalability_compare_tput_errorbar.dat' using 2:3:4:xtic(1) t "ECMP(sim)" w hist ls 1, '' using 5:6:7 t "ECMP" w hist ls 2, '' using 17:18:19 t "MPTCP" w hist ls 3, '' using 8:9:10  t "Presto" w hist ls 4, '' using 14:15:16  t "Opt" w hist ls 5
  
-plot 'scalability_compare_tput_errorbar.dat' using ($5/1000):($6/1000):($7/1000):xtic(1) t "ECMP" w hist ls 1 fs pattern 1, '' using ($17/1000):($18/1000):($19/1000) t "MPTCP" w hist ls 2 fs pattern 2, '' using ($8/1000):($9/1000):($10/1000)  t "Presto" w hist ls 3 fs pattern 3, '' using ($14/1000):($15/1000):($16/1000)  t "Optimal" w hist ls 4 fs pattern 9
+plot 'scalability_compare_tput_errorbar.dat' using ($5/1000):($6/1000):($7/1000):xtic(1) t "ECMP" w hist ls 1 fs pattern 1, '' using ($17/1000):($18/1000):($19/1000) t "MPTCP" w hist ls 2 fs pattern 2, '' using ($8/1000):($9/1000):($10/1000)  t "Presto" w hist ls 3 fs pattern 3, '' using ($14/1000):($15/1000):($16/1000)  t "Optimal" w hist ls 4 fs pattern 4
 
 #newhistogram "8", 'scalability_compare_tput_errorbar_path8.dat' using 2:3:4 t "ECMP(sim)" w hist ls 1, \
 # '' using 5:6:7 t "ECMP" w hist ls 2, \

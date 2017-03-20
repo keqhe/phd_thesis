@@ -51,8 +51,8 @@ set key bottom right
 set yrange [50:80]
 #set rmargin 5
 
-plot "test_cpu_official.cpustat-dcn20.overall"  title "Official" w lp ls 1 linewidth 5 pointsize 2 pointinterval 5,\
-"test_cpu_fullload.cpustat-dcn20.overall"  title "Presto" w lp ls 2 linewidth 5 pointsize 2 pointinterval 5
+plot "test_cpu_official.cpustat-dcn20.overall"  title "Official" w lp ls 3 linewidth 5 pointsize 1 pointinterval 5,\
+"test_cpu_fullload.cpustat-dcn20.overall"  title "Presto" w lp ls 2 linewidth 5 pointsize 1 pointinterval 5
 #"OnePara_64KB_Delta55/ping.txt.cdf"  title "64K,55us" w lp ls 3 linewidth 10 pointsize 2, \
 #"OnePara_64KB_Delta215/ping.txt.cdf"  title "64K,215us" w lp ls 4 linewidth 10 pointsize 2
 #"ecmp_tput.cdf"  title "ecmp" w lp ls 5 linewidth 4 pointsize 2

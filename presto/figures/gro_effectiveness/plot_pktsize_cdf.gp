@@ -33,11 +33,11 @@ set style line 2 lt rgb "#00A000" lw 2 pt 6
 set style line 3 lt rgb "#5060D0" lw 2 pt 2
 set style line 4 lt rgb "#F25900" lw 2 pt 9
 
-set style line 1 lt rgb "#1b9e77" lw 5 pt 1
-set style line 2 lt rgb "#d95f02" lw 5 pt 6
-set style line 3 lt rgb "#7570b3" lw 5 pt 2
-set style line 4 lt rgb "#e7298a" lw 5 pt 9
-set style line 5 lt rgb "#636363" lw 5 pt 12
+set style line 1 lt rgb "#1b9e77" lw 10 pt 1
+set style line 2 lt rgb "#d95f02" lw 10 pt 6
+set style line 3 lt rgb "#7570b3" lw 10 pt 2
+set style line 4 lt rgb "#e7298a" lw 10 pt 9
+set style line 5 lt rgb "#636363" lw 10 pt 12
 
 set output "metric1_pktsize_cdf_compare.pdf"
 
@@ -51,5 +51,5 @@ set key bottom right
 #set yrange [0:50]
 
 #plot "chunk_seg.txt" using 1:2 title "" w lp ls 1 linewidth 4 pointsize 2
-plot "dcn16_without/frame.len_dcn16.cdf" using 1:2 title "Official GRO" w lp ls 1 pointsize 3,\
-"dcn16_with_release/frame.len_dcn16.cdf" using 1:2 title "Presto GRO" w lp ls 2 pointsize 3
+plot "dcn16_without/frame.len_dcn16.cdf" using 1:2 title "Official GRO" w lp ls 1 pointinterval 4 pointsize 3,\
+"dcn16_with_release/frame.len_dcn16.cdf" using 1:2 title "Presto GRO" w lp ls 2 pointinterval 4 pointsize 3

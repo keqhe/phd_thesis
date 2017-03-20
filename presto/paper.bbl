@@ -45,6 +45,17 @@ G.~Antichi, C.~Callegari, and S.~Giordano.
 \newblock
   \url{http://www.arista.com/assets/data/pdf/Datasheets/7250QX-64_Datasheet.pdf}.
 
+\bibitem{pias}
+W.~Bai, L.~Chen, K.~Chen, D.~Han, C.~Tian, and H.~Wang.
+\newblock {Information-Agnostic Flow Scheduling for Commodity Data Centers}.
+\newblock In {\em NSDI}, 2015.
+
+\bibitem{eden}
+H.~Ballani, P.~Costa, C.~Gkantsidis, M.~P. Grosvenor, T.~Karagiannis,
+  L.~Koromilas, and G.~O'Shea.
+\newblock {Enabling End Host Network Functions}.
+\newblock In {\em SIGCOMM}, 2015.
+
 \bibitem{benson10}
 T.~Benson, A.~Akella, and D.~A. Maltz.
 \newblock {Network Traffic Characteristics of Data Centers in the Wild}.
@@ -68,7 +79,7 @@ E.~Blanton and M.~Allman.
 \bibitem{tcp-pr}
 S.~Bohacek, J.~P. Hespanha, J.~Lee, C.~Lim, and K.~Obraczka.
 \newblock {TCP-PR: TCP for Persistent Packet Reordering}.
-\newblock In {\em ICDCS}, pages 222--231, 2003.
+\newblock In {\em ICDCS}, 2003.
 
 \bibitem{trident2}
 {Broadcom Extends Leadership with New {StrataXGS Trident II} Switch Series
@@ -125,6 +136,12 @@ L.~Grossman.
   Driver}.
 \newblock In {\em Linux Symposium}, 2005.
 
+\bibitem{qjump}
+M.~P. Grosvenor, M.~Schwarzkopf, I.~Gog, R.~N. Watson, A.~W. Moore, S.~Hand,
+  and J.~Crowcroft.
+\newblock {Queues Don't Matter When You Can JUMP Them!}
+\newblock In {\em NSDI}, 2015.
+
 \bibitem{nvo3}
 {H. Chen and W. Song}.
 \newblock {Load Balancing without Packet Reordering in NVO3}.
@@ -154,6 +171,10 @@ R.~Jain, D.~Chiu, and W.~Hawe.
 \newblock {A Quantitative Measure Of Fairness And Discrimination For Resource
   Allocation In Shared Computer Systems}.
 \newblock {\em CoRR}, 1998.
+
+\bibitem{linuxgro}
+{JLS2009: Generic Receive Offload}.
+\newblock \url{https://lwn.net/Articles/358910/}.
 
 \bibitem{flowbender}
 A.~Kabbani, B.~Vamanan, J.~Hasan, and F.~Duchene.
@@ -215,6 +236,16 @@ T.~P. Morgan.
 {MPTCP Linux Kernel Implementation}.
 \newblock \url{http://www.multipath-tcp.org}.
 
+\bibitem{netlord}
+J.~Mudigonda, P.~Yalagandula, J.~Mogul, B.~Stiekes, and Y.~Pouffary.
+\newblock {NetLord: A Scalable Multi-tenant Network Architecture for
+  Virtualized Datacenters}.
+\newblock In {\em SIGCOMM}, 2011.
+
+\bibitem{nuttcp}
+Nuttcp.
+\newblock \url{http://www.nuttcp.net/Welcome%20Page.html}.
+
 \bibitem{ovs-website}
 {Open vSwitch}.
 \newblock \url{http://openvswitch.org}.
@@ -251,6 +282,12 @@ B.~Pfaff, J.~Pettit, K.~Amidon, M.~Casado, T.~Koponen, and S.~Shenker.
 \newblock {Extending Networking into the Virtualization Layer}.
 \newblock In {\em HotNets}, 2009.
 
+\bibitem{pfaff2015design}
+B.~Pfaff, J.~Pettit, T.~Koponen, E.~J. Jackson, A.~Zhou, J.~Rajahalme,
+  J.~Gross, A.~Wang, J.~Stringer, P.~Shelar, et~al.
+\newblock {The Design and Implementation of Open vSwitch}.
+\newblock In {\em NSDI}, 2015.
+
 \bibitem{dc-mptcp}
 C.~Raiciu, S.~Barre, C.~Pluntke, A.~Greenhalgh, D.~Wischik, and M.~Handley.
 \newblock {Improving Datacenter Performance and Robustness with Multipath TCP}.
@@ -267,6 +304,15 @@ J.~Rasley, B.~Stephens, C.~Dixon, E.~Rozner, W.~Felter, K.~Agarwal, J.~Carter,
 {Receive Segment Coalescing (RSC)}.
 \newblock \url{http://technet.microsoft.com/en-us/library/hh997024.aspx}.
 
+\bibitem{rss}
+{Receive Side Scaling (RSS)}.
+\newblock \url{https://technet.microsoft.com/en-us/library/hh997036.aspx}.
+
+\bibitem{moose}
+M.~Scott, A.~Moore, and J.~Crowcroft.
+\newblock {Addressing the Scalability of Ethernet with MOOSE}.
+\newblock In {\em Proc. DC CAVES Workshop}, 2009.
+
 \bibitem{flowlet}
 S.~Sinha, S.~Kandula, and D.~Katabi.
 \newblock {Harnessing TCPs Burstiness using Flowlet Switching}.
@@ -275,6 +321,11 @@ S.~Sinha, S.~Kandula, and D.~Katabi.
 \bibitem{sockperf}
 {Sockperf: A Network Benchmarking Utility over Socket API}.
 \newblock \url{https://code.google.com/p/sockperf/}.
+
+\bibitem{vxlan-bench}
+{VXLAN Performance Evaluation on VMware vSphere 5.1}.
+\newblock
+  \url{http://www.vmware.com/files/pdf/techpaper/VMware-vSphere-VXLAN-Perf.pdf}.
 
 \bibitem{mptcp}
 D.~Wischik, C.~Raiciu, A.~Greenhalgh, and M.~Handley.

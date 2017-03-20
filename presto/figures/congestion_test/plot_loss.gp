@@ -56,9 +56,9 @@ set ytics ('0' 0.00001, '0.0001' 0.0001, '0.001' 0.001, '0.01' 0.01)
 
 ###use ejr jain metric
 plot \
-"loss.dat" using 1:2 title "ECMP" w lp ls 1 pointsize 2, \
-"loss.dat" using 1:5 title "MPTCP" w lp ls 2 pointsize 2, \
-"loss.dat" using 1:($4+0.00001) title "Presto" w lp ls 3 pointsize 2,\
+"loss.dat" using 1:2 title "ECMP" w lp ls 1 pointsize 2.5, \
+"loss.dat" using 1:5 title "MPTCP" w lp ls 2 pointsize 2.5, \
+"loss.dat" using 1:($4+0.00001) title "Presto" w lp ls 3 pointsize 2.5,\
 
 ###if you want to distinguish ejr and khe jain metric
 #plot "fair_index.dat" using 1:2 title "ECMP" w lp ls 1 pointsize 3,\
