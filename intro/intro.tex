@@ -1,38 +1,7 @@
 \chapter{Introduction}
 \label{chap:intro}
 Over the past few years, cloud-based networking solutions have been gaining widespread acceptance and
-deployment for organizations such as enterprises and institutions. 
-Today's data centers are infrastructures of various services, including search, content distribution,
-big data analysis, and virtual networks. The cloud providers obtain revenue by multiplexing the 
-infrastructure among the cloud tenants and the tenants save the trouble of needing to manage the network by themselves.
-Recent studies have forecast that global data center traffic (both inter and intra) in 2018 will 
-be triple the traffic in 2013~\cite{cisco2018}.
-
-Despite their importance, cloud networks still face the risk of performance, availability and
-reliability issues. In April 2011, AWS performed a network change for scaling, 
-and shifted the traffic to a low capacity EBS network, which caused a fault whereby the EBS nodes
-were unable to find replicas. As such the EBS nodes became ``stuck" in searching 
-for replicas \textemdash  the outage lasted for 12 hours!
-In April 2013, a misconfiguration with an invalid address for authentication
-servers was released to the Google API production environment causing the internal monitoring systems
-to become blocked and all of the serving threads to be consumed; as a result, Google API experienced 
-a one-hour long outage.
-
-Performance, availability and reliability issues affect the productivity and revenue of the cloud 
-providers and tenants. For example, in 2009, AWS experienced an 24-hour outage, which cost a revenue loss of 
-about \$4,320,000~\cite{clouddowntime}.
-%Theoretically, service outages cost Amazon and Google \$66,240 and \$109,000 per minute, respectively. 
-In August 2013, an AWS outage causes its high profile tenants Netflix and 
-Airbnb to go down as well.
-Motivated by these observations, this thesis proposes two diagnostic solutions\textemdash VND and \Name\textemdash
-for cloud network problems. They together form an integral basis of cloud network diagnosis.
-
-In the rest of this chapter, we first describe the cloud infrastructure (Section~\ref{sec:intro:organization}).
-Then, in section~\ref{sec:intro:challenges}, we discuss the new challenges for troubleshooting 
-in cloud networks compared with the traditional networks. 
-Section~\ref{sec:intro:approach} briefly presents our network troubleshooting approaches 
-for the new challenges. 
-Section~\ref{sec:intro:outline} provides a road map for the rest of thesis.
+deployment for organizations such as enterprises and institutions~\cite{paxson1997end}.
 
 \section{Cloud Infrastructure Organization}
 % virtual network data plane
@@ -41,67 +10,10 @@ Section~\ref{sec:intro:outline} provides a road map for the rest of thesis.
 In this thesis, we focus on multi-tenant cloud data centers.
 In this setting, tenants deploy \emph{virtual private clusters}
 composed of application end-points (this could be service software in
-the case of private data centers, or VMs in the case of public
-clouds), network function services (or middeboxes), and logical links
-between subsets of them. Network functions improve network performance
-or security, and tenants increasingly desire to deploy sophisticated
-sets of middlebox functionality within their
-clusters~\cite{koponen2014network}.
-
-This setting can be viewed logically as being composed of three planes
-(Figure~\ref{fig:arch}): the \emph{control plane}, \emph{application plane}
-and \emph{data plane}.  Tenants interact with the application plane,
-requesting (re)deployments of virtual private clusters. The control
-plane, which the cloud operator runs, responds to such requests by
-computing suitable deployment policies, e.g., determining where VMs
-and middleboxes ought to be placed, instantiating virtual links
-between VMs and middleboxes (using tunneling schemes or encapsulation
-policies~\cite{koponen2014network}), and computing the forwarding
-state configuration to determine how traffic flows between
-VMs/middleboxes and over virtual links. Then the data plane for the tenant's
-virtual cluster, where fast path actions are performed on the tenant's
-traffic, follows the configurations provided by the control plane
-to deliver network traffic between the appropriate end-points in each
-virtual cluster.
-
-In this thesis, we focus on middleboxes that are implemented as
-software and deployed in VMs attached to virtual switches, which is an
-increasingly popular trend also known as \emph{network functions
-virtualization (NFV)}~\cite{chiosi2012network}. In NFV, the
-middlebox VMs, similar to application VMs, are allocated fixed
-resources (e.g., CPU, memory, network bandwidth), and the controller
-deploys all VMs to physical machines that have sufficient resources.
-
-Figure~\ref{fig:dp_org_example} shows a tenant with a simple
-virtual cluster, consisting of an application VM and a firewall;
-furthermore, the tenant requires all Internet traffic to traverse
-through the firewall. While this is a simple example, virtual clusters
-can have much more complex sequences of middleboxes, where a given
-sequence may only apply to a specific traffic substream. 
-
-The physical deployment computed by the controller is shown in
-Figure~\ref{fig:dp_org_deploy}. Consider the path that
-Internet-originated traffic would traverse to arrive at the tenant VM
-(and vice versa for the outgoing traffic), each packet is
-forwarded by the cloud gateway to the physical NIC (pNIC) of a
-physical server hosting the middlebox VM first; then it traverses the
-pNIC driver, the virtual switch, the hypervisor I/O handler, the
-virtual NIC (vNIC), the vNIC driver and the VM guest OS network stack,
-and finally arrives at the software firewall. After being processed by
-the software firewall, the packet traverses all the layers back down
-to the pNIC. Then it is delivered by the physical network to the next
-hop in the virtual network (a tenant VM or another middlebox).
 
 \section{Challenges in Diagnosing Cloud Networks}
 \label{sec:intro:challenges}
 Troubleshooting network problems is difficult. A network is a distributed
-system, where the states are distributed across devices and software components.
-With current rudimentary tools (trace, ping, SNMP, NetFlow, sFlow), troubleshooting
-network problems depends heavily on the operators' skill and experience, which
-lead to a long problem-solving time and high operational costs~\cite{ndb_thesis}.
-
-In addition to this common difficulty, cloud networks have their own characteristics,
-which makes troubleshooting even more difficult. 
 
 \begin{itemize}
 \item Cloud networks have higher complexity than traditional networks.  In data planes, network virtualization introduces more software components, including software switches, hypervisors, and so on; software middleboxes are introduced to support network function virtualization. In control planes, the cloud controllers need to perform more functions to set up virtual networks; the controllers map tenants' requirements from a logical view to a physical view, and finally to devices rules. Cloud networks involve a greater number of components involved, and these components may have logical or physical dependency (e.g., exchanging data or sharing hardware resources). This complexity in cloud networks makes them not only more error-prone but also difficulty to manage and diagnose.

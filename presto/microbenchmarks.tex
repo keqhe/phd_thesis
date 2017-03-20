@@ -12,13 +12,13 @@ switching, and (vi) comparison to local, per-hop load balancing.
         \centering
 	\begin{subfigure}[b]{0.225\textwidth}
         	\centering
-  		\includegraphics[width=\textwidth]{./figures/micro_test_topology/micro_scalabilitytest_topology_refined.pdf}
+  		\includegraphics[width=\textwidth]{presto/figures/micro_test_topology/micro_scalabilitytest_topology_refined.pdf}
         	\caption{}
 		\label{micro_scalability_topology}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.225\textwidth}
                 \centering
-		\includegraphics[width=\textwidth]{./figures/micro_test_topology/micro_congestiontest_topology_refined.pdf}
+		\includegraphics[width=\textwidth]{presto/figures/micro_test_topology/micro_congestiontest_topology_refined.pdf}
         	\caption{}
 		\label{micro_congestion_topology}
 	\end{subfigure}
@@ -31,13 +31,13 @@ switching, and (vi) comparison to local, per-hop load balancing.
 	\centering
 	\begin{subfigure}[b]{0.225\textwidth}
                 \centering
-  		\includegraphics[width=\textwidth]{./figures/gro_effectiveness/metric1_seg_cdf_compare.pdf}
+  		\includegraphics[width=\textwidth]{presto/figures/gro_effectiveness/metric1_seg_cdf_compare.pdf}
 		\caption{}
 		\label{gro_effectiveness_on_reordering}
 	\end{subfigure}
         \begin{subfigure}[b]{0.225\textwidth}
                 \centering
-		\includegraphics[width=\textwidth]{./figures/gro_effectiveness/metric1_pktsize_cdf_compare.pdf}
+		\includegraphics[width=\textwidth]{presto/figures/gro_effectiveness/metric1_pktsize_cdf_compare.pdf}
         	\caption{}
 		\label{gro_effectiveness_on_pktsize}
 	\end{subfigure}
@@ -79,7 +79,7 @@ Therefore, an effective scheme must deal with both reordering and small segment 
 
 \begin{figure}[t]
         \centering
-  \includegraphics[width=0.45\textwidth]{./figures/mornitor_cpu/macro_compare_cpu_usage.pdf}
+  \includegraphics[width=0.45\textwidth]{presto/figures/mornitor_cpu/macro_compare_cpu_usage.pdf}
         \caption{Presto incurs 6\% CPU overhead on average.}
         \label{micro_compare_cpu}
 \end{figure}
@@ -104,7 +104,7 @@ number of mostly in-order segments, which easily amortizes overhead because it i
 %%%%%scalability test figures %%%%
 \begin{figure}[t]
         \centering
-  \includegraphics[width=0.45\textwidth]{./figures/scalability_test/scalability_compare_tput_witherrbar.pdf}
+  \includegraphics[width=0.45\textwidth]{presto/figures/scalability_test/scalability_compare_tput_witherrbar.pdf}
         \caption{Throughput comparison in scalability benchmark. We denote the non-blocking case as Optimal. 
 		} 
         \label{micro_scalability_test_tput}
@@ -114,7 +114,7 @@ number of mostly in-order segments, which easily amortizes overhead because it i
 \iffalse
 \begin{figure}[ht]
         \centering
-  \includegraphics[width=0.45\textwidth]{./figures/scalability_test/scalability_compare_fairness.pdf}
+  \includegraphics[width=0.45\textwidth]{presto/figures/scalability_test/scalability_compare_fairness.pdf}
         \caption{Micro benckmark 2 - scalability test. 
 		We increase the number of spine switches (i.e., the number of intermediate paths)
                 and set the number of flows (host pairs) equal to the number of available paths. 
@@ -126,7 +126,7 @@ number of mostly in-order segments, which easily amortizes overhead because it i
 
 \begin{figure}[t]
         \centering
-  \includegraphics[width=0.45\textwidth]{./figures/scalability_test/scalability_compare_latency.pdf}
+  \includegraphics[width=0.45\textwidth]{presto/figures/scalability_test/scalability_compare_latency.pdf}
         \caption{Round trip time comparison in scalability benchmark. 
 		%We increase the number of spine switches (i.e., the number of intermediate paths)
                 %and set the number of flows (host pairs) equal to the number of available paths. 
@@ -140,12 +140,12 @@ number of mostly in-order segments, which easily amortizes overhead because it i
 	\centering
         \begin{subfigure}[b]{0.225\textwidth}
                 \centering
-		\includegraphics[width=\textwidth]{./figures/scalability_test/scalability_compare_loss.pdf}
+		\includegraphics[width=\textwidth]{presto/figures/scalability_test/scalability_compare_loss.pdf}
 		\caption{}
 		\label{micro_scalability_test_loss}
         \end{subfigure}
         \begin{subfigure}[b]{0.225\textwidth}
-  		\includegraphics[width=\textwidth]{./figures/scalability_test/scalability_compare_fairness.pdf}
+  		\includegraphics[width=\textwidth]{presto/figures/scalability_test/scalability_compare_fairness.pdf}
         	\caption{}
         	\label{micro_scalability_test_fairness}
 	\end{subfigure}
@@ -173,7 +173,7 @@ achieve almost perfect fairness.
 %%%congestion test figures %%%%
 \begin{figure}[t]
         \centering
-  \includegraphics[width=0.45\textwidth]{./figures/congestion_test/congestion_compare_tput_witherrbar.pdf}
+  \includegraphics[width=0.45\textwidth]{presto/figures/congestion_test/congestion_compare_tput_witherrbar.pdf}
         \caption{Throughput comparison in oversubscription benchmark.}
         \label{micro_congestion_test_tput}
 \end{figure}
@@ -181,7 +181,7 @@ achieve almost perfect fairness.
 
 \begin{figure}[t]
         \centering
-  \includegraphics[width=0.45\textwidth]{./figures/congestion_test/congestion_compare_latency.pdf}
+  \includegraphics[width=0.45\textwidth]{presto/figures/congestion_test/congestion_compare_latency.pdf}
         \caption{Round trip time comparison in oversubscription benchmark.
 		}
         \label{micro_congestion_test_latency}
@@ -194,13 +194,13 @@ achieve almost perfect fairness.
 	\centering
         \begin{subfigure}[b]{0.225\textwidth}
                 \centering
-		\includegraphics[width=\textwidth]{./figures/congestion_test/congestion_compare_loss.pdf}
+		\includegraphics[width=\textwidth]{presto/figures/congestion_test/congestion_compare_loss.pdf}
 		\caption{}
 		\label{micro_congestion_test_loss}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.225\textwidth}
 		\centering
-  		\includegraphics[width=\textwidth]{./figures/congestion_test/congestion_compare_fairness.pdf}
+  		\includegraphics[width=\textwidth]{presto/figures/congestion_test/congestion_compare_fairness.pdf}
 		\caption{}
         \label{micro_congestion_test_fairness}
 	\end{subfigure}
@@ -223,7 +223,7 @@ Both Presto and MPTCP have greatly improved fairness compared with ECMP (Figure~
 
 \begin{figure}[t]
         \centering
-  \includegraphics[width=0.45\textwidth]{./figures/flowlets/flowlet_switching/flowlet_presto_compare_sockperf.pdf}
+  \includegraphics[width=0.45\textwidth]{presto/figures/flowlets/flowlet_switching/flowlet_presto_compare_sockperf.pdf}
         \caption{Round trip time comparison of Flowlet switching~\cite{flowlet,conga} and Presto in Stride workload. 
 		The throughputs of Flowlet switching with 100 $\mu\text{s}$ gap, 500 $\mu\text{s}$ gap and Presto 
 		are 4.3Gbps, 7.6Gbps and 9.3Gbps respectively. }
@@ -261,7 +261,7 @@ schemes, Presto decreases 99.9$^{th}$ percentile latency by 2x-3.6x.
 %%%%presto 2 mods (ecmp and shaodw MAC) compare
 \begin{figure}[t]
         \centering
-  \includegraphics[width=0.45\textwidth]{./figures/presto_compare_2modes/presto_compare_2mods.pdf}
+  \includegraphics[width=0.45\textwidth]{presto/figures/presto_compare_2modes/presto_compare_2mods.pdf}
         \caption{Round trip time comparison between Presto + shadow MAC and Presto + ECMP.
 		%Compare Presto 2 modes' (Presto over ECMP and Presto over Shadow MAC) performance.
                 %Simple 2-tier Clos network with 4 senders and 4 receivers, 4 paths between any host pair.

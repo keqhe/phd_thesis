@@ -7,7 +7,7 @@ trace-driven workloads, (iii) workloads containing north-south cross traffic, an
 All tests are run on the topology in Figure~\ref{macro_evaluation_topology}.
 \begin{figure}[!t]
         \centering
-  \includegraphics[width=0.45\textwidth]{./figures/macro/stride/macro_compare_tput_witherrbar.pdf}
+  \includegraphics[width=0.45\textwidth]{presto/figures/macro/stride/macro_compare_tput_witherrbar.pdf}
         \caption{Elephant flow's throughputs of ECMP, MPTCP, Presto and Optimal in Shuffle, Random, Stride and Random Bijection workloads.}
         \label{macro_evaluation_tput}
 \end{figure}
@@ -18,13 +18,13 @@ All tests are run on the topology in Figure~\ref{macro_evaluation_topology}.
         \centering
 	\begin{subfigure}[b]{0.3\textwidth}
                 \centering
-  		\includegraphics[width=\textwidth]{./figures/macro/stride/macro_compare_fct_stride_mice.pdf}
+  		\includegraphics[width=\textwidth]{presto/figures/macro/stride/macro_compare_fct_stride_mice.pdf}
         	\caption{Stride}
         	\label{macro_evaluation_fct_stride}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.3\textwidth}
                 \centering
-		\includegraphics[width=\textwidth]{./figures/macro/bijection/macro_compare_fct_bijection_mice.pdf}
+		\includegraphics[width=\textwidth]{presto/figures/macro/bijection/macro_compare_fct_bijection_mice.pdf}
         	\caption{Random Bijection}
         	\label{macro_evaluation_fct_bijection}
 	\end{subfigure}
@@ -36,7 +36,7 @@ All tests are run on the topology in Figure~\ref{macro_evaluation_topology}.
 	%\end{subfigure}
         \begin{subfigure}[b]{0.3\textwidth}
                 \centering
-		\includegraphics[width=\textwidth]{./figures/macro/shuffle/macro_compare_fct_shuffle_mice.pdf}
+		\includegraphics[width=\textwidth]{presto/figures/macro/shuffle/macro_compare_fct_shuffle_mice.pdf}
         	\caption{Shuffle}
         	\label{macro_evaluation_fct_shuffle}
 	\end{subfigure}
@@ -77,14 +77,14 @@ is 32\% worse than Presto.
 \iffalse
 \begin{figure}[!t]
         \centering
-  \includegraphics[width=0.45\textwidth]{./figures/macro/bijection/macro_compare_fct_bijection_mice.pdf}
+  \includegraphics[width=0.45\textwidth]{presto/figures/macro/bijection/macro_compare_fct_bijection_mice.pdf}
         \caption{Macro evaluation - flow completiom time in Random Bijection workload}
         \label{macro_evaluation_fct_bijection}
 \end{figure}
 
 \begin{figure}[!t]
         \centering
-  \includegraphics[width=0.45\textwidth]{./figures/macro/random/macro_compare_fct_random_mice.pdf}
+  \includegraphics[width=0.45\textwidth]{presto/figures/macro/random/macro_compare_fct_random_mice.pdf}
         \caption{Macro evaluation - flow completiom time in Random workload}
         \label{macro_evaluation_fct_random}
 \end{figure}
@@ -92,7 +92,7 @@ is 32\% worse than Presto.
 
 \begin{figure}[!t]
         \centering
-  \includegraphics[width=0.45\textwidth]{./figures/macro/shuffle/macro_compare_fct_shuffle_mice.pdf}
+  \includegraphics[width=0.45\textwidth]{presto/figures/macro/shuffle/macro_compare_fct_shuffle_mice.pdf}
         \caption{Macro evaluation - flow completiom time in Shuffle workload}
         \label{macro_evaluation_fct_shuffle}
 \end{figure}
@@ -230,14 +230,14 @@ in the datacenter.
 
 \begin{figure}[t]
         \centering
-  \includegraphics[width=0.45\textwidth]{./figures/failure_handling/failover_compare_tput_witherrbar.pdf}
+  \includegraphics[width=0.45\textwidth]{presto/figures/failure_handling/failover_compare_tput_witherrbar.pdf}
         \caption{Presto's throughput in symmetry, fast failover and weighted multipathing stages for different workloads.}
         \label{failover_compare_tput}
 \end{figure}
 
 \begin{figure}[t]
         \centering
-  \includegraphics[width=0.45\textwidth]{./figures/failure_handling/failover_compare_sockperf_bijection_mice.pdf}
+  \includegraphics[width=0.45\textwidth]{presto/figures/failure_handling/failover_compare_sockperf_bijection_mice.pdf}
         \caption{Presto's RTT in symmetry, fast failover and weighted multipathing stages in  random bijection workload.}
         \label{failover_compare_sockperf_bijection}
 \end{figure}

@@ -51,47 +51,33 @@
 \usepackage{geometry}
 \geometry{margin=1.2in}
 
-\usepackage{epsfig}
-\usepackage{times}
-
-
-\usepackage{mathptmx} % Times Roman font in math mode, too
-\usepackage{caption} % see http://www.ctex.org/documents/packages/float/caption.pdf
-
-\usepackage{auto-pst-pdf}
-\usepackage{graphics}
-\usepackage{epstopdf}
-\usepackage{color}
-\usepackage{multirow}
-
-\usepackage{amssymb}
-\usepackage{amsmath}
-\usepackage{amsfonts}
-
-\usepackage{authblk}
-
-%\usepackage[usenames,dvipsnames]{color}
-%\usepackage[breaklinks=true,colorlinks=true,plainpages=false,citecolor=blue,urlcolor=blue,filecolor=blue]{hyperref}
 \usepackage[hidelinks]{hyperref}
+\usepackage{url}        % Not compatible with hyperref?
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{color}
 \usepackage{times}
-\usepackage{subfigure}
-%\usepackage[normal]{subfigure}
-\usepackage{url}
+%\usepackage[sort]{natbib}
+\usepackage{enumitem}
+%\usepackage{subfigure}
+\usepackage{verbatim}
 \usepackage{xspace}
-%\usepackage[table,xcdraw]{xcolor}
-\usepackage{xcolor}
-%\usepackage[normalem]{ulem}
-\usepackage{ulem}
-\usepackage{textcomp,upquote,listings}
-%\usepackage{listings}
+\usepackage{xfrac}
+\usepackage{algorithmic} % must come after hyperref
 \usepackage{algorithm}
-%\usepackage[noend]{algpseudocode}
-\usepackage{algpseudocode}
-\usepackage{capt-of}
 
-\usepackage{rotating}
-\usepackage{pdflscape}
-%\usepackage{subfig}
+\usepackage{listings}
+\usepackage{microtype} %does typographical voodoo to get rid of most overfull
+                       %boxes. Ideally requires pdfTeX 1.4+, going directly
+                       %to pdf. Don't use a DVI workflow.
+\usepackage{balance}   %\balance keywork has to be included in the last page that
+                       % will not be balanced, in the first column.
+\usepackage{datetime}
+\usepackage{morefloats}
+
+\usepackage{caption}
+\usepackage{subcaption}
 
 \newcommand{\algrule}[1][.2pt]{\par\vskip.2\baselineskip\hrule height #1\par\vskip.2\baselineskip}
 \newcommand{\eg}{{e.g.}\xspace}
@@ -102,7 +88,7 @@
 \newcommand{\cut}[1]{}
 
 \renewcommand{\ttdefault}{cmtt}
-
+\newcommand{\tightparagraph}[1]{\vspace{5pt}\noindent\textbf{#1}\ }
 %========================================================================
 %  Draft Control Commands:
 %========================================================================
@@ -185,7 +171,7 @@
 \include{prelude/prelude}                % Title page, abstract, table of contents, etc
 \include{intro/intro}                  % Chapter 1
 %\include{background}
-%\include{vnd/vnd}
+\include{presto/presto}
 %\include{perfsight/perfsight}
 %\include{related}
 %\include{conc/conc}

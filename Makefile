@@ -8,6 +8,6 @@ abstract:
 
 clean:
 	rm -rf *.out *.aux *.bbl *.blg *.pdf *.log  *.lot *.lof *.toc  *~ 
-	rm -rf prelude/*.aux intro/*.aux vnd/*.aux perfsight/*.aux conc/*.aux prelude/*~ intro/*~ vnd/*~ perfsight/*~ conc/*~
+	rm -rf prelude/*.aux intro/*.aux presto/*.aux acdctcp/*.aux conc/*.aux prelude/*~ intro/*~ presto/*~ acdctcp/*~ conc/*~
 show:
 	evince main.pdf

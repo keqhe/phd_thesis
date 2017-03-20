@@ -89,7 +89,7 @@ introduce significant reordering into the network.
 
 \begin{figure}[t]
         \centering
-  \includegraphics[width=0.45\textwidth]{./figures/flowlets/histo.pdf}
+  \includegraphics[width=0.45\textwidth]{presto/figures/flowlets/histo.pdf}
         \caption{Stacked histogram of flowlet sizes (in MB) for a 1 GB {\tt scp} file transfer. We vary the number of {\tt nuttcp} background flows and
                 denote them as {\em Competing Flows}. The size of each flowlet is shown within each bar, and flowlets
                 are created whenever there is a 500 $\mu$s delay between segments. The top 10 flowlet sizes are shown here.
@@ -136,7 +136,7 @@ send to the same receiver. We vary the number of these competing flows and show 
 the top 10 flowlet sizes for a 1 GB {\tt scp} transfer with a 500 $\mu$s inactivity timer. 
 The graph shows flowlet sizes can be quite large, with more than half the transfer being attributed
 to a single flowlet for up to 3 competing flows. Using a smaller inactivity timer, such 100$\mu$s, helps (90\% of flowlet sizes are 114KB or less), but
-does not prevent a long tail: 00.1\% of flowlets are larger than 1 MB, with the largest ranging from 2.1-20.5 MB.
+does not prevent a long tail: 0.1\% of flowlets are larger than 1 MB, with the largest ranging from 2.1-20.5 MB.
 Collisions on large flowlet sizes can lead to congestion.
 The second problem with flowlets is that small inactivity thresholds, such as 100 $\mu$s, can lead to significant reordering.
 Not only does this impact TCP performance (profiled in Section~\ref{sec:micro}), but it also needlessly 
@@ -293,7 +293,7 @@ Receive offload algorithms, whether in hardware (LRO)~\cite{grossman2005large,op
 
 \begin{figure}[t]
         \centering
-  \includegraphics[width=0.45\textwidth]{./figures/gro-design/gro-break.pdf}
+  \includegraphics[width=0.45\textwidth]{presto/figures/gro-design/gro-break.pdf}
         \caption{GRO pushes up small segments ($S_i$) during reordering.}
         \label{gro-break}
 \end{figure}
