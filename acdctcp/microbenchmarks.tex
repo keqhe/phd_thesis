@@ -4,13 +4,13 @@
         \centering
         \begin{subfigure}[b]{0.5\textwidth}
                 \centering
-                \includegraphics[width=0.7\textwidth]{figures/dumbbell_topology.pdf}
+                \includegraphics[width=0.7\textwidth]{acdctcp/figures/dumbbell_topology.pdf}
                 \caption{Dumbbell topology.}
                 \label{dumbbell_topology}
         \end{subfigure}
         \begin{subfigure}[b]{0.5\textwidth}
                 \centering
-                \includegraphics[width=0.7\textwidth]{figures/parkinglot_topology.pdf}
+                \includegraphics[width=0.7\textwidth]{acdctcp/figures/parkinglot_topology.pdf}
                 \caption{Multi-hop, multi-bottleneck (parking lot) topology.}
                 \label{parkinglot_topology}
         \end{subfigure}
@@ -22,7 +22,7 @@
 
 \begin{figure}[!t]
         \centering
-  \includegraphics[width=0.45\textwidth]{figures/convergence/flowcontrolOFF_sockperf/convergence_test_sockperf.pdf}
+  \includegraphics[width=0.45\textwidth]{acdctcp/figures/convergence/flowcontrolOFF_sockperf/convergence_test_sockperf.pdf}
         \caption{RTT of schemes on dumbbell topology.}
         \label{sockperf_convergence}
 \end{figure}
@@ -58,13 +58,13 @@ The 50$^{th}$ and 99.9$^{th}$ percentile RTT for
         \centering
         \begin{subfigure}[b]{0.225\textwidth}
                 \centering
-                \includegraphics[width=\textwidth]{figures/cwnd_rwnd/newpara_refine/mtu1500_5flows_1/measure_cwnd_rwnd_gap_15k_5flows_0sec_100msec.pdf}
+                \includegraphics[width=\textwidth]{acdctcp/figures/cwnd_rwnd/newpara_refine/mtu1500_5flows_1/measure_cwnd_rwnd_gap_15k_5flows_0sec_100msec.pdf}
                 \caption{First 100 ms of a flow.}
                 \label{cwnd_rwnd_1500}
         \end{subfigure}
         \begin{subfigure}[b]{0.225\textwidth}
                 \centering
-                \includegraphics[width=\textwidth]{figures/cwnd_rwnd/moving-ave/measure_cwnd_rwnd_gap_15k_5flows_ave100.pdf}
+                \includegraphics[width=\textwidth]{acdctcp/figures/cwnd_rwnd/moving-ave/measure_cwnd_rwnd_gap_15k_5flows_ave100.pdf}
                 \caption{Moving average.}
                 \label{cwnd_rwnd_1500_ave}
         \end{subfigure}
@@ -80,25 +80,25 @@ The 50$^{th}$ and 99.9$^{th}$ percentile RTT for
         \centering
         \begin{subfigure}[b]{0.225\textwidth}
                 \centering
-                \includegraphics[width=\textwidth]{figures/cwnd_rwnd2/mtu1500_cubic/cubic_measure_cwnd_rwnd_gap_15k_5flows_0sec_100msec.pdf}
+                \includegraphics[width=\textwidth]{acdctcp/figures/cwnd_rwnd2/mtu1500_cubic/cubic_measure_cwnd_rwnd_gap_15k_5flows_0sec_100msec.pdf}
                 \caption{Starting from 0 sec.}
                 \label{who_limits_cwnd_rwnd_1500_0sec}
         \end{subfigure}
         \begin{subfigure}[b]{0.225\textwidth}
                 \centering
-                \includegraphics[width=\textwidth]{figures/cwnd_rwnd2/mtu1500_cubic/cubic_measure_cwnd_rwnd_gap_15k_5flows_2sec_100msec.pdf}
+                \includegraphics[width=\textwidth]{acdctcp/figures/cwnd_rwnd2/mtu1500_cubic/cubic_measure_cwnd_rwnd_gap_15k_5flows_2sec_100msec.pdf}
                 \caption{Starting from 2 sec.}
                 \label{who_limits_cwnd_rwnd_1500_2sec}
         \end{subfigure}
 %        \begin{subfigure}[b]{0.225\textwidth}
 %                \centering
-%                \includegraphics[width=\textwidth]{figures/cwnd_rwnd2/mtu9000_cubic/cubic_measure_cwnd_rwnd_gap_9k_5flows_0sec_100msec.pdf}
+%                \includegraphics[width=\textwidth]{acdctcp/figures/cwnd_rwnd2/mtu9000_cubic/cubic_measure_cwnd_rwnd_gap_9k_5flows_0sec_100msec.pdf}
 %                \caption{MTU9000: first 100 msec starting from second 0.}
 %                \label{who_limits_cwnd_rwnd_9000_0sec}
 %        \end{subfigure}
 %        \begin{subfigure}[b]{0.225\textwidth}
 %                \centering
-%                \includegraphics[width=\textwidth]{figures/cwnd_rwnd2/mtu9000_cubic/cubic_measure_cwnd_rwnd_gap_9k_5flows_2sec_100msec.pdf}
+%                \includegraphics[width=\textwidth]{acdctcp/figures/cwnd_rwnd2/mtu9000_cubic/cubic_measure_cwnd_rwnd_gap_9k_5flows_2sec_100msec.pdf}
 %                \caption{MTU9000: first 100 msec starting from second 2.}
 %                \label{who_limits_cwnd_rwnd_9000_2sec}
 %        \end{subfigure}
@@ -108,14 +108,14 @@ The 50$^{th}$ and 99.9$^{th}$ percentile RTT for
 
 \begin{figure}[t]
         \centering
-  \includegraphics[width=0.45\textwidth]{figures/overhead/sender_15k_compare_cpu_witherrbar.pdf}
+  \includegraphics[width=0.45\textwidth]{acdctcp/figures/overhead/sender_15k_compare_cpu_witherrbar.pdf}
         \caption{CPU overhead: sender side (1.5KB MTU).}
         \label{cpu_overhead_sender_15k}
 \end{figure}
 
 \begin{figure}[t]
         \centering
-  \includegraphics[width=0.45\textwidth]{figures/overhead/receiver_15k_compare_cpu_witherrbar.pdf}
+  \includegraphics[width=0.45\textwidth]{acdctcp/figures/overhead/receiver_15k_compare_cpu_witherrbar.pdf}
         \caption{CPU overhead: receiver side (1.5KB MTU).}
         \label{cpu_overhead_receiver_15k}
 \end{figure}
@@ -123,7 +123,7 @@ The 50$^{th}$ and 99.9$^{th}$ percentile RTT for
 
 \begin{figure}[t]
         \centering
-  \includegraphics[width=0.45\textwidth]{figures/qos/qos_stacked.pdf}
+  \includegraphics[width=0.45\textwidth]{acdctcp/figures/qos/qos_stacked.pdf}
         \caption{\crs{\acdc{} provides differentiated throughput via QoS-based CC. $\beta$ values are defined on a 4-point scale.}}
         \label{cc-qos}
 \end{figure}
@@ -153,7 +153,7 @@ is effective at reducing loss and~\acdc{} hides ECN feedback from the host TCP s
 %
 %\begin{figure}[!htb]
 %        \centering
-%  \includegraphics[width=0.45\textwidth]{figures/overhead/sender_9k_compare_cpu_witherrbar.pdf}
+%  \includegraphics[width=0.45\textwidth]{acdctcp/figures/overhead/sender_9k_compare_cpu_witherrbar.pdf}
 %        \caption{CPU overhead: sender side (9K MTU). The 10G NIC is saturated when there are more than 1K TCP connections.
 %		CPU usage refers to the CPU usage of the whole server (12 Intel(R) Xeon(R) CPU E5649@2.53GHz processors)
 %                measured by ``sar (sysstat)''.}
@@ -162,7 +162,7 @@ is effective at reducing loss and~\acdc{} hides ECN feedback from the host TCP s
 %
 %\begin{figure}[!htb]
 %        \centering
-%  \includegraphics[width=0.45\textwidth]{figures/overhead/receiver_9k_compare_cpu_witherrbar.pdf}
+%  \includegraphics[width=0.45\textwidth]{acdctcp/figures/overhead/receiver_9k_compare_cpu_witherrbar.pdf}
 %        \caption{CPU overhead: receiver side (9K MTU). The 10G NIC is saturated when there are more than 1K TCP connections.
 %		CPU usage refers to the CPU usage of the whole server (12 Intel(R) Xeon(R) CPU E5649@2.53GHz processors)
 %                measured by ``sar (sysstat)''}
@@ -224,19 +224,19 @@ HighSpeed  &   119     &  147     &    224    &  252     &   1.88    & 1.97    &
         \centering
         \begin{subfigure}[b]{0.33\textwidth}
                 \centering
-                \includegraphics[width=\textwidth]{figures/convergence/flowcontrolOFF/tcp_flowcontrolOFF_convergence.pdf}
+                \includegraphics[width=\textwidth]{acdctcp/figures/convergence/flowcontrolOFF/tcp_flowcontrolOFF_convergence.pdf}
                 \caption{CUBIC convergence test.}
                 \label{cubic_convergence}
         \end{subfigure}
         \begin{subfigure}[b]{0.33\textwidth}
                 \centering
-                \includegraphics[width=\textwidth]{figures/convergence/flowcontrolOFF/dctcp_flowcontrolOFF_convergence.pdf}
+                \includegraphics[width=\textwidth]{acdctcp/figures/convergence/flowcontrolOFF/dctcp_flowcontrolOFF_convergence.pdf}
                 \caption{DCTCP convergence test.}
                 \label{dctcp_convergence}
         \end{subfigure}
         \begin{subfigure}[b]{0.33\textwidth}
                 \centering
-                \includegraphics[width=\textwidth]{figures/convergence/flowcontrolOFF/ovsdctcp_flowcontrolOFF_convergence.pdf}
+                \includegraphics[width=\textwidth]{acdctcp/figures/convergence/flowcontrolOFF/ovsdctcp_flowcontrolOFF_convergence.pdf}
                 \caption{\acdc{} convergence test.}
                 \label{ovsdctcp_convergence}
         \end{subfigure}
@@ -277,13 +277,13 @@ previous results.
         \centering
         \begin{subfigure}[b]{0.225\textwidth}
                 \centering
-                \includegraphics[width=\textwidth]{figures/micro2flows/coexitence/cubic_dctcp_coexistence_official.pdf}
+                \includegraphics[width=\textwidth]{acdctcp/figures/micro2flows/coexitence/cubic_dctcp_coexistence_official.pdf}
                 \caption{Default.}
                 \label{coexistence_tput_ovs}
         \end{subfigure}
         \begin{subfigure}[b]{0.225\textwidth}
                 \centering
-                \includegraphics[width=\textwidth]{figures/micro2flows/coexitence/cubic_dctcp_coexistence_acdctcp.pdf}
+                \includegraphics[width=\textwidth]{acdctcp/figures/micro2flows/coexitence/cubic_dctcp_coexistence_acdctcp.pdf}
                 \caption{\acdc{}.}
                 \label{coexistence_tput_ovsdctcp}
         \end{subfigure}
@@ -294,7 +294,7 @@ previous results.
 
 \begin{figure}[!t]
         \centering
-  \includegraphics[width=0.45\textwidth]{figures/micro2flows/coexitence/sockperf_and_droprate/coexistence_sockperf.pdf}
+  \includegraphics[width=0.45\textwidth]{acdctcp/figures/micro2flows/coexitence/sockperf_and_droprate/coexistence_sockperf.pdf}
         \caption{CUBIC experiences high RTT when competing with DCTCP.~\acdc{} fixes this issue.}
         \label{coexistence_sockperf_droprate}
 \end{figure}
@@ -303,25 +303,25 @@ previous results.
         \centering
 %        \begin{subfigure}[b]{0.24\textwidth}
 %                \centering
-%                \includegraphics[width=\textwidth]{figures/tput_fairness/default_all_cubic_tput.pdf}
+%                \includegraphics[width=\textwidth]{acdctcp/figures/tput_fairness/default_all_cubic_tput.pdf}
 %                \caption{All CUBIC.}
 %                \label{fairness_all_cubic}
 %        \end{subfigure}
 %        \begin{subfigure}[b]{0.24\textwidth}
 %                \centering
-%                \includegraphics[width=\textwidth]{figures/tput_fairness/default_5CC_tput.pdf}
+%                \includegraphics[width=\textwidth]{acdctcp/figures/tput_fairness/default_5CC_tput.pdf}
 %                \caption{5 different CCs.}
 %                \label{fairness_5CC}
 %        \end{subfigure}
         \begin{subfigure}[b]{0.225\textwidth}
                 \centering
-                \includegraphics[width=\textwidth]{figures/tput_fairness/ecn_all_dctcp_tput.pdf}
+                \includegraphics[width=\textwidth]{acdctcp/figures/tput_fairness/ecn_all_dctcp_tput.pdf}
                 \caption{All DCTCP.}
                 \label{fairness_5CC_with_dctcp}
         \end{subfigure}
         \begin{subfigure}[b]{0.225\textwidth}
                 \centering
-                \includegraphics[width=\textwidth]{figures/tput_fairness/liquid_5CC_tput.pdf}
+                \includegraphics[width=\textwidth]{acdctcp/figures/tput_fairness/liquid_5CC_tput.pdf}
                 \caption{5 different CCs (\acdc{}).}
                 \label{fairness_5CC_with_ours}
         \end{subfigure}

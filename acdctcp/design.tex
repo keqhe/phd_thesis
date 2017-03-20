@@ -2,7 +2,7 @@
 \label{design}
 \begin{figure}[!t]
         \centering
-  \includegraphics[width=0.45\textwidth]{figures/acdc_highlevel.pdf}
+  \includegraphics[width=0.45\textwidth]{acdctcp/figures/acdc_highlevel.pdf}
         \caption{\acdc{} high-level architecture.}
         \label{acdc_highlevel}
 \end{figure}
@@ -16,7 +16,7 @@ can be implemented.
 
 \begin{figure}[th]
         \centering
-  \includegraphics[width=0.45\textwidth]{figures/tcp-state-new.pdf}
+  \includegraphics[width=0.45\textwidth]{acdctcp/figures/tcp-state-new.pdf}
         \caption{Variables for TCP sequence number space.}
         \label{tcpstate}
 \end{figure}
@@ -49,7 +49,7 @@ We omit additional details in the interest of space.
 \subsection{Implementing DCTCP}
 %\begin{figure}[!t]
 %        \centering
-%  \includegraphics[width=0.45\textwidth]{figures/acdc_ECT_marking.pdf}
+%  \includegraphics[width=0.45\textwidth]{acdctcp/figures/acdc_ECT_marking.pdf}
 %        \caption{Simple stateless ECT marking in \acdc{}. 
 %		Turn all intra-DC TCP packets in the fabric into ECT.}
 %        \label{acdc_ect_marking}
@@ -57,7 +57,7 @@ We omit additional details in the interest of space.
 
 %\begin{figure}[!t]
 %        \centering
-%  \includegraphics[width=0.25\textwidth]{figures/carry_ecn_info.pdf}
+%  \includegraphics[width=0.25\textwidth]{acdctcp/figures/carry_ecn_info.pdf}
 %        \caption{Carrying the congestion information back. 
 %		Being compatible with TSO and minimizing CPU and traffic overhead.}
 %        \label{acdc_carry_ecn_info}
@@ -171,7 +171,7 @@ data. In practice, most feedback takes the form of PACKs.
 
 \begin{figure}[!t]
         \centering
-  \includegraphics[width=0.49\textwidth]{figures/acdc_cc.pdf}
+  \includegraphics[width=0.49\textwidth]{acdctcp/figures/acdc_cc.pdf}
         \caption{DCTCP congestion control in \acdc{}.}
         \label{acdc_cc}
 \end{figure}
@@ -314,13 +314,13 @@ is future work.
         \centering
         \begin{subfigure}[b]{0.225\textwidth}
                 \centering
-                \includegraphics[width=\textwidth]{figures/new_enforce/new_tput_cwnd_rwnd_cubic_15k.pdf}
+                \includegraphics[width=\textwidth]{acdctcp/figures/new_enforce/new_tput_cwnd_rwnd_cubic_15k.pdf}
                 \caption{MTU = 1.5KB.}
                 \label{effectiveness_15k}
         \end{subfigure}
         \begin{subfigure}[b]{0.225\textwidth}
                 \centering
-                \includegraphics[width=\textwidth]{figures/new_enforce/new_tput_cwnd_rwnd_cubic_9k.pdf}
+                \includegraphics[width=\textwidth]{acdctcp/figures/new_enforce/new_tput_cwnd_rwnd_cubic_9k.pdf}
                 \caption{MTU = 9KB.}
                 \label{effectiveness_9k}
         \end{subfigure}
@@ -395,13 +395,13 @@ cannot guarantee the VM flow's~\cwnd{} will allow the flow to increase its sendi
 %        \centering
 %        \begin{subfigure}[b]{0.225\textwidth}
 %                \centering
-%                \includegraphics[width=\textwidth]{figures/new_enforce/new_tput_cwnd_rwnd_cubic_15k.pdf}
+%                \includegraphics[width=\textwidth]{acdctcp/figures/new_enforce/new_tput_cwnd_rwnd_cubic_15k.pdf}
 %                \caption{MTU = 1.5KB.}
 %                \label{effectiveness_15k}
 %        \end{subfigure}
 %        \begin{subfigure}[b]{0.225\textwidth}
 %                \centering
-%                \includegraphics[width=\textwidth]{figures/new_enforce/new_tput_cwnd_rwnd_cubic_9k.pdf}
+%                \includegraphics[width=\textwidth]{acdctcp/figures/new_enforce/new_tput_cwnd_rwnd_cubic_9k.pdf}
 %                \caption{MTU = 9KB.}
 %                \label{effectiveness_9k}
 %        \end{subfigure}

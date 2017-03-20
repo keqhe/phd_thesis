@@ -78,6 +78,8 @@
 
 \usepackage{caption}
 \usepackage{subcaption}
+\usepackage{multirow}
+
 
 \newcommand{\algrule}[1][.2pt]{\par\vskip.2\baselineskip\hrule height #1\par\vskip.2\baselineskip}
 \newcommand{\eg}{{e.g.}\xspace}
@@ -89,6 +91,16 @@
 
 \renewcommand{\ttdefault}{cmtt}
 \newcommand{\tightparagraph}[1]{\vspace{5pt}\noindent\textbf{#1}\ }
+
+\newcommand{\acdc}{{AC/DC}\xspace}
+%\newcommand{\acdc}{{AC/DC}\xspace}
+\newcommand{\cwnd}{{{\tt CWND}}\xspace}
+\newcommand{\rwnd}{{{\tt RWND}}\xspace}
+\newcommand{\crs}[1]{#1}% Do nothing
+\usepackage{cleveref}
+\crefname{section}{§}{§§}
+\Crefname{section}{§}{§§}
+\crefformat{section}{§#2#1#3}
 %========================================================================
 %  Draft Control Commands:
 %========================================================================
@@ -172,7 +184,7 @@
 \include{intro/intro}                  % Chapter 1
 %\include{background}
 \include{presto/presto}
-%\include{perfsight/perfsight}
+\include{acdctcp/acdctcp}
 %\include{related}
 %\include{conc/conc}
 
