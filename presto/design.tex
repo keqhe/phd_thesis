@@ -32,7 +32,7 @@ adapts in the case of failures and asymmetry.
 %%%%%macro test - test topology, 2-tier Clos network with 8 switches and 16 hosts
 \begin{figure}[!t]
         \centering
-  \includegraphics[width=0.45\textwidth,height=0.17\textwidth]{presto/figures/macro/macro_evaluation_topology_refined.pdf}
+  \includegraphics[width=0.5\textwidth,height=0.17\textwidth]{presto/figures/macro/macro_evaluation_topology_refined.pdf}
         \caption{Our testbed: 2-tier Clos network with 16 hosts.}
         \label{macro_evaluation_topology}
 \end{figure}
@@ -184,7 +184,7 @@ the TSO algorithm in the NIC replicates these values to all derived MTU-sized pa
 The pseudo-code of flowcell creation is presented in Algorithm~\ref{alg:flowcell}.
 Since this code executes in the vSwitch, retransmitted TCP packets run through this code for each retransmission.
 
-\begin{algorithm}[t]
+\begin{algorithm}[!t]
 \caption{Pseudo-code of Presto GRO {\tt flush} function}
 \label{alg:gro}
 \begin{algorithmic}[1]

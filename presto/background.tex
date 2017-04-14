@@ -40,7 +40,7 @@ platforms.
 Presto is to use a proactive approach to congestion management. Bursty 
 behavior can create transient congestion that must be reacted to 
 before switch buffers overflow to prevent loss (timescales range from 100s of $\mu$s 
-to \textasciitilde{}4 ms~\cite{planck}). This requirement renders most of the centralized reactive schemes ineffective
+to around 4 ms~\cite{planck}). This requirement renders most of the centralized reactive schemes ineffective
 as they are often too slow to react to any but the largest network events,~\eg{}, link failures. 
 %Not reacting to transient congestion can increase tail latencies.
 Furthermore, centralized schemes can hurt performance when rerouting
@@ -89,9 +89,9 @@ introduce significant reordering into the network.
 
 
 
-\begin{figure}[t]
+\begin{figure}[!t]
         \centering
-  \includegraphics[width=0.45\textwidth]{presto/figures/flowlets/histo.pdf}
+  \includegraphics[width=0.5\textwidth]{presto/figures/flowlets/histo.pdf}
         \caption{Stacked histogram of flowlet sizes (in MB) for a 1 GB {\tt scp} file transfer. We vary the number of {\tt nuttcp}~\cite{nuttcp} background flows and
                 denote them as {\em Competing Flows}. The size of each flowlet is shown within each bar, and flowlets
                 are created whenever there is a 500 $\mu$s delay between segments. The top 10 flowlet sizes are shown here.
@@ -302,9 +302,9 @@ Receive offload algorithms, whether in hardware (LRO)~\cite{grossman2005large,op
 %        \label{gro-design}
 %\end{figure}
 
-\begin{figure}[t]
+\begin{figure}[!t]
         \centering
-  \includegraphics[width=0.45\textwidth]{presto/figures/gro-design/gro-break.pdf}
+  \includegraphics[width=0.5\textwidth]{presto/figures/gro-design/gro-break.pdf}
         \caption{GRO pushes up small segments ($S_i$) during reordering.}
         \label{gro-break}
 \end{figure}

@@ -7,7 +7,7 @@ trace-driven workloads, (iii) workloads containing north-south cross traffic, an
 All tests are run on the topology in Figure~\ref{macro_evaluation_topology}.
 \begin{figure}[!t]
         \centering
-  \includegraphics[width=0.45\textwidth]{presto/figures/macro/stride/macro_compare_tput_witherrbar.pdf}
+  \includegraphics[width=0.5\textwidth]{presto/figures/macro/stride/macro_compare_tput_witherrbar.pdf}
         \caption{Elephant flow throughput for ECMP, MPTCP, Presto and Optimal in shuffle, random, stride and random bijection workloads.}
         \label{macro_evaluation_tput}
 \end{figure}
@@ -227,16 +227,16 @@ in the datacenter.
 
 %%%failure handling experiments
 
-\begin{figure}[t]
+\begin{figure}[!t]
         \centering
-  \includegraphics[width=0.45\textwidth]{presto/figures/failure_handling/failover_compare_tput_witherrbar.pdf}
+  \includegraphics[width=0.5\textwidth]{presto/figures/failure_handling/failover_compare_tput_witherrbar.pdf}
         \caption{Presto's throughput in symmetry, fast failover and weighted multipathing stages for different workloads.}
         \label{failover_compare_tput}
 \end{figure}
 
-\begin{figure}[t]
+\begin{figure}[!t]
         \centering
-  \includegraphics[width=0.45\textwidth]{presto/figures/failure_handling/failover_compare_sockperf_bijection_mice.pdf}
+  \includegraphics[width=0.5\textwidth]{presto/figures/failure_handling/failover_compare_sockperf_bijection_mice.pdf}
         \caption{Presto's RTT in symmetry, fast failover and weighted multipathing stages in  random bijection workload.}
         \label{failover_compare_sockperf_bijection}
 \end{figure}
@@ -248,7 +248,7 @@ Presto when %under different stages of loss recovery when
 the link between spine switch S1 and leaf switch L1 goes down.
 Three stages are defined: symmetry (the link is up), failover (hardware fast-failover moves traffic from S1 to S2), and weighted (the controller
 learns of the failure and prunes the tree with the bad link).
-Workload L1-->L4 is when each node connected to L1 sends to one node in L4 (L4-->L1 is the opposite).
+Workload L1$\rightarrow$L4 is when each node connected to L1 sends to one node in L4 (L4$\rightarrow$L1 is the opposite).
 Despite the asymmetry in the topology, Presto still achieves reasonable average throughput at 
 each stage.
 Figure~\ref{failover_compare_sockperf_bijection} shows the round trip time of

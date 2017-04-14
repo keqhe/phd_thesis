@@ -80,6 +80,8 @@
 \usepackage{subcaption}
 \usepackage{multirow}
 
+\usepackage{amssymb}% http://ctan.org/pkg/amssymb
+\usepackage{pifont}% http://ctan.org/pkg/pifont
 
 \newcommand{\algrule}[1][.2pt]{\par\vskip.2\baselineskip\hrule height #1\par\vskip.2\baselineskip}
 \newcommand{\eg}{{e.g.}\xspace}
@@ -101,6 +103,14 @@
 \crefname{section}{§}{§§}
 \Crefname{section}{§}{§§}
 \crefformat{section}{§#2#1#3}
+
+%%%%%rate limiter
+\newcommand{\dem}{DEM\xspace}
+\newcommand{\spring}{SPRING\xspace}
+\newcommand{\nameone}{DEM\xspace}
+\newcommand{\nametwo}{SPRING\xspace}
+\newcommand{\cmark}{\ding{51}}%
+\newcommand{\xmark}{\ding{55}}%
 %========================================================================
 %  Draft Control Commands:
 %========================================================================
@@ -185,6 +195,7 @@
 %\include{background}
 \include{presto/presto}
 \include{acdctcp/acdctcp}
+\include{rate_limiter/rate_limiter}
 %\include{related}
 %\include{conc/conc}
 

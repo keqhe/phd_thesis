@@ -1,0 +1,34 @@
+%==========================packages=====================================
+%\usepackage{times}
+%\usepackage{thumbpdf}
+%\usepackage{verbatim}
+\usepackage{xspace}
+\usepackage{color}
+%\usepackage{amsthm}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{listings}
+\usepackage[T1]{fontenc}
+\usepackage{tikz}
+\usetikzlibrary{shapes,shapes.geometric,arrows,fit,calc,positioning,automata,}
+\usepackage[breaklinks=true,colorlinks=true,plainpages=false,citecolor=blue,urlcolor=blue,linkcolor=magenta,filecolor=blue]{hyperref}
+\usepackage{url}        % Not compatible with hyperref?
+\usepackage{algorithmic} % must come after hyperref
+\usepackage{algorithm}
+\usepackage{fixltx2e}
+%\usepackage{booktabs}
+%\usepackage{colortbl}
+\usepackage{tabularx}
+%=========================new macros================================================
+\newtheorem{thm}{Theorem}
+\newtheorem{question}{Question}
+\newenvironment{answer}{\renewcommand{\proofname}{Answer}\begin{proof}}{\end{proof}}
+\newcommand{\Q}[1]{\begin{question} #1 \end{question}}
+\newcommand{\A}[1]{\begin{answer} #1 \end{answer}}
+%=====================================================
+
+\newcommand{\eat}[1]{}
+
+
+\newcommand{\cwnd}{{{\tt CWND}}\xspace}
+\newcommand{\rwnd}{{{\tt RWND}}\xspace}

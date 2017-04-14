@@ -1,0 +1,53 @@
+
+\begin{figure*}[!tb]
+\centering
+
+\begin{subfigure}[b]{0.49\textwidth}
+\centering
+\includegraphics[width=\textwidth]{../raw_data/dem_benchmark/1gbps.pdf}
+\caption{Rate Limiting: 1Gbps}
+\label{fig:dem-1g} \mylabel{fig:dem-1g}
+\end{subfigure}
+\begin{subfigure}[b]{0.49\textwidth}
+\centering
+\includegraphics[width=\textwidth]{../raw_data/dem_benchmark/2gbps.pdf}
+\caption{Rate Limiting: 2Gbps}
+\label{fig:dem-2g} \mylabel{fig:dem-2g}
+\end{subfigure}
+\caption{\dem{} experiments, 1flow, varying threshold}
+\label{fig:dem} \mylabel{fig:dem}
+\end{figure*}
+
+\iffalse
+\begin{figure*}[!t]
+\centering
+ \begin{subfigure}[b]{0.8\columnwidth}
+ \centering
+ \includegraphics[width=\textwidth]{../raw_data/tcp-ece/1000m/figure1.pdf}
+ \caption{CDF of latency}
+ \end{subfigure}
+ \begin{subfigure}[b]{0.8\columnwidth}
+ \centering
+ \includegraphics[width=\textwidth]{../raw_data/tcp-ece/1000m/figure2.pdf}
+ \caption{Throughput}
+ \end{subfigure}
+\caption{~\dem{} performance: rate limiter speed is 1Gbps. 1 iperf flow. Varying threshold $K$}
+\label{tcp-ece-1-iperf-1gbps}
+\end{figure*}
+
+\begin{figure*}[!tb]
+\centering
+ \begin{subfigure}[b]{0.8\columnwidth}
+ \centering
+ \includegraphics[width=\textwidth]{../raw_data/tcp-ece/2000m/figure1.pdf}
+ \caption{CDF of latency}
+ \end{subfigure}
+ \begin{subfigure}[b]{0.8\columnwidth}
+ \centering
+ \includegraphics[width=\textwidth]{../raw_data/tcp-ece/2000m/figure2.pdf}
+ \caption{Throughput}
+ \end{subfigure}
+\caption{~\dem{} performance: rate limiter speed is 2Gbps. 1 iperf flow. Varying threshold $K$}
+\label{tcp-ece-1-iperf-2gbps}
+\end{figure*}
+\fi
