@@ -2,15 +2,15 @@
 \label{macro}
 
 %%%%%%%%%%using figures to present incast: tput, fariness, droprate, TCP RTT
-\begin{figure}[t]
+\begin{figure}[!t]
         \centering
-        \begin{subfigure}[b]{0.225\textwidth}
+        \begin{subfigure}[b]{0.45\textwidth}
                 \centering
                 \includegraphics[width=\textwidth]{acdctcp/figures/incast/plots9k/incast_tput_vary_sender.pdf}
                 \caption{Average throughput.}
                 \label{incast_9k_tput}
         \end{subfigure}
-        \begin{subfigure}[b]{0.225\textwidth}
+        \begin{subfigure}[b]{0.45\textwidth}
                 \centering
                 \includegraphics[width=\textwidth]{acdctcp/figures/incast/plots9k/incast_fairness_vary_sender.pdf}
                 \caption{Fairness.}
@@ -22,19 +22,19 @@
 
 \begin{figure*}[!t]
         \centering
-        \begin{subfigure}[b]{0.33\textwidth}
+        \begin{subfigure}[b]{0.3\textwidth}
                 \centering
                 \includegraphics[width=\textwidth]{acdctcp/figures/incast/plots9k/incast_sockperf50th_vary_sender.pdf}
                 \caption{50$^{th}$ percentile RTT.}
                 \label{incast_9k_50th_sockperf}
         \end{subfigure}
-        \begin{subfigure}[b]{0.33\textwidth}
+        \begin{subfigure}[b]{0.3\textwidth}
                 \centering
                 \includegraphics[width=\textwidth]{acdctcp/figures/incast/plots9k/incast_sockperf999th_vary_sender.pdf}
                 \caption{99.9$^{th}$ percentile RTT.}
                 \label{incast_9k_999th_sockperf}
         \end{subfigure}
-        \begin{subfigure}[b]{0.33\textwidth}
+        \begin{subfigure}[b]{0.3\textwidth}
                 \centering
                 \includegraphics[width=\textwidth]{acdctcp/figures/incast/plots9k/incast_droprate_vary_sender.pdf}
                 \caption{Packet drop rate.}
@@ -45,9 +45,9 @@
 \end{figure*}
 
 
-\begin{figure}[t]
+\begin{figure}[!t]
         \centering
-  \includegraphics[width=0.45\textwidth]{acdctcp/figures/incast/pressure/incast_pressure_compare_sockperf.pdf}
+  \includegraphics[width=0.5\textwidth]{acdctcp/figures/incast/pressure/incast_pressure_compare_sockperf.pdf}
         \caption{TCP RTT when almost all ports are congested.}
         \label{sockperf_pressure_incast}
 \end{figure}
