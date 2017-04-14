@@ -1,68 +1,18 @@
 \begin{figure*}[!t]
 \centering
-\begin{subfigure}[b]{0.49\textwidth}
+\begin{subfigure}[b]{0.45\textwidth}
 \centering
-\includegraphics[width=\textwidth]{../raw_data/spring_benchmark/1gbps.pdf}
+\includegraphics[width=\textwidth]{rate_limiter/raw_data/spring_benchmark/1gbps.pdf}
 \caption{Rate Limiting: 1Gbps, $K2$=$K1$+10KB}
-\label{fig:spring-1g} \mylabel{fig:spring-1g}
+\label{fig:spring-1g} 
 \end{subfigure}
-\begin{subfigure}[b]{0.49\textwidth}
+\begin{subfigure}[b]{0.45\textwidth}
 \centering
-\includegraphics[width=\textwidth]{../raw_data/spring_benchmark/2gbps.pdf}
+\includegraphics[width=\textwidth]{rate_limiter/raw_data/spring_benchmark/2gbps.pdf}
 \caption{Rate Limiting: 2Gbps, $K2$=$K1$+20KB}
-\label{fig:spring-2g} \mylabel{fig:spring-2g}
+\label{fig:spring-2g} 
 \end{subfigure}
 \caption{\nametwo experiments, $\alpha=0.5$, $\beta=0.5$, 1 flow, varying threshold}
-\label{fig:spring} \mylabel{fig:spring}
+\label{fig:spring} 
 \end{figure*}
 
-\iffalse
-\begin{figure*}
-\centering
- \begin{subfigure}[b]{0.8\columnwidth}
- \centering
- \includegraphics[width=\textwidth]{../raw_data/timely_3_18_hunter/timely500mbps/alpha2048/beta2048/difference5000/figure1.pdf}
- \caption{CDF of latency}
- \end{subfigure}
- \begin{subfigure}[b]{0.8\columnwidth}
- \centering
- \includegraphics[width=\textwidth]{../raw_data/timely_3_18_hunter/timely500mbps/alpha2048/beta2048/difference5000/figure2.pdf}
- \caption{Throughput}
- \end{subfigure}
-\caption{~\spring: rate limiter speed is 500Mbps. $\alpha$=0.5, $\beta$=0.5. 1 iperf flow. Varying $K1$. $K2$=$K1$+5KB}
-\label{timely-1iperf-500mbps}
-\end{figure*}
-
-\begin{figure*}
-\centering
- \begin{subfigure}[b]{0.8\columnwidth}
- \centering
- \includegraphics[width=\textwidth]{../raw_data/timely_3_18_hunter/timely1000mbps/alpha2048/beta2048/difference10000/figure1.pdf}
- \caption{CDF of latency}
- \end{subfigure}
- \begin{subfigure}[b]{0.8\columnwidth}
- \centering
- \includegraphics[width=\textwidth]{../raw_data/timely_3_18_hunter/timely1000mbps/alpha2048/beta2048/difference10000/figure2.pdf}
- \caption{Throughput}
- \end{subfigure}
-\caption{~\spring: rate limiter speed is 1Gbps. $\alpha$=0.5, $\beta$=0.5. 1 iperf flow. Varying $K1$. $K2$=$K1$+10KB}
-\label{timely-1iperf-1gbps}
-\end{figure*}
-
-\begin{figure*}
-\centering
- \begin{subfigure}[b]{0.8\columnwidth}
- \centering
- \includegraphics[width=\textwidth]{../raw_data/timely_3_18_hunter/timely2000mbps/alpha2048/beta2048/difference20000/figure1.pdf}
- \caption{CDF of latency}
- \end{subfigure}
- \begin{subfigure}[b]{0.8\columnwidth}
- \centering
- \includegraphics[width=\textwidth]{../raw_data/timely_3_18_hunter/timely2000mbps/alpha2048/beta2048/difference20000/figure2.pdf}
- \caption{Throughput}
- \end{subfigure}
-\caption{~\spring: rate limiter speed is 2Gbps. $\alpha$=0.5, $\beta$=0.5. 1 iperf flow. Varying $K1$. $K2$=$K1$+20KB}
-\label{timely-1iperf-2gbps}
-\end{figure*}
-
-\fi

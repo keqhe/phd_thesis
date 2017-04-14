@@ -1,11 +1,8 @@
 \section{Measurement and Analysis}
-\label{rate-limiter:sec:measurement} \mylabel{sec:measurement}
-
-\wenfei{missing: packet drop measurement.}
-\keqhe{say something about why we choose  HTB, just 1 - 2 sentences}
+\label{rate-limiter:sec:measurement}
 
 \subsection{Performance of Linux HTB}
-\input{figs/exp_setup.tex}
+\input{rate_limiter/figs/exp_setup.tex}
 
 We first measure the performance of Linux HTB rate limiter. 
 Compared with other software rate limiters, HTB ensures that a minimum amount of bandwidth is guaranteed 
@@ -29,8 +26,8 @@ we configure two rate limiters on the sender server and set up two VMs (one rate
 We configure the minimum rate of each rate limiter to 2Gbps, 3Gbps, 4Gbps and 5Gbps and
 the total rate of the two rate limiters is always 10Gbps. 
 
-\input{figs/htb_result.tex}
-\input{figs/htb.tex}
+\input{rate_limiter/figs/htb_result.tex}
+\input{rate_limiter/figs/htb.tex}
 
 The experiments results are shown in Table~\ref{tbl:htb-1rec} and~\ref{tbl:htb-2rec}. 
 In all experiment scenarios, network saturation ratio is from 91\%-96\%. 
@@ -64,7 +61,7 @@ The possible reason for the trend is that enqueue speed is higher when rate limi
 For a fixed dequeue speed, larger enqueue speed implies higher latency.
 
 \subsection{Strawman Solution: DCTCP + ECN}
-\input{figs/dctcp.tex}
+\input{rate_limiter/figs/dctcp.tex}
 Inspired by solutions to reduce queueing latency in switches~\cite{alizadeh2010data}, 
 we test a strawman solution. In the strawman solution, 
 we implement ECN marking in Linux HTB queues and enable DCTCP at the end-points. 

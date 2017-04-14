@@ -1,4 +1,12 @@
-\section{Conclusion} 
-\label{sec:conclusion} \mylabel{sec:conclusion}
+\section{Summary} 
+\label{rate-limiter:sec:conclusion} 
 
-cite one~\cite{kohler2000click, roy2015inside}
+A lot of recent work has been focusing on solving in network latency in datacenter networks.
+In this paper, we focus on a less explored topic \textemdash\xspace latency
+increase caused by rate limiters on the end-host.
+We show that latency can be increased by an order of magnitude
+by the rate limiters in cloud networks,
+and simply extending ECN into rate limiters is not sufficient.
+To this end, we propose two techniques \textemdash\xspace~\dem{} and~\spring{} to improve the performance of rate limiters.
+Our experiment results demonstrate that~\dem{} and~\spring{} enabled
+rate limiters can achieve high (and stable) throughput and low latency.

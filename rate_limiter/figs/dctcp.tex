@@ -1,51 +1,20 @@
 \begin{figure*}[!htb]
 \centering
 
-\begin{subfigure}[b]{0.49\textwidth}
+\begin{subfigure}[b]{0.45\textwidth}
 \centering
-\includegraphics[width=\textwidth]{../raw_data/dctcp_benchmark/1gbps.pdf}
+\includegraphics[width=\textwidth]{rate_limiter/raw_data/dctcp_benchmark/1gbps.pdf}
 \caption{Rate Limiting: 1Gbps}
-\label{fig:dctcp-1g} \mylabel{fig:dctcp-1g}
+\label{fig:dctcp-1g} 
 \end{subfigure}
-\begin{subfigure}[b]{0.49\textwidth}
+\begin{subfigure}[b]{0.45\textwidth}
 \centering
-\includegraphics[width=\textwidth]{../raw_data/dctcp_benchmark/2gbps.pdf}
+\includegraphics[width=\textwidth]{rate_limiter/raw_data/dctcp_benchmark/2gbps.pdf}
 \caption{Rate Limiting: 2Gbps}
-\label{fig:dctcp-2g} \mylabel{fig:dctcp-2g}
+\label{fig:dctcp-2g} 
 \end{subfigure}
 \caption{DCTCP experiments, 1 flow, varying threshold}
-\label{fig:dctcp} \mylabel{fig:dctcp}
+\label{fig:dctcp}
 \end{figure*}
 
 
-\iffalse
-\begin{figure*}
-\centering
- \begin{subfigure}[b]{0.8\columnwidth}
- \centering
- \includegraphics[width=\textwidth]{../raw_data/dctcp_benchmark/1gbps/figure1.pdf}
- \caption{CDF of latency}
- \end{subfigure}
- \begin{subfigure}[b]{0.8\columnwidth}
- \centering
- \includegraphics[width=\textwidth]{../raw_data/dctcp_benchmark/1gbps/figure2.pdf}
- \caption{Throughput}
- \end{subfigure}
-\caption{DCTCP: rate-limiting=1Gbps, 1 iperf flow, different thresholds}
-\end{figure*}
-
-\begin{figure*}
-\centering
- \begin{subfigure}[b]{0.8\columnwidth}
- \centering
- \includegraphics[width=\textwidth]{../raw_data/dctcp_benchmark/2gbps/figure1.pdf}
- \caption{CDF of latency}
- \end{subfigure}
- \begin{subfigure}[b]{0.8\columnwidth}
- \centering
- \includegraphics[width=\textwidth]{../raw_data/dctcp_benchmark/2gbps/figure2.pdf}
- \caption{Throughput}
- \end{subfigure}
-\caption{DCTCP: rate-limiting=2Gbps, 1 iperf flow, different thresholds}
-\end{figure*}
-\fi

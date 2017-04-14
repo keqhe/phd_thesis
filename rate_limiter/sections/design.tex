@@ -1,48 +1,8 @@
 \section{Design}
-\label{rate-limiter:sec:design} \mylabel{sec:design}
-\iffalse
-The design requirements are 1) high throughput, 2) low throughput oscillation, 3) low latency and 4) generic. Here generic 
-means the designed solution should be able to support different kinds of traffic (both north-south and east-west traffic)
-in the datacenter network.
-\fi
-\iffalse
-\subsection{Challenges and Requirements}
-
-Conventionally, ECN marking is done on the transmitting path (i.e., from the sender to the receiver). 
-TCP sender sends packets to TCP receiver. If congestion happens in a switch on the network path, 
-the switch marks ECN bits in packet's IP header to denote that congestion happens. 
-Once TCP receiver receives a ECN-marked IP packet, it sets the ECE (ECN-Echo) bit in TCP ACK header 
-and the ECE-marked TCP ACK informs TCP sender that congestion happened on the transmitting path. 
-Based on this, TCP sender takes proper actions to reduce its sending rate to mitigate the congestion level.
-
-If we directly apply the existing ECN marking technique onto rate limiter queue, a few 
-challenges arises---First, end-host networking stacks enable optimization techniques 
-such TSO (TCP Segmentation Offload~\cite{tcp-segment-offload}) to improve throughput and 
-reduce CPU overhead. Therefore, end-host networking stack (including the software rate limiters) 
-processes TCP segments instead of MTU-sized packets. 
-The maximum TCP segment size is 64KB in default. A TCP segment's IP header is copied into 
-each MTU-sized packet in the NIC using TSO.  So marking one TCP segment in the rate limiter 
-queue means a bunch of consecutive MTU-sized packets are marked. Because of such coarse-grained segment-level marking, 
-the accuracy of congestion level estimation is greatly decreased. 
-Second, if we perform ECN marking on the data transmitting path, then the 
-congestion control loop latency (i.e., the time difference between when congestion happened 
-and when actions were taken) is around one TCP RTT. TCP RTT can be affected by the ``in network" latency. 
-So, the congestion signal (i.e., the ECN signal) may become stale when congestion control actions are taken. 
-The problem is exacerbated by the facts that TCP traffic at the source tends to be very 
-bursty (due to TCP's windowing scheme and TSO optimization) and software rate limiter queue occupancy 
-fluctuates drastically. To capture real-time queue occupancy, we need to reduce the congestion control 
-loop latency and decouple the side-effects due to ``in network'' latency.  Third, the designed solution needs to 
-work under various kinds of configurations and work for different kinds of traffic. For example, 
-VMs running on top of the physical server may not enable ECN-capable transports 
-(e.g., DCTCP)~\cite{he2016ac,cronkite2016virtualized}. Also, north-south traffic (i.e., traffic 
-between client and cloud, inter-datacenter traffic) typically does not support ECN as ECN support 
-in Wide Area Networks (WANs) is limited~\cite{kuhlewind2013state}. In these two cases, schemes replying 
-on ECN support simply do not work. Besides limited ECN support, north-south traffic 
-typically has much larger RTT. Therefore, reducing the control loop latency for north-south flows is important. 
-\fi
+\label{rate-limiter:sec:design}
 
 \subsection{Direct ECE Marking}
-\begin{algorithm}[t]
+\begin{algorithm}[!t]
 \caption{Pseudo-code of Direct ECE Marking Algorithm}
 \label{alg:algorithm1}
 \begin{algorithmic}[1]
@@ -90,50 +50,10 @@ If neither network switches nor the rate limiter is congested, then TCP ECE is a
 So~\dem{} does not affect the correctness of end-to-end
 congestion control and is complementary with ``in network'' congestion control schemes.
 
-
 \iffalse
-\subsection{Algorithm2}
-
-\begin{algorithm}[t]
-\caption{Pseudo-code of Algorithm 2}
-\label{alg:algorithm2}
-\begin{algorithmic}[1]
-\FOR{each packet p}
-\STATE q $\leftarrow$ rate\_limiter\_queue(p)
-\STATE current\_qlen $\leftarrow$ len(q)
-\STATE new\_gradient $\leftarrow$ current\_qlen -- q.prev\_qlen
-\STATE q.prev\_qlen $\leftarrow$ current\_qlen
-\STATE q.gradient $\leftarrow$ (1 -- $\alpha$)*q.gradient + $\alpha$*new\_gradient
-\IF{p is an incoming TCP ACK}
-\IF {current\_qlen $\ge$ {\emph {K2}} || current\_qlen > {\emph {K1}} and q.gradient $>$ 0}
-\STATE tcp(p).ece $\leftarrow$ 1
-\ENDIF
-\ENDIF
-\ENDFOR
-\end{algorithmic}
-\end{algorithm}
-
-Besides the rate limiter queue occupancy, we also consider the trend of queue occupancy change (i.e., the gradient) 
-when setting ECE bit in
-TCP ACK header. We maintain two thresholds, $K1$ and $K2$ ($K1 < K2$). The queue occupancy gradient is calculated in the
-following ways---we first calculate the $new\_gradient$ which is the value of $current\_qlen - prev\_qlen$.
-Then $gradient$ is calculated as $$gradient = (1 - \alpha)*gradient + \alpha*new\_gradient$$  
-
-Similar to Algorithm~\ref{alg:algorithm1}, we process each incoming TCP ACK. If the length of the TCP ACK's corresponding
-rate limiter queue is larger than or equal to $K2$, 
-then we set this ACK's ECE bit to 1. If the length of the TCP ACK's corresponding
-rate limiter queue is larger than $K1$ but smaller than $K2$ while the calculated $gradient$ is positive, we set
-this ACK's ECE bit to 1. In all other cases, this ACK's ECE bit is left unchanged. The idea is that if the current 
-rate limiter queue is larger than $K1$ but it is draining rapidly (i.e., the $gradient$ is negative or 0), we do not
-set TCP ECE bit.
-To achieve the most accurate estimation of the queue length gradient, we update $gradient$ whenever a packet is processed
-by the rate limiter. $gradient$ is a per rate limiter queue parameter.
-The details of this algorithm is presented in Algorithm~\ref{alg:algorithm2}.
-\fi
-
 \subsection{~\spring{}}
 
-\begin{algorithm}[t]
+\begin{algorithm}[!t]
 \caption{Pseudo-code of~\spring{} Algorithm}
 \label{alg:algorithm3}
 \begin{algorithmic}[1]
@@ -213,4 +133,6 @@ they do not support IPSec (because they need to modify TCP header). However, SSL
 Furthermore,~\spring{} needs to maintain per-flow information in the hypervisor. 
 Maintaining per-flow information in switches is conventionally considered to be challenging.
 In~\spring{} we only need to maintain the information of the connections from the VMs/Containers running on the end-host. 
-Also, recent advances like OVS ConnTrack~\cite{ovs-conntrack} has made connection tracking on the end-host more effective. 
+Also, recent advances like OVS ConnTrack~\cite{ovs-conntrack} has made connection tracking on the end-host more effective.
+
+\fi 
