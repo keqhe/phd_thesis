@@ -3,7 +3,7 @@
 
 Bandwidth allocation is an indispensable feature in multi-tenant clouds. 
 It guarantees the performance of various applications from multiple tenants running on the same physical server. 
-Bandwidth allocation is often implemented by \textit{software rate limiters\footnote{In this paper,
+Bandwidth allocation is often implemented by \textit{software rate limiters\footnote{In this chapter,
 we use software rate limiter and rate limiter interchangeably.}} 
 in the operating system (e.g., Linux Hierarchical Token Bucket, aka HTB) due to their flexibility and scalability.
 However, rate limiters either uses traffic policing (i.e., dropping packets when
@@ -16,7 +16,7 @@ find that one of the most widely used software rate limiters, HTB, dramatically 
 Previous work mainly focused on solving ``in-network'' queueing latency (i.e., latency in 
 switches)~\cite{alizadeh2010data,he2016ac,mittal2015timely}, but little research effort has been
 done to solve the latency, packet loss and burstiness issues for the software rate limiters on the end-host.
-To this end, we explore how we can address the performance issues associated with rate limiters on the end-host in this paper.
+To this end, we explore how we can address the performance issues associated with rate limiters on the end-host in this chapter.
 Inspired by the efforts to reduce queueing latency in hardware switches, 
 we first extend ECN into software rate limiters and configure DCTCP on the end-points. 
 However, in our tests, we find simply applying DCTCP+ECN on the end-host causes a problem \textemdash\xspace 
@@ -69,7 +69,7 @@ both ECN-capable and non ECN-capable flows.
 we compute \cwnd according to instantaneous rate limiter queue length and queue length gradient and 
 rewrite \rwnd in TCP ACK header. 
 
-The contributions of this paper are as follows:
+The contributions of this chapter are as follows:
 \begin{enumerate}
 \item We point out and measure the latency caused by software rate limiters on the end-host in multi-tenant clouds, 
 and also show that simply applying DCTCP+ECN is not sufficient to achieve constant bandwidth saturation.

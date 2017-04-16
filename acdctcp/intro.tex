@@ -25,7 +25,7 @@ bandwidth and low latency by ensuring network queues in switches do not fill up.
 private datacenters~\cite{singh2015jupiter,judd2015nsdi}, ensuring a vast majority of VMs within a public datacenter will update their TCP stacks
 to a new technology is a daunting, if not impossible, task.
 
-In this paper, we explore how operators can regain authority over TCP congestion control, regardless of the TCP stack
+In this chapter, we explore how operators can regain authority over TCP congestion control, regardless of the TCP stack
 running in a VM. Our aim is to allow a cloud provider to utilize advanced TCP stacks, such as DCTCP, without having
 control over the VM or requiring changes in network hardware. We propose implementing congestion control in the virtual switch
 (vSwitch) running on each server. Implementing congestion control within a vSwitch has several advantages. 
@@ -48,7 +48,7 @@ Finally, VM TCP stacks may differ in the features they support (\eg{}, ECN) or t
 control algorithm they implement, so a vSwitch congestion control implementation should work under a variety
 of conditions. 
 
-This paper presents Administrator Control over Datacenter TCP (\acdc{} TCP, or simply~\acdc{}), a new technology that implements 
+This chapter presents Administrator Control over Datacenter TCP (\acdc{} TCP, or simply~\acdc{}), a new technology that implements 
 TCP congestion control within a vSwitch to help ensure VM
 TCP performance cannot impact the network in an adverse way. At a high-level, the vSwitch monitors all packets for a flow, modifies 
 packets to support features not implemented in the VM's TCP stack (\eg{}, ECN) and reconstructs
@@ -63,7 +63,7 @@ our system mitigates the impact of varying TCP stacks running on the same fabric
 solves the ECN co-existence problem identified in production networks~\cite{wu2012tuning,judd2015nsdi}. 
 Third, our scheme is easy to implement, computationally lightweight, scalable, and modular so that it is highly complimentary to
 performance isolation schemes also designed for virtualized datacenter environments.
-The contributions of this paper are as follows:
+The contributions of this chapter are as follows:
 \begin{enumerate}
 \item The design of a vSwitch-based congestion control mechanism that regains control over the VM's TCP/IP stack
 without requiring any changes to the VM or network hardware. 
@@ -74,7 +74,6 @@ performance to when the host TCP stack varies but DCTCP's congestion control is 
 throughput, fairness and latency on a shared datacenter fabric.
 \end{enumerate}
 
-The outline of this paper is as follows. Background and motivation are discussed in \cref{background}.~\acdc{}'s design is outlined in \cref{design} and
-implementation in \cref{impl}. Results are presented in \cref{results}. Related work is surveyed in \cref{related}
-before concluding.
+The outline of this chapter is as follows. Background and motivation are discussed in \cref{background}.~\acdc{}'s design is outlined in \cref{design} and
+implementation in \cref{impl}. Results are presented in \cref{results}.
 
