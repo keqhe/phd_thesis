@@ -50,7 +50,6 @@ If neither network switches nor the rate limiter is congested, then TCP ECE is a
 So~\dem{} does not affect the correctness of end-to-end
 congestion control and is complementary with ``in network'' congestion control schemes.
 
-\iffalse
 \subsection{~\spring{}}
 
 \begin{algorithm}[!t]
@@ -135,4 +134,3 @@ Maintaining per-flow information in switches is conventionally considered to be 
 In~\spring{} we only need to maintain the information of the connections from the VMs/Containers running on the end-host. 
 Also, recent advances like OVS ConnTrack~\cite{ovs-conntrack} has made connection tracking on the end-host more effective.
 
-\fi 
