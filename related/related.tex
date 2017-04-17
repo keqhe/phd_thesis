@@ -1,0 +1,145 @@
+\section{Related Work}
+\label{thesis:related}
+
+{\bf Load Balancing in Datacenters} 
+%Load balancing in datacenter networks has been the focus of several studies.
+MPTCP~\cite{mptcp,dc-mptcp} is a transport protocol that uses subflows to 
+transmit over multiple paths.
+CONGA~\cite{conga} and Juniper VCF~\cite{juniper-vcf} both employ congestion-aware flowlet switching~\cite{flowlet} on
+specialized switch chipsets to load balance the network.
+RPS~\cite{packetspray} and DRB~\cite{drb} evaluate per-packet load balancing on symmetric 1 Gbps networks
+at the switch and end-host, respectively.
+The CPU load and feasibility of end-host-based per-packet load balancing for 10+ Gbps networks remains open.
+%Per-packet load balancing can incur significant end-host overhead for DRB
+%if not resorting to jumbo frames.
+%Packet reordering problem is not well considered in both RPS and DRB.
+%RPS and DRB may perform worse than ECMP in case of topology asymmetry.
+Hedera~\cite{hedera}, MicroTE~\cite{microte} and Planck~\cite{planck} use centralized traffic engineering to
+reroute traffic based on network conditions.
+FlowBender~\cite{flowbender} reroutes flows when congestion is detected by end-hosts and 
+Fastpass~\cite{fastpass} employs a centralized arbiter to schedule path selection for each packet.
+As compared to these schemes, Presto is the only one that proactively load-balances at line rate for fast networks
+in a near uniform fashion without requiring additional infrastructure or changes
+to network hardware or transport layers. Furthermore, to the best of our knowledge, Presto is
+the first work to explore the interactions of fine-grained load balancing with built-in
+segment offload capabilities used in fast networks.
+%\textcolor{blue}{~\cite{eden} also advocates to implement network functions such as load balancing 
+%at datacenter end hosts.}
+
+{\bf Reducing Tail Latency}
+%Detail~\cite{detail} summarizes the causes of long tails of flow completion time---
+%1)packet loss and retransmissions,
+%2)absence of flow prioritization and 3)uneven load balancing.
+%Reducing tail latencies of small mice flows has also been actively studied.
+DeTail~\cite{detail} is a cross-layer network stack designed to reduce the tail of flow completion times.
+%link layer uses port buffer occupancy to construct lossless fabric,
+%network layer performs per-packet adaptive load balancing based on port buffer occupancy,
+%transport layer relies upon congestion notifications
+%derived from port buffer occupancies,
+%finally Detail lets application layer specify flow priorities to
+%avoid head-of-line blocking of elephant flows for mice time-sensitive flows.
+%Detail modified many layers (including the switch) and is hard to deploy using
+%current hardware and network stack.
+DCTCP~\cite{dctcp} is a transport protocol that uses the portion of marked packets 
+by ECN to adaptively adjust sender's TCP's congestion window to reduce switch buffer occupancy.
+%Thus, DCTCP can reduce switch buffer occupancy and reduce flow completion time.
+HULL~\cite{hull} uses Phantom Queues and congestion notifications to cap link utilization and prevent congestion.
+%HULL uses packet pacing to combat with traffic burstiness in order to leave "bandwidth headroom".
+In contrast, Presto is a load balancing system that naturally improves 
+the tail latencies of mice flows by uniformly spreading traffic in 
+fine-grained units.
+%We share the overall goal of reducing mice tail latencies, but instead explore how
+%fine-grained load balancing can provide a solution.
+QJUMP~\cite{qjump} utilizes priority levels to 
+allow latency-sensitive flows to "jump-the-queue" over low priority flows.
+PIAS~\cite{bai2015information} uses priority queues to mimic the Shortest Job First principle to reduce FCTs.
+%solve the network interference problem caused by elephant and mice flows 
+%for datacenter networks. High priority packets are rate-limited 
+%at the end-host and can "jump-the-queue" over packets with 
+%lower priorities. PIAS~\cite{pias} mimics the Shortest Job First (SJF) 
+%principle to reduce flow completion times. It gradually decreases 
+%the priority level assigned to a flow based on its flow size.
+%Presto is complementary and could be applied on each priority level.
+%DIBS~\cite{dibs} detours packets of a congested switch port to a randomly 
+%picking neighboring switch to reduce packet drops.
+Last, a blog post by Casado and Pettit~\cite{vmware} summarized
+four potential ways to deal with elephants and mice, with one advocating
+to turn elephants into mice at the edge. 
+We share the same motivation and high-level
+idea and design
+a complete system that addresses many practical challenges of using
+such an approach.
+
+
+{\bf Handling Packet Reordering}
+%Many schemes have tried to mitigate the impact of reordering.
+TCP performs poorly in the face of reordering, and thus several studies
+design a more robust alternative~\cite{rr-tcp,blanton2002making,tcp-pr}.
+Presto takes the position that reordering should be handled below TCP in the existing 
+receive offload logic.
+In the lower portion of the networking stack, SRPIC~\cite{wu2009sorting} sorts reordered packets 
+in the driver after each interrupt coalescing event. While this approach can help
+mitigate the impact of reordering, it does not sort packets across interrupts, have a 
+direct impact on segment sizes, or distinguish between loss and reordering. 
+%SRPIC is 
+%complementary to our approach because their actions are taken in the driver, before packets
+%are pushed to GRO.
+%RR-TCP~\cite{rr-tcp} proposed to extend TCP sender to detect and recover from false fast retransmits using DSACK information. 
+%As we show, fixing TCP itself cannot solve all the problems incurred by packet reordering.
+%\eric{i have some LRO references in the patent slides that we need to make sure are cited somewhere} 
+%Instead, Presto's chunking scheme leverages the fact that all the packets going through the same path are in order and has two nice properties:
+%1)Presto uses chunkid to make the task of distinguishing packet loss from temporary packet reordering much simpler. 
+%2)Presto only needs to make sure the chunks are in order instead of packets, thus reducing per-packet processing overhead.
+
+{\bf Congestion control for DCNs}
+%\crs{Rather than proposing a new congestion control algorithm, our work investigates if congestion control can be moved to the vSwitch.
+%Thus, many of the following schemes are complimentary.}
+DCTCP~\cite{alizadeh2011data} is a seminal TCP variant for datacenter networks.
+Judd~\cite{judd2015nsdi} proposed simple yet practical fixes to enable DCTCP in production networks.
+TCP-Bolt~\cite{stephens2014practical} is a variant of DCTCP for PFC-enabled lossless Ethernet.
+%DCQCN~\cite{zhu2015congestion} is a rate-based congestion control scheme implemented in NICs
+%for QCN-based~\cite{qcn} RDMA deployments.
+DCQCN~\cite{zhu2015congestion} is a rate-based congestion control scheme (built on DCTCP and QCN) to
+support RDMA deployments in PFC-enabled lossless networks.
+TIMELY~\cite{mittal2015timely} and DX~\cite{lee2015accurate}
+use accurate network latency as the signal to perform congestion control.
+TCP ex Machina~\cite{winstein2013tcp} uses computer-generated congestion control rules.
+PERC~\cite{jose2015high} proposes proactive congestion control to improve convergence.
+ICTCP's~\cite{wu2010ictcp} receiver monitors incoming TCP flows and
+modifies~\rwnd{} to mitigate the impact of incast, but this cannot
+provide generalized congestion control like~\acdc{}.
+Finally, efforts~\cite{dell-toe,chelsio-toe} to
+implement TCP Offload Engine (TOE) in specialized NICs are not widely deployed for reasons noted in~\cite{mogul2003tcp,linux-toe}.
+vCC~\cite{vcc} is a concurrently designed system that shares~\acdc{}'s goals and some of its design details.
+The paper is complementary in that some items not addressed in~\acdc{} are presented, such as a more detailed
+analysis of the ECN-coexistence problem, an exploration of the design space, and a theoretical proof of
+virtualized congestion control's correctness.~\acdc{} provides an in-depth design and thorough evaluation of
+a DCTCP-based virtualized congestion control algorithm on a 10 Gbps testbed.
+
+
+{\bf Bandwidth allocation} Many bandwidth allocation schemes have been proposed.
+Gatekeeper~\cite{rodrigues2011gatekeeper} and EyeQ~\cite{jeyakumar2013eyeq} abstract the network as a single
+switch and provide bandwidth guarantees by managing each server's access link.
+Oktopus~\cite{Ballani2011oktopus} provides fixed performance guarantees within virtual clusters.
+SecondNet~\cite{Guo2010Secondnet} enables virtual datacenters with static bandwidth guarantees.
+Proteus~\cite{Xie2012Proteus} allocates bandwidth for applications with dynamic demands.
+Seawall~\cite{shieh2011sharing} provides bandwidth proportional to a defined weight by
+forcing traffic through congestion-based edge-to-edge tunnels.
+NetShare~\cite{Lam2012NetShare} utilizes hierarchical weighted max-min fair sharing to tune relative bandwidth allocation for services.
+FairCloud~\cite{Popa2012Faircloud} identifies trade-offs in minimum
+guarantees, proportionality and high utilization, and designs schemes over this space.
+Silo~\cite{jang2015silo} provides guaranteed bandwidth, delay and burst allowances through a novel VM placement and admission
+algorithm, coupled with a fine-grained packet pacer. 
+~\acdc{} is largely complimentary to these schemes because it is a transport-level solution.
+
+{\bf Rate limiters}
+SENIC~\cite{niranjan2013fastrak}
+identifies the limitations of NIC hardware rate limiters (\ie{}, not scalable) and
+software rate limiters (\ie{}, high CPU overhead) and uses the CPU to enqueue packets
+in host memory and the NIC. Silo's pacer injects void packets into
+an original packet sequence to achieve pacing. FasTrack~\cite{niranjan2013fastrak} offloads
+functionality from the server into the switch for certain flows.
+%~\acdc{} prevents
+%TCP flows from sending in the first place and can be used in conjunction with these
+%schemes.
+
