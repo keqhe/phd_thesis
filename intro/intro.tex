@@ -1,9 +1,68 @@
 \chapter{Introduction}
-\label{chap:intro}
-Over the past few years, cloud-based networking solutions have been gaining widespread acceptance and
-deployment for organizations such as enterprises and institutions~\cite{paxson1997end}.
+\label{thesis:chapter:intro}
 
-\section{Cloud Infrastructure Organization}
+Cloud computing is changing the way computing is conducted since a few years ago.
+It is a rapidly growing business and many industry leaders
+(\eg{}, Amazon~\cite{amazon-aws}, Google~\cite{google-compute}, 
+IBM~\cite{ibm-softlayer,ibm-bluemix} and
+Microsoft~\cite{microsoft-azure}) have embraced such a
+business model and are deploying highly advanced cloud computing infrastructures.
+Market analysis~\cite{cloud-market2020}
+has predicted that the global cloud computing market will
+reach \$270 billion by 2020. The success of cloud computing is
+not accidental \textemdash\xspace it is rooted in many advantages that cloud computing offers
+over traditional computing model. The most notable feature is that tenants
+(customers) who rent the computing resources can get equivalent computing power
+with \emph{lower cost}. That is because the computing resources
+(CPUs, memory, storage, and network) are shared among multiple users and
+server consolidation and server virtualization improve the utilization
+of the computing resources. Another key advantage cloud computing offers
+is \emph{computing agility}. That means, tenants can rent as many computing
+resources as they need and can grow or shrink the computing pool based on their demands.
+This feature is especially attractive for relatively smaller and
+rapidly growing businesses.
+
+Datacenter networks are important components in modern cloud computing infrastructures. 
+High-performance cloud computing infrastructures require high-speed, low latency, scalable and 
+highly robust datacenter networking solutions to support a massive amount of traffic. 
+For example, Cisco Global Cloud Index~\cite{cisco-predict} predicts that annual global datacenter IP traffic will 
+reach 15.3 zettabytes (ZB) by 2020, which is 3 times large as 2015's (4.7 ZB). 
+The tremendous growth of datacenter traffic drives the need for high-performance 
+datacenter networking solutions. Datacenter network is a complicated system and it covers many 
+aspects of computer networking, ranging from TCP congestion control algorithms to switch hardware design. 
+In the past 10 years, datacenter networking technologies have been advanced significantly. 
+Starting in 2009 - 2010, seminal works on datacenter network topology designs such as 
+FatTree~\cite{fattree} and VL2~\cite{vl2} were published. These works proposed to use multi-stage Clos networks to 
+scale out and support hundreds of thousands of servers in a single datacenter. 
+Recently (in 2016), Microsoft published their congestion control solution for 
+RDMA deployments in Azure networks~\cite{zhu2015congestion}. 
+Despite the advances, there are still a lot of unsolved research challenges in datacenter networking.
+
+In 2007, Casado et al~\cite{casado2007ethane} presented a control plane and dataplane separation network architecture for 
+Enterprise networks. In 2008, networking researchers, McKeown et al, argued that today's computer network 
+devices (i.e., switch and routers) were commercialized black boxes, 
+and it was increasingly harder for networking researchers to invent and test new networking 
+techniques on existing networking devices. Their white paper~\cite{McKeown08} described the initial motivation 
+for OpenFlow. Ethane and OpenFlow started the revolution of Software-defined Networking (SDN). 
+Later, an open source implementation of SDN-capable virtual switch, Open vSwitch (OVS)~\cite{Pfaff2015ovs}, was released. 
+OVS is now maintained by VMware. Datacenter networking and SDN technique are closely related. 
+In datacenter networks, SDN technique is widely applied. Of particular importance, 
+OVS is widely deployed in cloud computing platforms to support network virtualization functionalities and 
+meet SDN-style network management requirements. OVS is one part of end-host networking.
+End-host networking covers many components, for example, TCP/IP stack, virtual switch, rate limiters and NIC hardware. 
+In a datacenter network, all the servers (and hypervisors) are managed by a single entity 
+(i.e., the cloud provider), therefore, there are a lof of opportunities for innovations.
+
+In this thesis, I will present my research works on improving datacenter networking performance. 
+Performance here refers to network throughput, latency and packet loss etc. 
+The major theme of this thesis is to leverage the intelligent software-defined network 
+edge (i.e., end-host networking) to improve performance for datacenter networks.
+In the following of this chapter, I will briefly introduce three research projects I worked on 
+during my PhD study, they are \textemdash\xspace edge-based traffic load balancing for 
+datacenter networks, congestion control virtualization for multi-tenant clouds and 
+low latency software rate limiters for cloud networks.
+
+\section{Edge-based traffic load balancing}
 % virtual network data plane
 
 %While our work applies to general cloud networking settings, for the purposes of 
@@ -11,7 +70,12 @@ In this thesis, we focus on multi-tenant cloud data centers.
 In this setting, tenants deploy \emph{virtual private clusters}
 composed of application end-points (this could be service software in
 
-\section{Challenges in Diagnosing Cloud Networks}
+\section{Congestion control virtualization}
+\section{Low latency software rate limiters}
+
+
+
+\section{Summary of Contributions and Overview}
 \label{sec:intro:challenges}
 Troubleshooting network problems is difficult. A network is a distributed
 
@@ -29,20 +93,3 @@ the problem-solving time and maintenance cost.
 \end{itemize}
 
 
-\section{An Overview of Our Approach}
-\label{sec:intro:approach}
-Ever since the birth of networks, network problems have been appearing and upseting network operators. There have been numerous proposals aiming to solve various problems. For example, there are standards or technologies such as SNMP, sFlow, and NetFlow to collect states in networks; there are network models and diagnostic algorithms to discover culprits in network problems; and there are various network diagnostic solutions for traditional networks and software-defined networks, which combine the technologies and algorithms. These approaches are undoubtedly valuable in their specific scenarios.
-
-However, these solutions do not overcome the challenges in diagnosing cloud networks (Section~\ref{sec:intro:challenges}). In this thesis, we make a study of problems in cloud networks. According to the cloud organization, we look into each planes and summarize new problems. In more details, we found that in application planes, the isolation between tenants and the provider causes tenants unable to diagnose their virtual networks, thus we propose, design and implement a virtual network diagnostic service in application planes. We found that in data planes, increasing complexity and lack of visibility cause performance problems difficult to be identified, thus we modify software data planes, collect statistics and leverage the statistics to perform accurate diagnosis. We also find inconsistency issues in control planes, where tenant requirements may not be consistency with physical device states; we leave this problem in future works.
-
-Decomposing cloud networks into three planes and reconsidering diagnostic challenges in cloud networks is an efficient way to discover, abstract and solve cloud network problems. We feel that, owing to our approach, several cloud-specific problems are discovered. Therefore, our works improve the reliability of cloud networks.
-
-\section{Thesis Outline}
-\label{sec:intro:outline}
-The rest of this thesis is organized as follows. 
-In Chapter~\ref{chap:background}, we make a study of cloud network problems and briefly describe our approaches.
-In Chapter~\ref{chap:vnd},
-we describe our design of the virtual network diagnostic service. In Chapter~\ref{chap:perfsight},
-we present our solution for software data plane diagnosis.
-In Chapter~\ref{chap:related}, we discuss the related work, 
-Finally in Chapter~\ref{chap:conc}, we conclude this thesis and discuss options for future work.

@@ -201,7 +201,7 @@ Since this code executes in the vSwitch, retransmitted TCP packets run through t
 \STATE f.lastFlowcell $\leftarrow$ getFlowcell(S)
 \STATE f.expSeq $\leftarrow$ S.endSeq
 \STATE pushUp(S)
-\ELSIF{f.expSeq > S.startSeq}
+\ELSIF{f.expSeq $>$ S.startSeq}
 \STATE f.lastFlowcell $\leftarrow$ getFlowcell(S)
 \STATE pushUp(S)
 \ELSIF{timeout(S)}
