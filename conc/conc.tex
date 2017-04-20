@@ -1,76 +1,10 @@
-\chapter{Conclusion}
-\label{chap:conc}
+\chapter{Conclusion and Future Work}
+\label{thesis:chapter:conclusion}
+
 In this thesis, we have demonstrated new network problems in the cloud environment
 and our approaches to solve them. We have shown the feasibility and performance
 of our approach. 
 Here, we highlight the main contributions of our works, and then close this thesis with
-a discussion of options for future work.
-\section{Contributions}
-\paragraph{VND.} We proposed a virtual network diagnostic service from the cloud provider
-to its cloud tenants.
-%  makes a case for providing virtual network diagnosis as a service in the cloud.  
-We identified a set of technical challenges in providing such a service and propose
-a Virtual Network Diagnosis (VND) service framework.  VND exposes abstract
-configuration and query interfaces for cloud tenants to troubleshoot
-their own virtual networks. It controls software switches to collect
-flow traces, distributes traces storage, and executes distributed
-queries for different tenants for network diagnosis. It reduces the
-data collection and processing overheads by performing local flow
-capture and on-demand query execution. 
-  %Our evaluation shows the feasibility of providing a virtual network diagnosis service in the cloud. VND is prompt to respond tenant's diagnosis request and introduces acceptable overhead.
-Our experiments validated the functionality of VND approach and showed its feasibility 
-in terms of quick service response and acceptable overhead; our simulation
-proved the VND architecture cloud be scaled to the size of a real data center network.
-\paragraph{\Name.}
-The new ``software data
-planes'' in the cloud infrastructure are susceptible to at least three new classes of
-performance problems. To diagnose such problems, we designed,
-implemented and evaluated \Name, a ground-up system that works by
-extracting comprehensive low-level information regarding packet
-processing and I/O performance of the various elements in the
-software data plane. \Name then analyzes the information gathered in
-various dimensions (e.g., across all VMs on a machine, or all VMs
-deployed by a tenant). By looking across aggregates, we showed that it
-becomes possible to detect and diagnose key performance
-problems. Our experimental results showed that our framework can result in
-accurate detection of the root causes of key performance problems in
-software data planes, and it imposes very little overhead.
-\section{Future Work}
-Our study has not covered all aspects of the cloud infrastructure. There
-are still other network troubleshooting issues in the cloud infrastructure,
-which we consider as research areas for future work. In addition, our study of the 
-network problems also points out a way to improve the network performance.
-
-\paragraph{Control Plane.} The cloud control plane translates
-and deploys management policies (e.g., virtual networks) into low-level devices. There are several
-layers in this process: the management policy, the logic view, the physical view, and the device
-states. Diagnostic tools for traditional networks usually target the physical-view layer and the
-device states; they have proposed network-wide invariants such as loop-free, reachability in these
-two layers. I argue that in the public cloud, more invariants need to be guaranteed, such as isolation
-and fault tolerance. I intend to model this layer-by-layer translation and the invariants. In addition,
-I believe we need to use the actual data plane behaviors to verify the network invariants instead of the
-states in the control plane (as is done in current solutions); 
-to implement this, we can make use of existing techniques such as sFlow,
-NetFlow or VND to capture the network traffic and to verify whether the data plane behavior violates
-the network invariants.
-
-\paragraph{Software Data Plane Optimization.} An observation of our data plane diagnostic work 
-is that processing overheads is imposed in the software data plane, causing unsatisfactory
-performance (e.g., low throughput). The overhead is usually
-caused by uncoordinated design of data plane components (these components are usually designed
-for generic usage). In a specific environment (e.g., multi-tenant cloud), the software data plane can
-be further optimized. For example, two VMs in the same physical server can exchange network
-traffic with zero memory copy; VM outgoing traffic can bypass the NAPI routine to the NIC directly.
-I intend to further optimize the the software data plane in the context of multi-tenant clouds.
-
-I would like to discover whether the software data plane can be software-defined.
-The optimization examples mentioned above actually design new ``short-cut" datapaths for
-network traffic to accelerate processing speed. It is possible to control the datapath in the software
-data plane, so that different flows go through different datapaths and achieve different benefits.
-For example, trusted VMs can exchanges packets directly without going through virtual switches,
-while untrusted VMs should not for security reasons; 
-delay-sensitive middlebox traffic can output directly to
-the physical NIC, while others are put into the CPU backlog queue for bulk processing. This requires
 a new design and implementation of the software data plane and the comprehensive evaluation of different practices.
 
 %\cite{example}
