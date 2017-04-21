@@ -1,0 +1,254 @@
+%!TEX TS-program = pdflatex
+% dissertation.tex -- main dissertation file
+%
+% Wisconsin dissertation template
+% Copyright (c) 2008-2009 William C. Benton.  All rights reserved.
+%
+% This program can redistributed and/or modified under the terms
+% of the LaTeX Project Public License Distributed from CTAN
+% archives in directory macros/latex/base/lppl.txt; either
+% version 1 of the License, or (at your option) any later version.
+%
+% This program includes other software that is licensed under the
+% terms of the LPPL and the Perl Artistic License; see README for details.
+%
+% You, the user, still hold the copyright to any document you produce
+% with this software (like your dissertation).
+%
+
+% Copyright (c) 2013 Evan Driscoll
+%
+% In my evaluation the items remaining from Will's original version do not
+% withstand the test of copyright, and so as a result I don't think I need to
+% meet the sole criteria of the Latex PPL which I otherwise wouldn't -- I am
+% not renaming this file.
+
+%%% You'll want ``oneside'' for the deposit version, but probably not for any
+%%% versions that don't need to meet the UW requirements
+%\documentclass[12pt,letterpaper,numbers,oneside]{memoir}
+%\documentclass[12pt,letterpaper,numbersm,oldfontcommands]{memoir}
+\documentclass[12pt, letterpaper, oldfontcommands]{memoir}
+
+%\def\ShortenThesis{y}
+
+%\newcommand{\TODO}[1]{\textbf{#1}\protect\marginnote{\large{[**]}}}
+\newcommand{\CHECK}[1]{#1} %\protect\marginnote{\large{[**]}}}
+
+\input{includes/preamble}
+\input{includes/defs}
+
+\usepackage[algo2e,noline,noend,linesnumbered,algochapter]{algorithm2e}
+\usepackage{algorithmic} % must come after hyperref
+\usepackage{algorithm}
+\usepackage{aliascnt}
+\usepackage{bookmark}
+\usepackage{mathtools}
+\usepackage{colortbl}
+\usepackage{lipsum}
+%\usepackage[hyphens]{url}
+\PassOptionsToPackage{hyphens}{url}
+% Include last: only autonum should be after this (or hypdvips, but if you
+% need that you're doing something wrong)
+\usepackage[capitalize]{cleveref}
+
+\usepackage{alltt,url}
+\usepackage{rotating}
+%\usepackage{textcomp}
+%\usepackage{graphics}
+%\usepackage{floatflt}
+\usepackage{multirow}
+%\usepackage{cite}
+%\usepackage{needspace}
+%\usepackage[hyphens, breaklinks]{hyperref}
+%\usepackage{breakurl}
+\usepackage{hyperref}
+%\usepackage{epstopdf}
+%\epstopdfDeclareGraphicsRule{.eps}{pdf}{.pdf}{%
+%ps2pdf -dEPSCrop #1 \OutputFile
+%}
+\usepackage{fancyvrb}
+\usepackage{relsize}
+\usepackage{soul}
+\usepackage{array}
+\usepackage{caption}
+
+\usepackage{graphicx} % for subfigure
+%\newsubfloat{figure} % for subfigure 
+
+%\usepackage{subfigure}
+%\usepackage{subcaption}
+%\captionsetup{compatibility=false}
+%\captionsetup[subfigure]{labelformat=simple, labelsep=colon}
+%\captionsetup[subfloat]{labelfont={bf,small},textfont={it,small},
+%subrefformat=parens}
+
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{verbatim}
+%\usepackage[toc,page]{appendix}
+%%%%%%%%%%%%%%%%%%
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{multirow}
+\usepackage{amssymb}% http://ctan.org/pkg/amssymb
+\usepackage{pifont}% http://ctan.org/pkg/pifont
+%%%%%%%%%%%%%%%%%%%%
+
+\newlength{\tmpa}
+\newlength{\tempa}
+
+
+\input{macros}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% No \usepackage after this point %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\input{includes/thesisdefs}
+
+% Some style options
+\hangcaption
+\captionnamefont{\small}
+\captiontitlefont{\small}
+
+\setsecnumdepth{subsection}
+\maxtocdepth{subsection}
+
+\crefname{algorithm}{Listing}{Listings}
+\Crefname{algorithm}{Listing}{Listings}
+\crefname{equation}{Equation}{Equations}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Number tables, theorems, and listings %%
+%% inline with figures,  instead of with %%
+%% their own,  parallel counter which is %%
+%% dumb.                                 %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\makeatletter
+\let\c@table\@undefined
+\let\c@thm\@undefined
+\let\c@algocf\@undefined
+\makeatother
+
+\newaliascnt{table}{figure}
+\newaliascnt{thm}{figure}
+\newaliascnt{algocf}{figure}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\renewcommand{\AlCapSty}[1]{#1}
+\renewcommand{\AlCapFnt}{\small}
+\renewcommand*{\cftfigurename}{Figure\space}
+
+\renewcommand*{\cftfigurename}{Figure\space}
+\renewcommand*{\cfttablename}{Table\space}
+%\newcommand*{\cftalgocfname}{Listing\space}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\algrule}[1][.2pt]{\par\vskip.2\baselineskip\hrule height #1\par\vskip.2\baselineskip}
+\newcommand{\cf}{{cf.}\xspace}
+
+\newcommand{\cut}[1]{}
+
+\renewcommand{\ttdefault}{cmtt}
+\newcommand{\tightparagraph}[1]{\vspace{5pt}\noindent\textbf{#1}\ }
+
+\newcommand{\acdc}{{AC/DC}\xspace}
+%\newcommand{\acdc}{{AC/DC}\xspace}
+\newcommand{\cwnd}{{{\tt CWND}}\xspace}
+\newcommand{\rwnd}{{{\tt RWND}}\xspace}
+\newcommand{\crs}[1]{#1}% Do nothing
+\usepackage{cleveref}
+\crefname{section}{§}{§§}
+\Crefname{section}{§}{§§}
+\crefformat{section}{§#2#1#3}
+
+%%%%%rate limiter
+\newcommand{\dem}{DEM\xspace}
+\newcommand{\spring}{SPRING\xspace}
+\newcommand{\nameone}{DEM\xspace}
+\newcommand{\nametwo}{SPRING\xspace}
+\newcommand{\cmark}{\ding{51}}%
+\newcommand{\xmark}{\ding{55}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\overfullrule=2mm
+
+% Thesis options
+\title{Physical Separation in Modern Storage Systems}
+\author{Lanyue Lu}
+\department{Computer Sciences}
+\date{2016 \vspace{-1in}}
+
+\defensedate{December 1 2015}
+\committeeMemberOne{Andrea Arpaci-Dusseau, Professor, Computer Sciences}
+\committeeMemberTwo{Remzi Arpaci-Dusseau, Professor, Computer Sciences}
+\committeeMemberThree{Shan Lu, Associate Professor, Computer Sciences}
+\committeeMemberFour{Michael Swift, Associate Professor, Computer Sciences}
+\committeeMemberFive{Xinyu Zhang, Assistant Professor, ECE}
+
+\includeonly{frontmatter/fm,xfa-pcca}
+
+\begin{document}
+
+% Add \part declarations if you want, but it's not necessary
+%\part{Preliminaries}
+
+\ifdef{\ShortenThesis}{
+}{
+  \include{frontmatter/fm}
+}
+
+\chapter{Introduction}
+\label{thesis:chapter:intro}
+\input{intro/intro}
+
+\chapter{Edge-based Load Balancing for Fast Datacenter Networks}
+\label{thesis:chapter:presto}
+\input{presto/presto}
+
+%\include{intro/intro}                  % Chapter 1
+%\include{presto/presto}
+%\include{acdctcp/acdctcp}
+%\include{rate_limiter/rate_limiter}
+%\include{related/related}
+%`\include{conc/conc}
+
+\bibliography{refs}              % Make the bibliography
+\bibliographystyle{plain}
+
+
+%\lipsum
+
+%\chapter{Something Else Cool}
+%\lipsum
+
+%\part{Second Part}
+%\chapter{Something Even Cooler}
+%\lipsum
+
+% Ends the \part for purposes of the PDF TOC tree
+%\bookmarksetup{startatroot}
+%\chapter{Conclusions}
+%\lipsum
+
+
+\if 0
+
+\begin{appendices}
+\include{backmatter/appendix1}
+%\include{appendix/main}
+\end{appendices}
+
+
+
+\appendix
+
+\chapter{Appendix A}
+\input{backmatter/appendix1}
+
+\fi
+
+\end{document}

@@ -1,0 +1,23 @@
+\section{Crash Recovery}
+\label{sec-related-crash}
+
+Designing systems to recover safely after crashes has been the focus
+of systems researchers for many years. We first describe how databases
+provided crash consistency, and then explain how file systems and
+applications built on top of these techniques to build crash
+consistency protocols.
+
+\vspace{0.1in} \noindent \textbf{Crash Recovery in Databases}. The
+database community pioneered the transaction
+abstraction~\cite{Gray81-TransactionConcept, grayetal81,
+  MohanEtAl92-Aries} for atomic updates and introduced two techniques
+to optimize how transactions are persisted: logging and
+checkpointing~\cite{gray1978notes, haerder1983principles,
+  MohanEtAl92-Aries}, and group commit~\cite{DewittEtAl84-MemoryDB,
+  gawlick1985varieties, MohanEtAl92-Aries}. Mohan \etal\ brought these
+techniques together in the ARIES algorithm~\cite{MohanEtAl92-Aries}
+that has been implemented in a number of industrial and research
+systems~\cite{chang19882, date1989guide, haskin1988recovery,
+  schwarz1986extensibility, carey1986object, dewitt1990gamma,
+  satyanarayanan1994lightweight}.
+

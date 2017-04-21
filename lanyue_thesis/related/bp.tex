@@ -1,0 +1,74 @@
+\subsection{Using Embedded Information}
+\label{sec-related-embedded}
+
+The idea of using information inside or near the block to detect
+errors has been used in several systems. The Cambridge File
+Server~\cite{Dion80-CFS} used certain bits in each cylinder (cylinder
+map) to store the allocation status of blocks in that cylinder. The
+Cedar File System~\cite{hagmann87-cedar} used \textit{labels} inside
+pages to check their allocation status. Embedding logical identity of
+blocks (inode number + offset) has been done in RAID to recover from
+lost and misdirected writes~\cite{KrioukovEtAl08-FAST}. Transactional
+flash~\cite{Prabhakaran+08-txflash} embeds commit records inside every
+page to provide transactions and recovery. However, NoFS is the first
+work that we know of that clearly defines the level of consistency
+that such information provides and uses such information alone to
+provide consistency.
+
+The design of the Pilot file system \cite{RedellEtAl80-Pilot} is
+similar to that of NoFS. Pilot employs self identifying pages and uses
+a scavenger to reconstruct the file system metadata upon crash.
+However, like the file-system check, the scavenger needs to finish
+running before the file system can be accessed. In NoFS, the file
+system is made available upon mount, and can be accessed while the
+scan is running in the background.
+
+Pangaea~\cite{SaitoEtAl02-Pangaealocal} uses backpointers for
+consistency in a distributed wide area file system. However, its use
+of backpointers is limited to directory entry backpointers that are
+used to resolve conflicting updates on directories. Similar to NoFS,
+Pangaea also uses the backpointer as the true source of information,
+letting the backpointers of child inodes dictate whether they belong
+to a directory or not.
+
+Btrfs~\cite{Mason07-btrfs} supports back references that allow it to
+obtain the list of the extents that refer to a particular extent.
+Although back references are conceptually similar to NoFS
+backpointers, the main purpose of btrfs back references is supporting
+efficient data migration, rather than providing consistency. Other
+mechanisms such as checksums are used to ensure that the data is not
+corrupt in btrfs. Another key difference is that btrfs does not always
+store the back reference inside the allocated extent: sometimes the
+back references are stored as separate items close to the extent
+allocation records.
+
+Backlog~\cite{Macko2010} also uses explicit back references in order
+to manage migration of data in write anywhere file systems. The back
+references in Backlog are stored in a separate database, and are
+designed for efficient querying of usage information rather than
+consistency. Backlog's back references are not used for incremental
+file-system checking or resolving ownership disputes.
+
+The Selfie virtual disk format~\cite{wu2015selfie} embeds metadata
+into data blocks to allow data blocks to be written without requiring
+an associated metadata write, thus increasing performance
+significantly for data writes. Similar to the non-persistent
+allocation structures of NoFS, Selfie's lookup table in maintained in
+memory, and reconstructed from the on-disk version after a crash.
+While NoFS uses an out-of-band area for storing backpointers, Selfie
+depends on the data being compressed to make room for metadata inside
+a block. Thus, although Selfie does not depend upon hardware
+characteristics, it is dependent on workload characteristics.
+
+The ideas behind ReconFS~\cite{lu14-reconfs} are similar to those of
+NoFS. ReconFS makes the directory structure volatile, and recovers it
+from the on-disk structure by embedding extra information into the
+on-disk structures to make them recoverable. While NoFS maintains both
+forward and backward pointers, ReconFS maintains only backward
+pointers (inverted indices). NoFS is concerned with the crash
+consistency of the whole file system, while ReconFS focuses on the
+consistency of the name-space alone. ReconFS and Selfie are
+good testaments to our design choices of not persisting certain
+metadata structures and allowing I/O to be re-ordered.
+
+

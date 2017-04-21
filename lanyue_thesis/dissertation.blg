@@ -1,0 +1,52 @@
+This is BibTeX, Version 0.99d (TeX Live 2013/Debian)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: dissertation.aux
+A level-1 auxiliary file: frontmatter/fm.aux
+The style file: plain.bst
+Database file #1: refs.bib
+Warning--to sort, need author or key in tcp-segment-offload
+Warning--can't use both volume and number fields in alizadeh2010data
+Warning--can't use both volume and number fields in casado2007ethane
+Warning--can't use both volume and number fields in wilson2011better
+You've used 80 entries,
+            2118 wiz_defined-function locations,
+            803 strings with 16781 characters,
+and the built_in function-call counts, 25574 in all, are:
+= -- 2163
+> -- 1687
+< -- 8
++ -- 678
+- -- 598
+* -- 1684
+:= -- 4206
+add.period$ -- 225
+call.type$ -- 80
+change.case$ -- 550
+chr.to.int$ -- 0
+cite$ -- 84
+duplicate$ -- 955
+empty$ -- 2094
+format.name$ -- 598
+if$ -- 5349
+int.to.chr$ -- 0
+int.to.str$ -- 80
+missing$ -- 57
+newline$ -- 384
+num.names$ -- 122
+pop$ -- 819
+preamble$ -- 1
+purify$ -- 472
+quote$ -- 0
+skip$ -- 653
+stack$ -- 0
+substring$ -- 550
+swap$ -- 170
+text.length$ -- 8
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 316
+warning$ -- 4
+while$ -- 139
+width$ -- 82
+write$ -- 758
+(There were 4 warnings)

@@ -1,0 +1,49 @@
+\subsection{The Importance of Interface Design}
+\label{sec-conc-lessons-interfaces}
+
+In this dissertation, we studied existing crash-consistency problems
+in file systems and applications. Most of these problems can be
+directly traced to bad interfaces provided by storage devices and file
+systems.  
+
+\vspace{0.1in} \noindent \textbf{Storage Interface}. Storage devices
+at the lower end of the market (such as SATA and IDE drives) expose
+the flush command for managing the disk cache. There are two problems
+with the flush interface: coarseness, and lack of visibility. First,
+the flush interface is too coarse: there is no option to selectively
+flush a few blocks to non-volatile storage. If the cache is filled
+with dirty data, out of which the file system only wants to make a few
+blocks durable, the current interface forces a lot of inefficient
+waiting. Second, file systems do not have visibility into the
+durability status of blocks in the disk cache. Combined with the
+coarseness of the flush interface, this leads to a lot of un-necessary
+waiting for the file system.   
+
+\vspace{0.1in} \noindent \textbf{File-System Interface}. File systems
+implement the POSIX interface~\cite{posix2013} that includes the
+\sysfsync\ system call for making dirty writes durable. The \sysfsync\
+call results in a flush command at the storage level, and therefore
+inherits the performance problems associated with the flush interface.
+As mentioned in Section~\ref{sec-tmodel}, the \sysfsync\ interface
+couples together ordering and durability; applications desiring only
+ordering between writes are forced to pay the cost of durability. 
+
+These interface flaws have led to widespread problems: disk drives
+that lie about flushing~\cite{RajimwaleEtAl11-CCE, URLMacFsync},
+system administrators who deliberately put their systems at risk for
+performance~\cite{URLmassivefsthread}, systems that do not honor flush
+requests~\cite{virtualbox-ignoreflush}, and finally, application
+developers who do not use \sysfsync\ fearing the performance
+cost~\cite{tso-fsync}.
+
+% open interfaces
+
+\vspace{0.1in} \noindent \textbf{The importance of open interfaces}.
+We believe that the closed nature of storage-device interfaces have
+resulted in significant additional complexity and loss of performance.
+Much of file-system research can be traced back to working around the
+pitfalls of badly-designed interfaces. We believe that making the
+device interface open will greatly aid the storage community. Several
+groups are working towards this with open-channel
+SSDs~\cite{shin2015providing, ouyang2014sdf, wang2014efficient}.
+

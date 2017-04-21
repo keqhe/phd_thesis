@@ -1,0 +1,105 @@
+\section{Summary}
+\label{sec-conc-summary}
+
+This dissertation is mainly comprised of two parts. In the first part,
+we analyzed and studied file-system patches to understand the real problems 
+of modern file systems. In the second part, we built a file system and
+a key-value store with physical separation techniques for better
+reliability and performance. We summarize each part in turn.
+
+
+\subsection{File System Study} 
+\label{sec-conc-study}
+
+In the first part of the dissertation, we performed the first
+comprehensive study of the evolution of Linux file systems.
+First, we investigate the overview of file-system patches. We found
+that nearly half of total patches are for code maintenance and
+documentation. The remaining dominant category is bugs, existing in
+both new and mature file systems. Interestingly, file-system bugs do
+not diminish despite the stability.  We also found that bug patches
+are generally small while feature patches are significantly larger. 
+
+Second, we further analyzed bugs in detail. We found that semantic
+bugs are the dominant bug category (over 50\% of all bugs), which are
+hard to detect via generic bug detection tools. Concurrency bugs are
+the next most common (about 20\% of bugs), more prevalent than in
+user-level software. The remaining bugs are split relatively evenly
+across memory bugs and improper error-code handling. Unfortunately,
+most of the bugs we studied lead to crashes or corruption, and hence
+are quite serious. We also made an important discovery that nearly
+40\% of all bugs occur on failure-handling paths. 
+
+Finally, we also studied performance and reliability patches. The
+performance techniques used were relatively common and
+widespread. About a quarter of performance patches reduced
+synchronization overheads. Reliability techniques seemed to be added
+in a rather ad hoc fashion. Inclusion of a broader set of reliability
+techniques could harden all file systems.  
+
+\subsection{Physical Separation in Storage Systems}
+\label{sec-conc-icefs}
+
+In the second part of this dissertation, we presented our new
+physical separation techniques in two important types of storage
+systems: file systems and key-value stores. By building IceFS and
+WiscKey, we demonstrated that physical separation is a useful and
+practical technique, which can lead to significantly better
+reliability and performance for various workloads and environments. 
+
+First, we proposed IceFS, a novel file system that separates physical
+structures of the file system for better isolation.  A new
+abstraction, the cube, was provided to enable the grouping of files
+and directories inside a physically isolated container. 
+To realize disentanglement, IceFS was built upon three core principles:
+no shared physical resources, no access dependencies, and no bundled
+transactions among cubes. IceFS ensured that files and
+directories within cubes are physically distinct from files and
+directories in other cubes; thus data and I/O within each cube is
+disentangled from data and I/O outside of it. 
+
+We showed three major benefits of cubes within IceFS: localized
+reaction to faults, fast recovery, and concurrent file-system updates. 
+We showed how cubes enable localized micro-failures; crashes and
+read-only remounts that normally affect the entire system are now
+constrained to the faulted cube. We also showed how cubes permit
+localized micro-recovery; instead of an expensive file-system wide
+repair, the disentanglement found at the core of cubes enables 
+IceFS to fully (and quickly) repair a subset of the file system (and even
+do so online). In addition, we illustrated how transaction splitting
+allows the file system to commit transactions from different cubes in
+parallel, greatly increasing performance (by a factor of 2$\times$ - 5$\times$) for 
+some workloads.  Furthermore, we conducted two cases studies where
+IceFS is used to host multiple virtual machines and is deployed as the
+local file system for HDFS data nodes. IceFS achieved fault isolation
+and fast recovery in both scenarios, proving its usefulness in modern
+storage environments.
+
+Second, we presented WiscKey, an SSD-conscious persistent key-value
+store derived from the popular LSM-tree implementation, LevelDB. The
+central idea behind WiscKey was the separation of keys and values;
+only keys were kept sorted in the LSM-tree, while values were stored
+separately in a log. This simple technique can significantly reduce
+write amplification by avoiding the unnecessary movement of values
+while sorting. Furthermore, the size of the LSM-tree was also
+noticeably decreased, leading to better caching and fewer device reads
+during lookups. WiscKey retained the benefits of LSM-tree technology,
+including excellent insert and lookup performance, but without
+excessive I/O amplification. 
+
+We solved a number of reliability and performance challenges
+introduced by the new key-value separation architecture.
+First, range query (scan) performance may be affected because values
+are not stored in sorted order anymore.  We proposed a parallel range
+query design to leverage the SSD's internal parallelism for better range
+query performance on unordered datasets. 
+Second, WiscKey needed garbage collection to reclaim the free
+space used by invalid values. We introduced an online and light-weight
+garbage collector for WiscKey to reclaim the invalid key-value pairs
+without affecting the foreground workloads much. We demonstrated the
+advantages of WiscKey with both 
+microbenchmarks and YCSB workloads. Microbenchmark results showed that
+WiscKey is 2.5$\times$ - 111$\times$ faster than LevelDB for loading a
+database and 1.6$\times$ - 14$\times$ faster for random lookups;
+similar results hold for YCSB workloads. 
+

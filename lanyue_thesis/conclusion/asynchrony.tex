@@ -1,0 +1,30 @@
+\subsection{The Importance of Asynchrony}
+\label{sec-conc-lessons-asynchrony}
+
+The benefits of asynchrony have long been known in the software
+world~\cite{michelson2006event, AdyaEtAl02-Tasks}. For example, when
+asynchronous Javascript was introduced, it enabled the creation of
+exciting, responsive web applications such as Google Suggest and Google
+Maps~\cite{garrett2005ajax}.
+
+Yet, the role of asynchrony in storage systems has been limited. Until
+the 1990s, storage systems were essentially synchronous, performing
+one operation at time~\cite{Seltzer90-SchedRevisit,
+  McKusickEtAl-FFS-84}. With the introduction of tag queuing in SCSI
+disks~\cite{AndersonEtAl03-SCSIvATA, RidgeField00-SCSI, Weber04-SCSI},
+disks could accept sixteen simultaneous requests. Unfortunately, many
+devices do not implement tag queuing
+correctly~\cite{marshall2012disks}.
+
+In this dissertation, we have shown that asynchronous, orderless I/O
+has significant advantages. First, not constraining the order of I/O
+allows large performance gains, especially on today's multi-tenant
+systems~\cite{thereska2013ioflow}. Recent work on non-volatile memory
+has shown that removing ordering constraints on I/O can increase
+performance by 30$\times$~\cite{pelley2014memory}. 
+
+Second, using interfaces such as asynchronous durability notifications
+allows each layer to introduce optimizations such as delaying,
+batching, or re-ordering I/O, without affecting the correctness of the
+file system or the application. Increasing the independence of each
+layer in the storage stack leads to a more robust storage system.

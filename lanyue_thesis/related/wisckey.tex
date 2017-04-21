@@ -1,0 +1,95 @@
+\section{Key-Value Store Optimization}
+
+In this section, we discuss related work in both persistent and
+in-memory key-value stores. We focus on different data structures and
+optimization techniques used. 
+
+Various key-value stores based on hash tables have been proposed for SSD devices.
+FAWN~\cite{Anderson+09-Fawn} keeps key-value pairs in a append-only log on the
+SSD, and uses an in-memory hash table index for fast lookups. 
+FlashStore~\cite{DebnathEtAl10-VLDB} and
+SkimpyStash~\cite{DebnathEtAl11-SIGMOD} follow the same design, but optimize
+the in-memory hash table; FlashStore uses cuckoo hashing and compact key
+signatures, while SkimpyStash moves a part of the table to the SSD
+using linear chaining. BufferHash~\cite{AnandEtAl10-NSDI} uses multiple
+in-memory hash tables, with bloom filters to choose which hash table to use for
+a lookup. SILT~\cite{LimEtAl11-SOSP} is highly optimized for memory, and uses a
+combination of log-structure, hash-table, and sorted-table layouts; the lookup
+is served with a hash table and a trie in memory.
+\toolname\ shares the
+log-structure data layout with these key-value stores. However, these stores
+use hash tables for indexing, and thus do not support modern features that have
+been built atop LSM-tree stores, such as range queries or snapshots. \toolname\
+instead targets a feature-rich key-value store which can be used by various
+modern applications and environments. 
+
+Much work has gone into optimizing the original LSM-tree key-value
+store~\cite{ONeil96-LSMTree}.  bLSM~\cite{SearsEtAl12-SIGMOD} presents a new
+merge scheduler to bound write latency, thus maintaining a steady write
+throughput, and also uses bloom filters to improve performance.
+VT-tree~\cite{ShettyEtAl13-FAST} avoids sorting any previously sorted key-value
+pairs during compaction, by using a layer of indirection. 
+However, the performance of VT-trees depends on the key ranges of the SSTable
+files. 
+\toolname\ instead directly separates values from keys, significantly reducing
+write amplification regardless of the key distribution in the workload.
+LOCS~\cite{WangEtAl14-Eurosys} exposes internal flash channels to the LSM-tree
+key-value store, which can exploit the abundant parallelism for a more
+efficient compaction. Atlas~\cite{LaiEtAl15-MSST} is a distributed key-value
+store based on ARM processors and erasure coding, and stores keys and values on
+different hard drives. \toolname\ is a standalone key-value store, where the
+separation between keys and values is highly optimized for SSD devices to
+achieve over 100$\times$ performance gains.  LSM-trie~\cite{WuEtAl15-USENIX} uses a
+trie structure to organize keys, and proposes a more efficient compaction based
+on the trie; however, this design sacrifices LSM-tree features such as
+efficient support for range query.  RocksDB, described previously, still
+exhibits high write amplification due to its design being fundamentally similar
+to LevelDB; RocksDB's optimizations are orthogonal to \toolname's
+design.
+
+Walnut~\cite{walnut} is a hybrid object store which stores
+small objects in a LSM-tree and writes large objects directly to the
+file system. IndexFS~\cite{indexfs} stores its metadata in a LSM-tree
+with the column-style schema to speed up the throughput of insertion. 
+Purity~\cite{purity} also separates its index from data tuples by only
+sorting the index and storing tuples in time order. All three
+systems use similar techniques as \toolname.  However, we solve this
+problem in a more generic and complete manner, and optimize both load
+and lookup performance for SSD devices across a wide range of workloads. 
+
+Key-value stores based on data structures other than the LSM-tree and hash
+table have also been proposed.
+TokuDB~\cite{BenderEtAl07-SPAA,BuchsbaumEtAl00-SODA} is based on fractal-tree
+indexes, which buffer updates in internal nodes; the keys are not sorted, and a
+large index has to be maintained in memory for good performance. 
+BetrFS~\cite{JannenEtAl15-BetrFS} is a file system built on top
+of TokuDB in the kernel to get high performance for small updates.
+ForestDB~\cite{Ahn15-ForestDB} uses a HB+-trie to efficiently index long keys,
+improving the performance and reducing the space overhead of internal nodes.
+NVMKV~\cite{MarmolEtAl15-USENIX} is a FTL-aware key-value store which uses
+native FTL capabilities, such as sparse addressing, and
+transactional supports. Since these key-value stores are based on different
+data structures, they each have different trade-offs relating to performance;
+instead, \toolname\ proposes improving the widely used LSM-tree structure.
+
+Many proposed techniques seek to overcome the scalability bottlenecks of
+in-memory key-value stores, such as Mastree~\cite{MaoEtAl12-EUROSYS},
+MemC3~\cite{FanEtAl13-NSDI}, Memcache~\cite{NishtalaEtAl13-NSDI},
+MICA~\cite{LimEtAl14-NSDI} and cLSM~\cite{GuyEtAl15-Eurosys}. 
+Mastree~\cite{MaoEtAl12-EUROSYS} is a in-memory key-value database
+designed for SMP machines.  Its main data structure is a trie-like
+concatenation of B+-trees, each of which handles a fixed-length slice
+of a variable-length key. MemC3~\cite{FanEtAl13-NSDI} optimizes for
+read-mostly workloads. It proposes a new hashing scheme, optimistic
+cuckoo hashing, that achieves high space occupancy and concurrency. 
+cLSM~\cite{GuyEtAl15-Eurosys} tries to improve the scalability of
+LSM-tree based key-value stores on multicore servers. It presents an
+algorithm for scalable concurrency in LSM-trees, which exploits
+multiprocessor-friendly data structures and non-blocking
+synchronization. WiscKey focuses on improving the performance of
+LSM-trees by optimizing the data layout and I/O patterns. Once WiscKey
+can fully utilize the storage device bandwidth, the next step would be
+the scalability of in-memory structures. These scalable techniques
+used in in-memory key-value stores may be adapted for \toolname\ to 
+further improve its performance in future. 
+

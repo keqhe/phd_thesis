@@ -1,0 +1,52 @@
+\subsection{Ordered Updates}
+\label{sec-related-ordered}
+
+Soft Updates~\cite{GangerPatt-Metadata94} shows how to carefully order
+disk updates so as to never leave an on-disk structure in an
+inconsistent form. In contrast with OptFS, FreeBSD Soft Updates issues
+flushes to implement \sysfsync\ and ordering (although the original
+work modified the SCSI driver to avoid issuing flushes).
+
+Given the presence of asynchronous durability notifications, Soft
+Updates could be modified to take advantage of such signals. We
+believe doing so would be more challenging than modifying journaling
+file systems; while journaling works at the abstraction level of
+metadata and data, Soft Updates works directly with file-system
+structures, significantly increasing its complexity.
+
+OptFS is similar to that of Frost \etal's work on
+Featherstitch~\cite{Frost+07-GenFSDep}, which provides a generalized
+framework to order file-system updates, in either a soft-updating or
+journal-based approach. OptFS instead focuses on delayed ordering for
+journal commits; some of our techniques could increase the journal
+performance observed in their work.
+
+Lu \etal's work on loose-ordering consistency~\cite{cmutechreport2011,
+  lu2014loose} has a similar flavor to OptFS. They increase the
+performance of writes to persistent memory by allowing speculative
+writes and only making the writes visible at transaction commit. The
+dirty status of writes in the cache are identified using extra tag
+bits in the cache.
+
+Apart from file systems, write order is important in a different (but
+related) context. A number of storage systems today use SSD or RAM
+devices as caches to increase performance~\cite{holland2013flash,
+  saxena2012flashtier}. For such storage systems, the policy
+controlling how data is transferred from the cache to the backing
+device is crucial for performance and reliability. The setup in these
+systems is similar to the buffer cache and the disk storage device.
+
+Koller \etal\ propose writeback policies (ordered write-back and
+journaled writeback) to ensure consistency at the storage level
+(either point-in-time or epoch-based)~\cite{koller2013write}. Qin
+\etal\ take advantage of the fact that applications do not have
+consistency expectations in between two barrier events (\eg \sysfsync)
+to further increase performance~\cite{qin2014reliable}. OptFS
+writeback is similar to the journaled writeback policy of Koller
+\etal, with \sysfsync\ calls or time-duration triggers defining epochs.
+
+Write ordering is also important in non-volatile memory systems.
+Recent work by Pelley \etal\ ~\cite{pelley2014memory} explores how
+memory consistency models relates to persistent writes in non-volatile
+memory, and how the write orders may be relaxed while maintaining
+consistency.

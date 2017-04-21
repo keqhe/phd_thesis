@@ -1,0 +1,101 @@
+\section{File System Isolation}
+
+Isolation is an important property in modern systems. 
+Various isolation techniques are proposed for different parts of the 
+system.  Typical examples include virtual
+machines~\cite{bugnion97disco,DragovicEtAl03-Xen}, Linux Containers~\cite{linux-container}, 
+isolation kernel~\cite{WhitakerEtAl02-Denali}, BSD {\tt
+  jail}~\cite{Poul+00-Jail} and Solaris zones~\cite{Solaris11-Zones}.  
+They are used to create an independent environment for the target
+applications or even operating systems to run in a shared platform.  
+For the file system component, these frameworks only provide namespace
+isolation for different clients by constraining clients to only a
+subset of the shared file system.  However, as shown in this thesis,
+the failure, recovery and journaling performance are not isolated in
+a shared file system.  Our work is to provide a file system level
+container which can be used together with the above techniques to
+provide full isolation for applications.
+
+IceFS has derived inspiration from a number of projects for improving
+file system recovery and repair, and for tolerating system crashes.
+
+Many existing systems have improved the reliability of file systems
+with better recovery techniques.  Fast checking of the Solaris UFS~\cite{PeacockEtAl98-SolarisFsck} has been proposed by only
+checking the working-set portion of the file system when failure
+happens.  Changing the I/O pattern of the file system checker to reduce
+random requests has been suggested~\cite{BinaEmrath89-FasterFsck,Ma+13-ffsck}.
+A background fsck in BSD~\cite{McKusick02-BackgroundFsck} checks a file system 
+snapshot to avoid conflicts with the foreground
+workload. WAFL~\cite{HitzEtAl94-WAFL} employs Wafliron~\cite{WAFL-Iron}, an
+online file system checker, to perform online checking on a volume but the
+volume being checked cannot be accessed by users.  
+% AD removed for space -- return it if you want it
+Our recovery idea is based on the cube abstraction which provides isolated
+failure, recovery and journaling.  Under this model, we only check the
+faulty part of the file system without scanning the whole file system.
+The above techniques can be utilized in one cube to further speedup
+the recovery process.
+
+Several repair-driven file systems also exist. 
+Chunkfs~\cite{HensonEtAl06-Chunkfs} does a partial check of Ext2 by
+partitioning the file system into multiple chunks; however, files and
+directory can still span multiple chunks, reducing the independence of
+chunks.  Windows ReFS~\cite{Windows-ReFS} can automatically recover
+corrupted data from mirrored storage devices when it detects checksum
+mismatch. Our earlier work~\cite{LuEtAl13-HS} proposes a high-level
+design to isolate file system structures for fault and recovery
+isolation. Here, we extend that work by addressing both reliability
+and performance issues with a real prototype and demonstrations for
+various applications.  
+% AD removed for space
+Compared with these file systems, IceFS disentangles the file
+system into both logically and physically isolated parts.  In this
+systematical manner, the fault detection and recovery can be more
+independent and localized.
+
+Many ideas for tolerating system crashes have been introduced at
+different levels.  Microrebooting~\cite{CandeaEtAl04-Reboot}
+partitions a large application into rebootable and stateless
+components; to recover a failed component, the data state of each
+component is persistent in a separate store outside of the
+application.  Nooks~\cite{SwiftEtAl03-Nooks} isolates failures of
+device drivers from the rest of the kernel with separated address
+spaces for each target
+driver. Membrane~\cite{SundararamanEtAl10-Membrane} handles file 
+system crashes transparently by tracking resource usage and  
+the requests at runtime; after a crash, the file system is restarted
+by releasing the in-use resources and replaying the failed requests.  
+The Rio file cache~\cite{Chen96-Rio} protects the memory state of the
+file system across a system crash, and conducts a warm reboot to
+recover lost updates.  
+Inspired by these ideas, IceFS localizes a file system crash by
+microisolating the file system structures and microrebooting a cube
+with a simple and light-weight design.
+Address space isolation technique could be used in cubes for better
+memory fault isolation.   
+
+In addition to reliability isolation, performance isolation within
+file systems and SSDs also have been proposed. When running multiple
+workloads on a machine with fast storage devices and many cores, the
+contention of in-memory locks from different threads may introduce a
+large overhead. Similar to cubes in IceFS,
+Multi-lane~\cite{Kang14-multilane} and SpanFS~\cite{spanfs}  
+propose to isolate I/O stacks (both in-memory and on-disk structures)
+for different domains; in this manner, domains will not compete for
+shared locks, avoiding lock scalability bottlenecks when running
+multiple workloads in a many core machine.
+Similar to metadata entanglement in file systems, data with different
+lifetime could be stored together in the same flash page in modern
+SSDs, leading to excessive garbage collection traffic. 
+Multi-streamed SSDs~\cite{multi-stream} propose streams for
+applications, mapping data with different lifetimes to SSD streams.
+The multi-streamed SSD ensures that the data in a stream are not only
+written together to a physically related flash space, but also
+separated from data in other streams; thus, the SSD throughput and
+latency QoS can be significantly improved. Mapping cubes to different
+streams may improve performance of IceFS when running on such
+multi-streamed SSDs. 
+ 
+
+
+

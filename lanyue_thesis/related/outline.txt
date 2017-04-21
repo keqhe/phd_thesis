@@ -1,0 +1,51 @@
+Crash Recovery
+- databases DONE
+  - logging
+  - group commit
+  - transactions
+- file systems DONE
+  - logical disk
+  - increasing availability after recovery
+  - dbms as file system
+- application-level
+  - stasis
+- storage
+	- atomic updates (fusionIO, mariaDB) - HW
+	- transactional flash (on top + min2015lightweight)
+- NVM
+	- mnemosyne
+	- RVM
+	- rio vista
+- Backpointers DONE
+- Delaying durability
+  - rethink the sync
+- Durability vs performance
+  - designing for disasters
+  - other disaster related work
+
+File-System Interfaces
+- flush/fence mnemosyne
+- failure-atomic msync
+
+Ordering primitives
+- flush/fence mnemosyne
+- flush/fence Intel
+- featherstitch
+- failure-atomic msync
+- strand persistency
+
+Ordered write-back DONE
+- qin2014reliable
+- koller2013write
+- park2005atomic
+
+Similar work to OptFS
+- uses selective data journaling
+  - chen2014sjournal
+
+Similar work to NoFS
+- wu2015selfie (backpointer in VM) DONE
+- 
+
+
+

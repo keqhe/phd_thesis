@@ -1,0 +1,209 @@
+\section{Lessons Learned}
+\label{sec-conc-lessons}
+
+In this section, we present a list of general lessons we learned while
+working on this dissertation.  
+
+%lessons of file-system study
+\vspace{0.1in} \noindent \textbf{Large-scale studies are valuable.} 
+In general, studies drive system designs.  Researchers and
+practitioners conducted numerous studies in the past to help
+understand system behaviors, workload patterns, and various
+design tradeoffs.  These detailed studies can provide practical
+motivation and useful design guidelines for next generation systems. 
+
+For the file system study project, we found many interesting and
+important details after studying a large number of patches across six
+file systems. These details can inspire new research opportunities. For 
+example, once we understand how file systems leak their resources,
+we can build a specialized tool to detect them more efficiently. Once
+we know how file systems crash, we can improve current systems to
+tolerate them more effectively. These vivid examples in the study
+really teach us what are the important problems in file systems.  
+
+The scale of the study is also very important.  More patches we
+studied, more interesting patterns we found. More importantly, only
+after a large number of cases are studied, we can make some
+observations which may be statistically significant and insightful. 
+
+\vspace{0.1in} \noindent \textbf{Conquer a large-scale study with small steps.}
+Conducting a large-scale study is definitely time consuming. 
+The total number of patches we studied comprehensively is
+about 2000 (bugs, performance and reliability patches). If we knew in
+advance that we need to analyze 2000 hard patches, we may feel
+overwhelmed and give up this project early on. The way we handled this
+study is starting from small beginnings. 
+
+Initially, we were just curious about Ext3's patches, since Ext3 was a
+stable and popular file system. We studied 5 versions of Ext3 patches,
+and classified them into different categories. We found the results
+very interesting and surprising.  Then, we thought that we
+need to study more patches of Ext3 to better understand the broader
+patterns.  Once we finished all 40 versions of Ext3 in Linux 2.6
+series, we wondered that whether Ext4 has similar bugs and performance
+techniques as Ext3. After Ext4, we continued to ask that what about 
+other types of file systems, such as Btrfs (copy-on-write) and XFS
+(logical journaling).  In this incremental manner, we grew our study
+base from one file system to six popular file systems, and from less
+than 100 patches to over 5000 patches in total finally.  It took us
+one and half year to finish the study. Thus, a large-scale study is
+still feasible and manageable.  Starting from small beginnings and
+making consistent progress keep us interested and mentally sane in
+this long journey.  
+
+
+\vspace{0.1in} \noindent \textbf{Research should match reality.}
+Most previous work of bug studies and bug-finding tools focused on
+generic bugs (such as memory bugs, concurrency bugs and error handling
+bugs). However, in our study, we found that a majority of file system
+bugs are semantic bugs, which require file-system domain knowledge to 
+understand and fix.  Furthermore, we found that none of these semantic
+bugs was detected by existing tools, such as Coverity.  This striking
+gap between research and reality demonstrates the importance of
+finding and solving real problems. 
+
+In our study, we advocated that new tools are highly desired for
+semantic bugs in file systems. We also suggested that more attention
+may be required to make failure paths more correct.  Fortunately,
+following research papers~\cite{MinEtAl15-SOSP,YuanEtAl14-OSDI}
+proposed solutions for these two real problems. 
+
+
+\vspace{0.1in} \noindent \textbf{History repeats itself.} 
+We observed that similar mistakes happened again and again, within a
+single file system and across different file systems. Developers of
+new file systems even borrowed bug-fixing solutions from patches of
+old file systems. We also found that similar performance and
+reliability techniques were used across file systems in
+different time when performance bottlenecks were detected or data
+corruption occurred. 
+
+System researchers and developers should not only focus on innovative
+designs for future systems, but also respect the history of existing
+systems widely deployed and researched. Learning from these rich
+history will never be wasting of time; instead, it will provide new
+insights and experiences of what worked and what not. More
+importantly, the same mistakes can be avoided at the first place. 
+We should pay more attention to system histories, learn from them, and
+build a correct, high-performance and robust next generation systems
+from the beginning. 
+
+%lessons of icefs
+\vspace{0.1in} \noindent \textbf{Inspiration can come from a different area.}
+After we finished the file system study, we were looking for what to
+work next.  During that period, we occasionally read a security paper
+from our colleague~\cite{VaraEtAl12-CCS}, which solved the problem of 
+performance interference among virtual machines co-located in the same
+physical machine in the cloud.  Since there was little isolation
+for VMs from different users, it is possible to slow down other VMs
+co-located in the same machine by running a carefully design workload
+from the attacker VM. 
+
+Even though this is a security paper, it immediately inspired us to 
+think about isolation for VMs or users on the same machine in the
+context of file systems. Since we just finished the file system study,
+we knew that file systems have many bugs, and bugs cause data
+corruption and system crashes, which will affect all VMs or users
+relying on the same file system. An interesting research question for
+us is that how can we isolate reliability interference in the file
+system layer. This is how we started the IceFS project.  Later, we
+also extended IceFS to handle the performance interference in the file
+system by isolating transactions. 
+
+Ideas from a different area may help you think about your research in
+a new perspective. Viewing problems in a different angle is hard
+without any new source of inputs. These small and random kicks from
+other research areas may inspire you in unexpected ways and play an
+important role for new research ideas.  
+
+
+\vspace{0.1in} \noindent \textbf{Don't settle for existing abstraction.}
+Files and directories are basic and long-standing abstraction provided
+by file systems.  However, these logical entities are an illusion; the
+underlying physical entanglement in file system data structures and
+transactional mechanisms does not provide true isolation. 
+To provide true isolation within a file system, we proposed a new
+abstraction, called cube.  This new abstraction connects the logical
+abstraction provided to users and the underlying physical structures
+on disk. Based on this new abstraction, it is straightforward for us
+to design an isolation file system which can provide both reliability
+and transaction performance isolation.  
+
+New abstraction fosters new research. If a research problem cannot be 
+solved by existing abstraction, a new abstraction may be required. 
+New abstraction should be simple and easy to use. 
+
+\vspace{0.1in} \noindent \textbf{Isolation should be a fundamental design goal.}
+When we analyzed the shared failures and bundled performance in file
+systems, we found the root cause is the entanglement of on-disk  
+structures and in-memory transactions for different files. In other
+words, file systems were not designed to provide isolation at the
+first place.  To provide better data locality, metadata from multiple
+files is stored together in the same disk block. To provide better I/O
+performance, updates from different files are batched in the same
+transaction. Data locality and I/O performance were the main goals
+when designing file systems.  However, isolation was omitted as a
+fundamental design goal. 
+
+Isolation is becoming more important in new environments. As the
+workloads of the world move to the cloud, as the computing moves to
+virtual machines and containers, as the multi-tenant world becomes the
+only world we will live in, isolation is the key property to give us
+the illusion that we have our own machines. We should rethink systems 
+underneath our applications at the very basic levels, both in terms of 
+data layouts and I/O patterns. We should design systems with strong
+isolation for well-defined boundaries from the beginning. 
+
+\if 0
+\vspace{0.1in} \noindent \textbf{Don't miss the big system stack.}
+Modern systems in data centers have a large number of stackable layers
+due to virtualization, compression, replication, deduplication,
+etc. For example, Windows I/O stack has 18 layers between applications and the
+device~\cite{thereska2013ioflow}. 
+
+We should think any system problem with the whole system stack in
+mind.  
+\fi 
+
+
+%wisckey
+\vspace{0.1in} \noindent \textbf{Don't put old software in new hardware.}
+Originally, LSM-trees were designed for machines with hard drives and 
+a small number of cores. As long as the write and read amplification
+are smaller than 1000, LSM-trees are good enough for a wide range of
+workloads.  With the rise of SSDs on modern servers, while replacing
+an HDD with an SSD underneath an LSM-tree does improve performance,
+the SSD's true potential goes largely unrealized with the old
+LSM-trees as we demonstrated in Chapter~\ref{chap-whiskey}. 
+
+We need to evolve old software for new hardware. There are lots of
+progresses on building storage systems in last several decades.
+Virtually, all of those intelligence was based on hard drives. 
+Recently, we really transition our storage system to flash based
+devices. We should re-evaluate systems designed before, leverage
+things worked well, and optimize them further to leverage the new
+hardware. In WiscKey, we leverage the good parts of LSM-trees 
+(such as sequential I/O patterns and rich features), and
+further optimize it in new ways for SSDs to get the best of two
+worlds. 
+
+\vspace{0.1in} \noindent \textbf{Work on systems extremely slow or unreliable.}
+At the conference Usenix FAST 2009, Marshall Kirk McKusick said that
+the reason he worked on FFS (Fast File System)~\cite{McKusickEtAl-FFS-84} was 
+that the default UNIX file system that time only utilized 2\% of the device 
+bandwidth. There was a huge room to improve it. Therefore, FFS was
+proposed and it can reach 47\% of the device bandwidth, more than
+20$\times$ of the baseline. 
+
+WiscKey is also such an example. When our experiments showed that LevelDB
+has high I/O amplification, and it can only utilize about 1\% of the
+SSD device bandwidth, we felt that it is a great opportunity to make
+LevelDB significantly faster. After an array of new designs and
+optimization, WiscKey can be over 100$\times$ faster than LevelDB.    
+
+We believe that when choosing what to work on, try to choose an
+existing system which is extremely slow or unreliable. More
+opportunities lie at these corners.  
+
+
+

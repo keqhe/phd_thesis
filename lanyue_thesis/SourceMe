@@ -1,0 +1,6 @@
+#setenv TEXINPUTS '::.:/p/wind/papers/Styles/Latex:/p/wind/papers/Styles/Latex2e:/u/r/e/remzi/Papers/Styles:/u/r/e/remzi/Papers/Styles2e';
+#setenv BIBINPUTS '/p/wind/papers/Bibliographies:.';
+TEXINPUTS='::.:/p/wind/papers/Styles/Latex:/p/wind/papers/Styles/Latex2e:/u/r/e/remzi/Papers/Styles:/u/r/e/remzi/Papers/Styles2e';
+BIBINPUTS='/p/wind/papers/Bibliographies:.';
+export TEXINPUTS
+export BIBINPUTS

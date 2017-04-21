@@ -1,0 +1,65 @@
+\section{System Bug Study}
+
+%\noindent {\bf Operating-System Bugs:} 
+Faults in Linux have been systematically 
+studied in last decade~\cite{ChouEtAl01-OSErrors,Palix+11-LinuxFaults}.  
+Static analysis tools are used to find potential bugs in Linux 1.0 to
+2.4.1~\cite{ChouEtAl01-OSErrors} and Linux 2.6.0 to
+2.6.33~\cite{Palix+11-LinuxFaults}. Most detected faults are generic memory
+and concurrency bugs. Both studies find that device drivers contain the most
+faults, while Palix et al.~\cite{Palix+11-LinuxFaults} also show that
+file-system errors are rising. Yin et al.~\cite{Yin+11-FixFix} analyze
+incorrect bug-fixes in several operating systems, and find that about
+20\% of fixes are incorrect.  We also observe similar results in file
+system bugs.  Our work embellishes these studies, focusing on all
+file-system bugs found and fixed over eight years and providing more
+detail on which bugs plague file systems.  
+
+%\noindent {\bf User-Level Bugs:} 
+Various aspects of modern user-level open source
+software bugs have also been studied, including bug patterns, bug impacts,
+reproducibility, and bug fixes~\cite{Fonseca+10-ConEffect,Li+06-HaveThingsChanged,LuEtAl08-Mistakes,Sahoo+10-Empirical,Xiong+10-Sync}.
+As our findings show, file-systems bugs display different characteristics
+compared with user-level software bugs, both in their patterns and
+consequences (e.g., file-system bugs have more serious consequences than
+user-level bugs; concurrency bugs are much more common).  One other major
+difference is scale; the number of bugs (about 1800) and the time span
+(about 8 years of development) we study is much larger than previous
+efforts~\cite{Fonseca+10-ConEffect,Li+06-HaveThingsChanged,LuEtAl08-Mistakes,Sahoo+10-Empirical,Xiong+10-Sync}. 
+
+%\noindent {\bf File-System Bugs:} 
+In addition to system bug studies, several research projects have been
+proposed to detect and analyze file-system bugs. For example, Yang et
+al.~\cite{YangEtAl06-Explode,YangEtAl04-FSErrors} use model checking to detect
+file-system errors; Gunawi et al.~\cite{GunawiEtAl08-EIO} use static analysis
+techniques to determine how error codes are propagated in file systems;
+Rubio-Gonzalez et al.~\cite{RubioGonzalez+09-PLDI} utilize static analysis to
+detect similar problems; Prabhakaran et al.~\cite{PrabhakaranEtAl05-SOSP}
+study how file systems handle injected failures and corruptions.  Our work
+complements this work with insights on bug patterns and root causes.  Further,
+our public bug dataset provides useful hints and patterns to aid in the
+development of new file-system bug-detection tools. 
+
+% can add more recent bug-finding tool and studies motivated by my
+% study. 
+
+There are several interesting related research projects after our
+paper is published. Similar to our study methodology and analysis
+categories, software bug studies are also conducted for modern cloud
+systems~\cite{cloud-bug1,cloud-bug2}. Both projects analyze development
+and deployment issues found in popular distributed systems, such as
+Hadoop, HDFS, and Cassandra. We have two important findings in our
+study: semantic bugs dominate and failure-handling paths are
+error-prone.  Min et al.~\cite{MinEtAl15-SOSP} propose a tool that
+automatically infers file-system semantics directly from source
+code. The tool compares and contrasts multiple existing file-system
+implementations to detect the semantic bugs. Yuan et
+al.~\cite{YuanEtAl14-OSDI} find that majority of catastrophic failures 
+in distributed systems could easily be prevented by performing simple
+testing on error handling code. They develop a simple static checker
+to locate these error-handling bugs. In addition to bug-finding tools,
+another way to overcome file system bugs is to design verifiable
+file systems. BilbyFS~\cite{verify1} uses layered domain-specific
+languages to generate code and proofs, while FSCQ~\cite{verify2}
+extends Hoare logic with crash predicates, recovery procedures and
+logical address spaces for a complete file system. 

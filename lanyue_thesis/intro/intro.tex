@@ -1,0 +1,244 @@
+
+Cloud computing is changing the way computing is conducted since a few years ago.
+It is a rapidly growing business and many industry leaders
+(\eg{}, Amazon~\cite{amazon-aws}, Google~\cite{google-compute}, 
+IBM~\cite{ibm-softlayer,ibm-bluemix} and
+Microsoft~\cite{microsoft-azure}) have embraced such a
+business model and are deploying highly advanced cloud computing infrastructures.
+Market analysis~\cite{cloud-market2020}
+has predicted that the global cloud computing market will
+reach \$270 billion by 2020. The success of cloud computing is
+not accidental \textemdash\xspace it is rooted in many advantages that cloud computing offers
+over traditional computing model. The most notable feature is that tenants
+(customers) who rent the computing resources can get equivalent computing power
+with \emph{lower cost}. That is because the computing resources
+(CPUs, memory, storage, and network) are shared among multiple users and
+server consolidation and server virtualization improve the utilization
+of the computing resources. Another key advantage cloud computing offers
+is \emph{computing agility}. That means, tenants can rent as many computing
+resources as they need and can grow or shrink the computing pool based on their demands.
+This feature is especially attractive for relatively smaller and
+rapidly growing businesses.
+
+Datacenter networks are important components in modern cloud computing infrastructures. 
+High-performance cloud computing infrastructures require high-speed, low latency, scalable and 
+highly robust datacenter networking solutions to support a massive amount of traffic. 
+For example, Cisco Global Cloud Index~\cite{cisco-predict} predicts that annual global datacenter IP traffic will 
+reach 15.3 zettabytes (ZB) by 2020, which is 3 times large as 2015's (4.7 ZB). 
+The tremendous growth of datacenter traffic drives the need for high-performance 
+datacenter networking solutions. Datacenter network is a complicated system and it covers many 
+aspects of computer networking, ranging from TCP congestion control algorithms to switch hardware design. 
+In the past 10 years, datacenter networking technologies have been advanced significantly. 
+Starting in 2009 - 2010, seminal works on datacenter network topology designs such as 
+FatTree~\cite{fattree} and VL2~\cite{vl2} were published. These works proposed to use multi-stage Clos networks to 
+scale out and support hundreds of thousands of servers in a single datacenter. 
+Recently (in 2016), Microsoft published their congestion control solution for 
+RDMA deployments in Azure networks~\cite{zhu2015congestion}. 
+Despite these advances, there are still a lot of unsolved research challenges in datacenter networking.
+
+In 2007, Casado et al presented a control plane and dataplane separation network architecture for 
+Enterprise networks named Ethane~\cite{casado2007ethane}. 
+In 2008, networking researchers, McKeown et al, argued that today's computer network 
+devices (i.e., switch and routers) were commercialized black boxes, 
+and it was increasingly harder for networking researchers to invent and test new networking 
+techniques on existing networking devices. Their white paper~\cite{McKeown08} described the initial motivation 
+for OpenFlow. Ethane and OpenFlow started the revolution of Software-defined Networking (SDN). 
+Later on, an open source implementation of SDN-capable virtual switch, Open vSwitch (OVS)~\cite{Pfaff2015ovs}, was released. 
+OVS is now maintained by VMware. 
+
+In fact, datacenter networking and SDN are closely related. 
+In datacenter networks, SDN technique is widely applied. Of particular importance, 
+OVS is widely deployed in cloud computing platforms to support network virtualization functionalities and 
+meet SDN-style network management requirements. OVS is one part of end-host networking.
+End-host networking covers many components, for example, TCP/IP stack, virtual switch, rate limiters and NIC hardware. 
+In a datacenter network, all the servers (and hypervisors) are managed by a single entity 
+(i.e., the cloud provider), therefore, there are a lof of opportunities for innovations.
+
+In this thesis, I will present our research works on improving datacenter networking performance. 
+Performance here refers to network throughput, latency and packet loss etc. 
+The major theme of this thesis is to leverage the intelligent software-defined network 
+edge (i.e., end-host networking) to improve the performance for datacenter networks.
+In the following of this chapter, I will briefly introduce three research projects I worked on 
+during my PhD study, they are \textemdash\xspace edge-based traffic load balancing for 
+datacenter networks, congestion control virtualization for multi-tenant clouds and 
+low latency software rate limiters for cloud networks.
+
+\section{Edge-based Traffic Load Balancing}
+
+Modern datacenter networks are built with multi-stage Clos network. 
+A good example of such topologies is Google's Jupiter topology~\cite{singh2015jupiter}. 
+A nice property of multi-stage Clos network is that there are tens to hundreds of 
+network paths between any two servers in the datacenter. Path diversity is good for network 
+reliability and traffic load balancing. The state-of-the-art approach of traffic load balancing 
+is called Equal Cost Multipathing (ECMP). When a data packet arrives at a switch, 
+there are many paths to the destination. The switch applies a hash function to several 
+fields in the packet header, for example, source IP address, destination IP address, 
+transport protocol, source port number and destination port number. Based on the hash value, 
+the switch chooses one of the potential paths. ECMP can lead to traffic imbalance and 
+does not work well in asymmetric networks, so Weighted Cost Multipathing (WCMP) was proposed~\cite{wcmp}.
+
+Datacenter networks need to support various kinds of network traffic generated by 
+a diverse set of applications and services running in the datacenters. For example, flows generated 
+by search, email, query and remote procedure calls tend to be short and small, and we call such flows mice flows. 
+On the other hand, flows generated by big data ingestion and data backup tend to be long and large, 
+so we call such flows elephant flows. A classic problem of ECMP and WCMP is that if two elephant flows 
+are hashed onto the same network path, then flows of both types suffer. First, elephant flows' throughputs are reduced. 
+Second, mice flows suffer from head-of-line blocking issue and their latency can be increased to 
+tens of milliseconds. Note that the baseline TCP RTT in the datacenter network environment is around 200 microseconds. 
+To solve this problem, we propose Presto. Presto has two novel components. At the sender side, 
+we utilize the virtual switch (e.g., OVS) in the hypervisor to break elephant flows into small chunks 
+called flowcells. A flowcell consists of several TCP segments and its maximum size is bounded to be the 
+maximum TCP Segment Offload (TSO) size, which is 64KB by default in Linux. In this way, packets of a mice flow whose size 
+is smaller than or equal to 64KB always go through the same network path, so there is no packet reordering issue. 
+For the flows that are larger than 64KB, packets may go through different paths and packet reordering 
+issue may arise if the congestion level on different network paths is different. 
+Therefore at the receiver side, we modify the Generic Receive Offload (GRO) functionality in the network stack to 
+mask packet reordering for TCP. Because Presto eliminates elephant flow collision problem and 
+masks packet reordering for large flows below TCP layer in GRO, the performance of 
+traffic load balancing is greatly improved.
+We will discuss the details of Presto in Chapter~\ref{thesis:chapter:presto}.
+
+
+\section{Congestion Control Virtualization}
+TCP congestion control is a long-lasting research problem in computer networking. 
+The first TCP congestion control algorithm (TCP Reno) was proposed by Jacobson et al in 1988~\cite{jacobson1988congestion}. 
+Since then a lot of research work has been done to optimize congestion control algorithms. 
+Traditional congestion control algorithms are tuned for Internet use cases. However, 
+datacenter network has its own unique characteristics. The most notable difference 
+is that a datacenter network is owned by the single entity. Therefore, many of the deployment 
+hurdles in Internet or Wide Area Networks (WANs) do not exist in datacenter environments. 
+In 2010, Alizadeh et al published the seminal work on datacenter network congestion 
+control \textemdash\xspace Datacenter TCP (aka DCTCP)~\cite{alizadeh2010data}. 
+DCTCP utilizes ECN (Explicit Congestion Notification) in 
+modern switches and adjusts TCP's congestion window based on the fraction of 
+packets that are ECN-marked by the switches. DCTCP effectively reduces datacenter network latency, especially tail latency.
+
+However, we still face a practical unsolved problem. Most of today's public clouds, e.g., 
+Google Cloud Platform, Microsoft Azure and Amazon Web Services (AWS), are multi-tenant clouds. 
+The computing resources (e.g., CPUs, memory, storage and network) are rented to 
+tenants (i.e., customers) in the form of Virtual Machines (VMs). The practical problem is 
+that cloud providers are not able to manage or configure the congestion control algorithms used 
+by the VMs' TCP/IP stacks. Tenants can manage and configure their own TCP/IP stacks. So VM TCP congestion 
+control algorithms can be outdated, inefficient or even misconfigured. Those outdated, inefficient or 
+misconfigured TCP/IP stacks cause network congestion and fairness issues for the datacenter network. 
+Therefore, we investigate if administrators can take control of a VM's
+TCP congestion control algorithm without making changes
+to the VM or network hardware. We propose \acdc{} TCP,
+a scheme that exerts fine-grained control over arbitrary tenant
+TCP stacks by enforcing per-flow congestion control in
+the virtual switch (vSwitch). Our scheme is light-weight,
+flexible, scalable and can police non-conforming flows. In
+our evaluation the computational overhead of \acdc{} TCP
+is less than one percentage point and we show implementing
+an administrator-defined congestion control algorithm in the
+vSwitch (i.e., DCTCP) closely tracks its native performance,
+regardless of the VM's TCP stack.
+We will discuss the details of \acdc{} TCP in Chapter~\ref{thesis:chapter:acdctcp}.
+
+\section{Low Latency Software Rate Limiters}
+The ability to create bandwidth allocations is an indispensable feature
+of multi-tenant clouds.  Bandwidth allocations can be used to provide
+bandwidth reservations to a tenant or to guarantee that network
+bandwidth is fairly shared between multiple competing
+tenants~\cite{shieh2011sharing,jeyakumar2013eyeq,rodrigues2011gatekeeper}.
+Bandwidth allocations are often implemented with \textit{software rate
+limiters} running in the hypervisor or operating system
+of the end-hosts attached to the network (e.g., Linux Hierarchical Token
+Bucket, aka HTB).  This is because software rate limiters are flexible
+and scalable.
+Unfortunately, typical software rate limiters (e.g., HTB) also increase
+network latency by adding an additional layer of queuing for packets.
+To be able to absorb bursts of incoming packets while also ensuring that
+network traffic does not exceed the configured rate, rate limiters
+maintain a queue of outstanding packets and control the speed at which
+packets are dequeued into the network.  This queuing introduces
+additional network latency.  For example, in our experiments, we find
+that software rate limiting (HTB) increases latency by 1-3 milliseconds
+across a range of different environment settings. This increase in
+latency is about an order of magnitude higher than the base latency of
+the network (200 microseconds). In multi-tenant clouds, this additional queuing
+latency can increase flow completion times, leading to possible
+service-level agreement (SLA) violations~\cite{wilson2011better}.
+
+Inspired by recent work that reduces queuing delay for in-network
+devices like switches ~\cite{alizadeh2010data,he2016ac,mittal2015timely,zhu2015congestion}, we explore how to
+use a congestion-control-based approach to address the latency issues
+associated with using software rate limiters.  As a promising first
+step, we find that the existing datacenter congestion control protocol
+DCTCP~\cite{alizadeh2010data} can be used to reduce the latency incurred
+by rate limiters. Unfortunately, we find that a straightforward
+application of DCTCP (we call it DCTCP+ECN) to software rate limiters also hurts throughput because of 
+two problems unique to end-host networking. First, different from hardware switches in the
+network, end-hosts process TCP segments instead of MTU-sized packets.
+TCP Segmentation Offload (TSO)~\cite{tcp-segment-offload} is an
+optimization technique that is widely used in modern operating systems
+to reduce CPU overhead for fast speed networks. Because Linux has
+difficult driving 10Gbps (and beyond) line-rates when TSO is not
+enabled, Linux uses a TSO size of 64KB by default. That means that
+marking the ECN bit in one 64KB segment causes 44 consecutive MTU-sized
+packets to have the ECN bit marked. This is because the ECN bits in the
+segment header are copied into each packet by the NIC. Oppositely, if a
+TCP segment is not marked, none of the packets in this segment is
+marked. This kind of coarse-grained segment-level marking leads to an
+inaccurate estimation of congestion level which consequently leads to
+throughput oscillation.
+The second problem with DCTCP+ECN is that the ECN mark takes one
+round-trip time (RTT) to get back to the source.  Because of this, the
+congestion window computation at the source uses a stale value from one
+RTT ago. As a result, congestion cannot be detected at early stage, and
+the congestion level would be exacerbated during this one-RTT delay.
+To solve the problems, we present two techniques \textemdash\xspace~\dem{} and ~\spring{}.
+~\dem{} directly sets TCP ACK's TCP ECE (Echo-Echo) bit based on real time rate limiter queue length information.
+In this way, congestion control loop latency is reduced to almost 0. Also coarse-grained segment-level marking is avoided.
+~\spring{} runs a queue-length-based congestion control algorithm and enforces congestion control decisions via modifying
+the~\rwnd{} field in the TCP header. Similar to~\dem{},~\spring{} also avoids the two shortcomings of DCTCP+ECN. 
+Compared with~\dem{},~\spring{}
+is more generic and deployable because it does not rely on ECN support.
+We will discuss the details of low latency software rate limiters in Chapter~\ref{thesis:chapter:rate_limiter}.
+
+\section{Summary of Contributions and Overview}
+
+The contributions of this dissertation are summarized in the following. 
+This section also serves as an outline for the rest of this dissertation.
+
+\begin{itemize}
+\item Edge-based Datacenter Traffic Load Balancing. We propose two novel techniques. 
+The first is to utilize the virtual switch (e.g., OVS) in the hypervisor to chunk flows into bounded-sized flowcells. 
+The second is to leverage the Generic Receive Offload (GRO) functionality in the networking stack to 
+mask packet reordering issue for TCP layer. To the best of our knowledge, we are the first to 
+present these two techniques in the literature. Based on these two techniques, we build a datacenter 
+traffic load balancing system called Presto and evaluate its performance on a real 10G testbed. 
+Our experiment results demonstrate that Presto improves network performance significantly. 
+We will cover the details of Presto in Chapter~\ref{thesis:chapter:presto}.
+ 
+\item Congestion Control Virtualization for Datacenter Networks. 
+We propose AC/DC TCP, a technique that utilizes the virtual switch in the hypervisor 
+to provide congestion control virtualization for multi-tenant clouds. 
+To the best of our knowledge, we are one of the first two research teams\footnote{The other team is from 
+Stanford, VMware and Israel Institute of Technology~\cite{vcc}, we invented the same technique independently.} in the world to 
+propose the congestion control virtualization technique for cloud networks. 
+We validate its feasibility on a real testbed and demonstrate that it provides similar 
+performance as the intended congestion control algorithm. Chapter~\ref{thesis:chapter:acdctcp} covers the details of AC/DC TCP.
+ 
+\item Low latency Software Rate Limiters. Rate limiters are important 
+components for multi-tenant clouds. We conduct experiments to show that network latency 
+can be increased by an order of magnitude by software rate limiters. We extend ECN into rate 
+limiter queues and apply DCTCP to reduce latency. However, we find such a straightforward 
+solution causes TCP throughput oscillation. We identify the reasons and propose 
+two techniques (i.e.,~\dem{} and ~\spring{}) to address of shortcoming of the 
+straightforward solution. Our experiments demonstrate that~\dem{} and ~\spring{} enable 
+low latency software rate limiters. The research work on software rate limiters is 
+discussed in Chapter~\ref{thesis:chapter:rate_limiter}.
+
+\item Related Work. We present the related work of this dissertation in Chapter~\ref{thesis:chapter:related}. 
+It covers related work in the following categories: datacenter network traffic load balancing, 
+reducing tail latency, handling packet reordering, congestion control for datacenter networks, 
+bandwidth allocation and rate limiters for multi-tenant clouds.
+
+\item Conclusion and Future Work. We conclude this dissertation in Chapter~\ref{thesis:chapter:conclusion}. 
+We believe that the techniques and mechanisms presented in this dissertation 
+will be valuable to the computer networking research community and industry. 
+Finally, we discuss several future research topics in datacenter networking area. 
+\end{itemize}
+
+

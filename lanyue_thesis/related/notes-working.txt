@@ -1,0 +1,11 @@
+reliable NVM systems with crash recovery
+- mnemosyne (Volos+11-Mnemosyne)
+- recoverable virtual memory (satyanarayanan1994lightweight)
+- rio vista (lowell1997free)
+
+uses selective data journaling
+- chen2014sjournal
+	    
+
+
+

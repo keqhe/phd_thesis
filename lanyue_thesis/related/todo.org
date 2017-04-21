@@ -1,0 +1,26 @@
+* DONE OdeFS
+CLOSED: [2015-07-21 Tue 15:51]
+* DONE Inversion file system
+CLOSED: [2015-07-21 Tue 15:51]
+* DONE TableFS
+CLOSED: [2015-07-21 Tue 15:51]
+* DONE Stasis
+CLOSED: [2015-07-21 Tue 19:47]
+* DONE taesoo kim's work
+CLOSED: [2015-07-21 Tue 20:15]
+* DONE Selfie
+
+* DONE Snapmirror, Seneca, Smoke and Mirrors
+CLOSED: [2015-07-22 Wed 11:43]
+* DONE Mnemosyne
+CLOSED: [2015-07-22 Wed 13:35]
+* DONE BPFS
+CLOSED: [2015-07-22 Wed 13:48]
+* Related Work for BOB
+** DONE Talk bout Mai Zheng torturing databases work
+CLOSED: [2015-07-22 Wed 16:13]
+** DONE Explode
+CLOSED: [2015-07-22 Wed 16:13]
+* DONE Talk about specific work, not "our work"
+CLOSED: [2015-07-22 Wed 16:17]
+

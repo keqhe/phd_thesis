@@ -1,0 +1,37 @@
+% The intro
+
+Storage has becoming increasingly important to our modern world. 
+Data is generated in an unprecedented speed, and new storage hardware
+is also on the rise. Under this situation, various storage 
+systems and applications have been developed to manage data more
+reliably and efficiently. In this dissertation, we presented study
+results that help us to understand the real problems in file systems
+and proposed solutions that offer better reliability and performance
+than existing file systems and key-value stores. 
+
+We started by analyzing a large number of file system patches to
+understand what are the real problems in modern file systems (\sref{chap-fs}).  
+We focused on file system bugs, performance and reliability patches. 
+We found that there are many bugs in both new and mature file systems,
+and most of bugs may lead to serious consequences (data corruption or
+system crashes). However, there is not enough isolation within a file
+system to cope with corruption, crashes and performance problems. 
+Therefore, we presented our solution IceFS, a new file system that
+separates physical structures of the file system for better
+reliability and performance isolation (\sref{chap-icefs}).  In
+addition to file systems, we also found that physical entanglement of
+keys and values in LSM-trees can lead to large I/O amplification and
+disappointed performance in fast SSDs. We proposed WiscKey, a novel
+LSM-tree based key-value store with a performance-oriented data layout
+that separates keys and values to minimize I/O amplification(\sref{chap-wisckey}). 
+
+In this chapter, we first summarize our contribution of this
+dissertation (\sref{sec-conc-summary}). We then describe a set of  
+general lessons we have learned in the course of this dissertation
+work (\sref{sec-conc-lessons}). Finally, we discuss several possible
+future research directions (\sref{sec-conc-future}). 
+
+\input{conclusion/summary}
+\input{conclusion/lessons}
+\input{conclusion/future}
+\input{conclusion/closing}

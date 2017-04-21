@@ -1,0 +1,83 @@
+\section{Interfaces for Consistency and Durability}
+\label{sec-related-interfaces}
+
+We now describe interfaces used in various systems to achieve
+consistency and durability.
+
+\vspace{0.1in} \noindent \textbf{Transactions}. Several file systems
+have provided a transactional interface, allowing developers to update
+application state with ACID guarantees~\cite{Olson07-NTFS,
+  PorterEtAl08-TxOS, spillane2009enabling, seltzer1990transaction}.
+However, either due to the performance cost (14\% in
+TxOS~\cite{PorterEtAl08-TxOS}), or high
+complexity~\cite{Olson07-NTFS}, transactional file systems have not
+been adopted widely.
+
+Several storage devices provide support for the transactional
+interface~\cite{Prabhakaran+08-txflash, choi2009jftl, park2005atomic,
+  galtoledo05-flash, lu2013lighttx, kang2013x,
+  ouyang+11-beyondblockio, coburn2013aries, lu15-blurred}.
+Applications or file systems can build on top of these devices to
+allow the user to atomically update application
+state~\cite{min2015lightweight}.
+
+\vspace{0.1in} \noindent \textbf{Atomic Update}. Several recent
+systems offer an interface for users to obtain atomicity (without
+isolation)~\cite{fusionIOmariaDB, verma2015failure, park2013failure}.
+Park \etal\ offer an atomic version of
+\texttt{msync()}~\cite{park2013failure}, while Verma \etal\ provides
+failure-atomic \texttt{writev()}, \texttt{msync()}, and
+\texttt{syncv()}~\cite{verma2015failure}. The MariaDB database builds
+on top of the atomic write offered by FusionIO
+SSDs~\cite{fusionIOmariaDB}.
+
+At the application level, atomic update is usually carried using the
+\texttt{rename()} system call~\cite{URLPosix-Rename}. There are subtle
+problems with using \texttt{rename()}, depending upon the file-system
+configuration~\cite{Thanu+14-Alice, URLmassivefsthread}. Specialized
+interfaces such as \texttt{exchangedata()}~\cite{Apple-exchangedata}
+and \texttt{replacefile()}~\cite{Windows-ReplaceFile} are also used
+to achieve atomic updates.
+ 
+\vspace{0.1in} \noindent \textbf{Barriers and Flushes}. The \syscsync\
+and \sysdsync\ primitives are similar to the fence and flush memory
+primitives in the Intel architecture~\cite{Intel2010-Arch}. The key
+difference is that a \sysdsync\ issues a flush at the end of
+\syscsync, and thus is a superset of \syscsync; on the other hand,
+flushes do not guarantee the ordering provided by barriers.
+Mnemosyne~\cite{Volos+11-Mnemosyne}, a lightweight system for exposing
+storage-class memory to user-mode programs, builds upon the Intel
+primitives to offer the persistent-memory version of flush and fence
+primitives to users (among other interfaces such as transactions).
+Since Mnemosyne is only concerned with data in processor caches and
+storage-class memory, Intel's primitives are sufficient, and no
+additional hardware support is required. In contrast, since current
+disks do not offer the fence primitive, hardware modifications like
+asynchronous durability notifications are required for OptFS.
+
+BPFS~\cite{Condit+09-BPFS} is another file system built on top of
+phase-change memory. BPFS introduces two new hardware primitives:
+8-byte atomic writes and epoch barriers. Similar to \syscsync, epoch
+barriers order writes without affecting durability. Note that while
+BPFS uses epoch barriers internally, it does not present an interface
+such as \syscsync\ to the user. While OptFS requires modifications to
+the storage device, BPFS requires modifications to the processor core,
+the cache, the memory controller, and the phase-change memory chips.
+
+Featherstitch~\cite{Frost+07-GenFSDep} provides similar primitives for
+ordering and durability: \texttt{pg\_depend()} is similar to
+\syscsync, while \texttt{pg\_sync()} is similar to \sysdsync. The main
+difference lies in the amount of work required from application
+developers: Featherstitch requires developers to explicitly
+encapsulate sets of file-system operations into units called
+\emph{patchgroups} and define dependencies between them. Since
+\syscsync\ builds upon the familiar semantics of \sysfsync, we believe
+it will be easier for application developers to use.
+
+We believe that barriers and flushes are the most fundamental of these
+interfaces; other interfaces can be implemented using barriers and
+flushes. Mnemosyne~\cite{Volos+11-Mnemosyne} builds transactions and
+atomic updates using barriers and flushes; it also exposes the
+low-level primitives to users so that they can build their own
+consistency mechanisms. We advocate a similar approach for
+applications using file systems to store state.

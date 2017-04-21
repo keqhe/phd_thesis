@@ -1,0 +1,108 @@
+reliable updates - DONE
+- Logging and checkpointing (gray1978notes, haerder1983principles, MohanEtAl92-Aries)
+- group commit (dewitt1984implementation, gawlick1985varieties,
+MohanEtAl92-Aries)
+- transactions (Gray81-TransactionConcept, grayetal81,
+MohanEtAl92-Aries)
+
+
+- transactional flash (Prabhakaran+08-txflash, lu2013lighttx)
+- WAL transactional properties on SSD (coburn2013aries)
+
+atomic updates
+- logical disk
+- DeJongeEtAl-LogicalDisk93
+- grimm1996atomic
+
+reliable NVM systems with crash recovery
+- mnemosyne (Volos+11-Mnemosyne)
+- recoverable virtual memory (satyanarayanan1994lightweight)
+- rio vista (lowell1997free)
+
+stasis  (application-level consistency)
+- stasis (sears2006stasis)
+
+
+fusionIO - DONE
+- atomic updates 
+- mariaDB uses it (fusionIOmariaDB)
+
+backpointers
+- all the stuff from NoFS
+
+increasing availability
+- chunkfs etc - DONE
+
+Delaying durability.
+- rethink the sync - DONE
+
+disaster recovery
+KeetonEtAl02-Designing
+- patterson2002snapmirror
+- ji2003seneca
+- weatherspoon2009smoke
+
+Interfaces like osync/dsync
+- park2005atomic
+
+Ordering primitives?
+- featherstitch
+- park2005atomic (failureatomic msync)
+
+ordered write back
+- koller2013write - DONE
+- park2005atomic
+
+NVRAM and write constraints
+- strand persistency 
+
+Very similar work
+- cmu tech report (cmutechreport2011)
+- Condit+09-BPFS (epoch barriers)
+- loose ordering, querying hardware (lu2014loose) - extension of CMU work
+
+Intel architecture instructions
+- fences
+- flushes
+- Intel2010-Arch
+
+Similar to NoFS
+- reconFS (lu2014reconfs)
+- decouples volatile and persistent representations
+
+
+Write back in caches
+- qin2014reliable - DONE
+
+uses selective data journaling
+- chen2014sjournal
+	    
+uses backpointer technique in virtual machines
+- wu2015selfie - DONE
+
+crash consistency for applications on top of transactional flash
+- min2015lightweight
+
+atomic writes in flash
+- transactional flash (Prabhakaran+08-txflash)
+- choi2009jftl
+- galtoledo05-flash
+- lu2013lighttx
+- kang2013x
+- ouyang+11-beyondblockio
+
+Using a DBMS as a file system
+- GehaniEtAl94-OdeFS
+- Olson93-Inversion
+
+transactional file systems
+- transactional NTFS
+- PorterEtAl08-TxOS
+- spillane2009enabling
+- seltzer1990transaction
+
+interfaces
+- exchangedata (mac)
+- replacefile (window)
+
+

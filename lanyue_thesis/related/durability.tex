@@ -1,0 +1,40 @@
+\subsection{Delaying Durability}
+\label{sec-related-durability}
+
+The work of Nightingale \etal\ on ``rethinking the
+sync''~\cite{Nightingale06-Rethink} has a similar flavor to OptFS. In
+that work, the authors cleverly note that disk writes only need to
+become durable when some external entity can observe said durability;
+thus, by delaying persistence until such externalization occurs, huge
+gains in performance can be realized. OptFS is complimentary, in that
+it reduces the number of such durability events, instead enforcing a
+weaker (and higher performance) ordering among writes, but avoiding
+the complexity of implementing dependency tracking within the OS. In
+cases where durability is required (\ie, applications use \sysdsync\
+and not \syscsync), optimistic journaling does not provide much gain;
+thus, Nightingale \etal's work still can be of benefit therein.
+
+The work of Keeton \etal\ on disaster recovery argues that durability
+can be traded for increased performance for many
+applications~\cite{KeetonEtAl02-Designing}.
+Snapmirror~\cite{patterson2002snapmirror}, Seneca~\cite{ji2003seneca},
+and the Smoke and Mirrors File System
+(SMFS)~\cite{weatherspoon2009smoke} are asynchronous (or
+semi-synchronous) mirroring systems that trade off durability for
+performance, similar to OptFS. All three systems use a modified form
+of log-structured file systems~\cite{RosenblumOusterhout92-LFS} and
+employ techniques similar to journaling. Using the terminology of
+Seneca~\cite{ji2003seneca}, OptFS provides asynchronous out-of-order
+atomic updates. The major difference between OptFS and these systems
+is that OptFS can gain performance without any data loss. If we define
+data loss as committed data that becomes unavailable, the performance
+gain of OptFS comes from using \syscsync\ -- where users have no
+expectations about the durability of data. In contrast, Snapmirror,
+Seneca, and SMFS can lose committed data if there is a disaster.
+
+% no osync - send barriers inserted
+% assumed ordered transport protocol
+% Snap mirror uses WAFL - very similar techniques to journaling
+% no snapshots as in Seneca
+% Talk about data loss - no data loss in OptFS!
+% asynchronous out-of-order atomic update

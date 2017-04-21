@@ -1,0 +1,213 @@
+\hypersetup{pageanchor=false}
+
+%% http://tex.stackexchange.com/questions/18924/pdftex-warning-ext4-destination-with-the-same-identifier-nam-epage-1-has
+\maketitle
+
+\advisorname{Remzi Arpaci-Dusseau}
+\advisortitle{Professor}
+
+% TODO: ABSTRACT
+\begin{umiabstract}
+  \input{frontmatter/abstract}
+\end{umiabstract}
+
+
+%%% SOME OF THIS CODE IS ADAPTED FROM THE VENERABLE withesis.cls
+
+% COPYRIGHT PAGE
+%  - To include a copyright page use \copyrightpage
+%\copyrightpage
+%\thispagestyle{empty}
+
+\chapterstyle{jenor}
+% TODO: DEDICATION
+\begin{dedication}
+  \pagenumbering{roman} % This makes the page numbers Roman (i, ii,
+                        % etc)
+  \setcounter{page}{3}
+  \hypersetup{pageanchor=true} \emph{To my family}
+\end{dedication}
+
+%% BEGIN PAGESTYLE
+
+%%% You can pick a pagestyle if you want; see the memoir class
+%%% documentation for more info.  The default ``deposit'' option meets
+%%% the UW thesis typesetting requirements but is probably
+%%% unsatisfactory for making a version of your dissertation that
+%%% won't be deposited to the graduate school (e.g. for web or a nice
+%%% printed copy)
+
+
+% TODO: ACKNOWLEDGMENTS
+\begin{acks}
+\input{frontmatter/acks}
+\end{acks}
+
+% CONTENTS, TABLES, FIGURES
+
+%\makeatletter
+%\renewcommand{\@pnumwidth}{1}
+%\makeatother
+
+\renewcommand{\printtoctitle}[1]{\chapter*{#1}}
+\renewcommand{\printloftitle}[1]{\chapter*{#1}}
+\renewcommand{\printlottitle}[1]{\chapter*{#1}}
+
+%\renewcommand{\cftchapteraftersnumb}{\\}
+%\cftsetindents{chapter}{0em}{0em}
+\renewcommand{\cftchapterfont}{\bfseries}
+\renewcommand{\cftchapterpagefont}{\bfseries}
+\renewcommand{\cftchapterpresnum}{\bfseries}
+%\renewcommand{\cftchapterleader}{} 
+%\renewcommand{\cftchapterafterpnum}{\cftparfillskip} 
+
+\renewcommand{\tocmark}{}
+\renewcommand{\lofmark}{}
+\renewcommand{\lotmark}{}
+
+\renewcommand{\tocheadstart}{}
+\renewcommand{\lofheadstart}{}
+\renewcommand{\lotheadstart}{}
+
+\renewcommand{\aftertoctitle}{}
+\renewcommand{\afterloftitle}{}
+\renewcommand{\afterlottitle}{}
+
+\cftpagenumbersoff{part}
+\renewcommand{\cftpartpresnum}{}
+%\renewcommand{\cftdotsep}{\cftnodots}
+\makeatletter
+\renewcommand*\l@part[2]{%
+  \ifnum \c@tocdepth >-2\relax
+    \addpenalty{-\@highpenalty}%
+    \addvspace{2.25em \@plus\p@}%
+    \setlength\@tempdima{3em}%
+    \begingroup
+      \parindent \z@ \rightskip \@pnumwidth
+      \parfillskip -\@pnumwidth
+      {\leavevmode
+       \hspace*{\fill}\centering\Large\bfseries{}Part$\ \ $\smash[b]{#1}\hspace*{\fill}}%
+       \vspace{1.3ex}\hrule\par%
+       \nobreak
+         \global\@nobreaktrue
+         \everypar{\global\@nobreakfalse\everypar{}}%
+    \endgroup
+  \fi}
+\makeatother
+
+\renewcommand{\cftsectionfont}{}
+\renewcommand{\cftsectionpagefont}{\itshape}
+\renewcommand{\cftsectionleader}{\hspace{0.8em}}
+\renewcommand{\cftsectionafterpnum}{\cftparfillskip} 
+
+\renewcommand{\cftsubsectionleader}{\hspace{0.8em}}
+\renewcommand{\cftsubsectionpagefont}{\itshape}
+\renewcommand{\cftsubsectionafterpnum}{\cftparfillskip} 
+
+% \captionnamefont{\small\sffamily} 
+% \captiontitlefont{\small\sffamily} 
+
+% \renewcommand{\contentsname}{contents}
+% \renewcommand{\listfigurename}{list of figures}
+% \renewcommand{\listtablename}{list of tables}
+
+\makeatletter
+  \renewcommand\ext@table{lof}
+  \renewcommand\ext@algocf{lof}
+
+  \newlength{\cftbeforealgocfskip}
+  \setlength{\cftbeforealgocfskip}{\cftbeforefigureskip}
+  \newlength{\cftalgocfindent}
+  \setlength{\cftalgocfindent}{\cftfigureindent}
+  \newlength{\cftalgocfnumwidth}
+  \setlength{\cftalgocfnumwidth}{\cftfigurenumwidth}
+
+  \newcommand{\cftalgocffont}{\cftfigurefont}
+  \newcommand{\cftalgocfname}{Listing }
+  \newcommand{\cftalgocfpresnum}{\cftfigurepresnum}
+  \newcommand{\cftalgocfaftersnum}{\cftfigureaftersnum}
+  \newcommand{\cftalgocffillnum}{\cftfigurefillnum}
+
+  \renewcommand*\l@algocf[2]{%
+     \ifnum \@nameuse {c@lofdepth} > 0\relax \vskip%
+            \@nameuse {cftbeforealgocfskip}%
+            {%
+               \newcommand *\cftwhatismyname {algocf}\memRTLleftskip \@nameuse {cftalgocfindent}\relax%
+               \memRTLrightskip \@tocrmarg \parfillskip -\memRTLrightskip \parindent%
+               \@nameuse {cftalgocfindent}\relax \@afterindenttrue \interlinepenalty \@M \leavevmode%
+               \settowidth {\@tempdima }%
+               {%
+                   \@nameuse {cftalgocffont}\@nameuse {cftalgocfname}%
+               }%
+               \addtolength {\@tempdima }{\@nameuse {cftalgocfnumwidth}}%
+               \expandafter \let \expandafter \@cftbsnum \csname cftalgocfpresnum\endcsname%
+               \expandafter \let \expandafter \@cftasnum \csname cftalgocfaftersnum\endcsname%
+               \expandafter \let \expandafter \@cftasnumb \csname cftalgocfaftersnumb\endcsname%
+               \expandafter \let \expandafter \@cftn@me \csname cftalgocfname\endcsname%
+               \advance \memRTLleftskip \@tempdima \null \nobreak \hskip -\memRTLleftskip%
+               {%
+                   \@nameuse {cftalgocffont}#1%
+               }\nobreak%
+               \@nameuse {cftalgocffillnum}{#2}%
+           }%
+      \fi}
+
+%  \renewcommand*\listfigurename{List of Figures, Tables, and Listings}
+  \renewcommand*\listfigurename{List of Figures and Tables}
+\makeatother
+
+\newlength\figlen
+\settowidth\figlen{Figure}
+\newlength\tablen
+\settowidth\tablen{Table}
+\newlength\lstlen
+\settowidth\lstlen{Listing}
+
+\newlength\FigNumSpace
+\newlength\TabNumSpace
+
+\addtolength\TabNumSpace{\lstlen - \tablen}
+\addtolength\FigNumSpace{\lstlen - \figlen}
+
+\renewcommand*{\cftfigurename}{Figure \hspace{\FigNumSpace}}
+\renewcommand*{\cfttablename}{Table \hspace{\TabNumSpace}}
+\renewcommand*{\cftalgocfname}{Listing }
+
+
+\tableofcontents
+
+\clearpage
+\listoffigures
+
+\clearpage
+% NOMENCLATURE
+% \begin{conventions}
+% % \begin{description}
+% % \item{\makebox[0.75in][l]{term}
+% %        \parbox[t]{5in}{definition\\}}
+% % \end{description}
+% \input{conventions}
+% \end{conventions}
+
+% TODO abstract
+\if 0
+\begin{abstract}
+  \input{frontmatter/abstract}
+\end{abstract}
+\fi
+
+\clearpage\pagenumbering{arabic}
+
+%%% END STUFF TAKEN FROM WITHESIS EXAMPLE FILE
+
+\renewcommand{\partnumfont}{\fontfamily{pbk}\fontseries{m}\fontshape{n}%
+    \fontsize{0.8in}{0in}\selectfont\raggedright\textcolor[rgb]{.44,.59,.77}}
+
+\renewcommand{\partnamefont}{\fontfamily{pbk}\fontseries{m}\fontshape{n}%
+    \fontsize{0.8in}{0in}\selectfont\raggedright\textcolor[rgb]{.44,.59,.77}}
+
+\renewcommand{\parttitlefont}{\fontfamily{pbk}\fontseries{m}\fontshape{n}%
+    \fontsize{0.38in}{0in}\selectfont\raggedright}
+
+\renewcommand{\beforepartskip}{\thispagestyle{deposit}}
+\renewcommand{\midpartskip}{\par\vspace{1in}}

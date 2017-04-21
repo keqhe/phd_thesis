@@ -1,0 +1,14 @@
+\subsection{Incremental FSCK in the Background}
+\label{sec-related-fsck}
+
+NoFS performs the checks done by fsck incrementally in the background.
+There have been previous work that modified fsck in a similar manner.
+McKusick's background fsck~\cite{McKusick02-BackgroundFsck} could
+repair simple inconsistencies such as lost resources by running fsck
+on snapshots of a running system.
+Chunkfs~\cite{HensonEtAl06-ChunkFSlocal} is similar to NoFS, providing
+incremental, online file-system checking. Chunkfs differs from NoFS in
+that the minimal unit of checking is a chunk whereas it is a single
+file or block in NoFS. Chunkfs does not offer online repair of the
+file system, while it is possible in NoFS, due to backpointers and
+non-persistent allocation structures.

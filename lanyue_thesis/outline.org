@@ -1,0 +1,58 @@
+* Introduction
+* Background
+Look at Mike's dissertation
+Be comprehensive
+the nasty things that drives do
+talk about how consistency is not the same as usability by file systems.
+* Work done by me
+** Talk about how this relates to my papers
+** NoFS
+Add the proof back in. - done
+Add the part about rename() in NoFS -- the new design that I came up
+with. - done
+Talk about durability a lot more.
+- persistence guarantees - done
+Adding to current file systems? - done
+Comparison with checksums - done
+mmap() issue - mention again - done
+Relation to ARIES?
+Cite NTFS? - in main
+Possible optimizations - leave out
+Talk about rename() more carefully - talk about why this is a
+problem - done
+** OptFS
+I have some extra experiments from the paper, and the figure that I
+produced. I can add these into the thesis. 
+
+Add a section about extending to distributed systems, and reference
+the Blizzard paper. 
+** BOB
+*** Introduction
+*** Background
+*** Persistence Properties
+*** Tool
+*** Results
+* Related Work
+Be comprehensive
+Look at Mike's dissertation
+** Soft Updates
+** Featherstitch
+** Rethink the Sync
+** Related work in other communities
+** Memory Persistency from Michigan
+* Lessons Learned
+This is separate from future work
+** Formally specify POSIX 
+** Encourage the two communities to talk to each other
+* Overall discussion
+how easy it is to figure out osync() and dsync()
+the role of ordering in file-system crash consistency
+how crash consistency has been closely tied
+
+* Future Work
+Be comprehensive
+
+Look at previous versions of the submitted papers to find what didn't
+get into the papers. 
+
+** 

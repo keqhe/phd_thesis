@@ -1,0 +1,194 @@
+\section{Future Work}
+\label{sec-conc-future}
+
+Non-volatile memory devices are at the rise.  NAND-flash based solid state disks
+(SSD)~\cite{Caulfield+09-Gordon,Grupp+09-FlashMeasure}, phase-change
+memory (PCM)~\cite{Caulfield+10-Moneta,Condit+09-BPFS} and
+memristor~\cite{Strukov08-memristor} provide microsecond level latency
+and high internal data parallelism, which can greatly boost
+application performance.  This revolution of storage technologies is 
+transforming the state-of-art of the storage hardware and software.  
+
+However, the entire storage stack and many key-value stores are
+designed for an ancient technology: the classic (and slow) hard
+drive~\cite{CardEtAl94-Ext2,Iyer01-Anticipatory,Kleiman86-Vnodes,McKusickEtAl-FFS-84,  
+Seltzer90-SchedRevisit,WorthingtonEtAl94-Scheduling}.
+Various designs and architectures are based on assumptions of slow I/O
+bottleneck in the system.  Simply replacing hard disks with fast SSDs
+will probably not achieve the full performance benefits with current
+system software.  
+
+In addition, commodity servers contain an increasing number of computing cores.   
+Servers with tens to hundreds of cores are available already~\cite{seamicro}.
+Trends indicate that the number of cores within a single machine will
+continue to increase in future~\cite{Borkar07-ThousandCore}.  The
+cache and memory capacity also increases with the number of cores for
+balanced performance; it is not uncommon that a single server machine
+contains over 100 GB of DRAM for high performance~\cite{Clements+13-Commute,David+13-Sync}. 
+
+We believe these two hardware trends (fast storage devices and many
+cores) will continue in foreseen future.  Our vision is to build
+highly scalable storage stack and applications.  In this section, we
+discuss several directions for such vision. 
+
+\subsection{Scalable Virtual File System (VFS)}
+
+VFS is the entrance of all system calls.  All the generic file system 
+structures are maintained in VFS, such as inode, super block, and dentry.
+VFS also maintains metadata and file data caches for fast accesses:
+inode cache, dentry cache and page cache.  When reading or writing a file,
+the related cached structures also need to be updated.  
+We are interested in exploring several potential scalability
+bottlenecks in VFS. 
+
+First, VFS uses spin locks to protect the global
+inode hash table and dentry LRU list.  Frequent insertion and deletion
+of inodes or directory entries may trigger these synchronization
+bottlenecks.  To solve this challenge, we propose to decompose the
+global shared structures into multiple smaller ones.  A new partition
+domain (e.g., a similar abstraction as cube) can be introduced in VFS
+to isolate these generic structures; thus, the big lock can be avoided.  
+
+Second, directories in file systems are organized as a tree
+hierarchy both logically and physically.  To access a
+file {\tt /home/bob/research/paper/foo}, all the directory entries
+from the root to the target file must be parsed.  
+During the directory traversal, if multiple threads access
+different files in deep directories, then all the dentries and paths
+along the directory path will be frequently locked and released.  This
+style of directory hierarchy dependency may affect scalability across
+many cores.  Furthermore, if each directory contains many entries,
+then the traversal process may require a fair number of 
+I/Os.  Even though efficient lookup structures, such as Btree, are
+helpful to reduce the overhead of lookup, the fundamental bottleneck
+still exist because of the directory hierarchy. 
+
+We should decouple the logical hierarchy and the physical layout of
+directories for better scalability.  We propose to build a directory
+hierarchy over a object-based store.  In this manner, given a
+pathname, the file system only needs to lookup the corresponding
+object on disk, instead of parsing all the entries along the path.
+
+\subsection{Scalable Local File Systems}
+
+Many popular Linux file systems, such as Ext3, Ext4 and XFS were
+designed decades ago. The scalability of local file systems on  
+new hardware is also very interesting to explore. 
+
+First, file systems use a wide range of synchronization methods to
+protect their internal metadata, such as spin locks, read/write locks
+and mutexes.  These lock primitives are also used extensively in
+kernel for shared data structures.  Developers make constant efforts
+to optimize existing locks for better
+concurrency~\cite{LuEtAl13-fsstudy}, 
+such as removing unnecessary locks, using finer-grained locking
+instead of big locks, and replacing write locks with RCU.  
+
+However, these techniques do not consider the scalability issue on
+many cores.  Typical locks used in Linux may not be scalable across 
+cores due to the cache coherence protocol~\cite{David+13-Sync}.
+It may be the worth effort to adopt more complex and scalable locks in
+file systems~\cite{Mellor91-Locks}.  Furthermore, we could change
+current locking granularity for better 
+concurrency.  For example, to update a file, the inode lock is
+required for exclusive accesses.  Two threads may update different
+pieces of metadata or data of the same file concurrently.  Thus,
+fine-grained locking may be more scalable for certain workloads.  
+
+Second, transaction management in file systems can cause significant
+performance degradation for certain workloads.  For example,
+Ext3/4 maintain only one running transaction, and use one single
+thread to flush the buffered transaction to disk periodically or 
+as triggered by {\tt fsync()}.  For a multiple-thread write intensive 
+workload, the journaling layer can block the applications due to the
+serialization in the transaction layer.  
+
+We propose to parallelize the journaling layer for better scalability.
+First, we need to maintain multiple running transactions in memory to
+buffer independent updates.  As a result, updates from 
+applications should be classified in some way to be independent from
+each other.  Second, during commit, we will use multiple threads to
+commit transactions in parallel.  Third, a shared physical journal or
+multiple physical journals should both work, since the bottleneck is
+not supposed to be at the device level. 
+
+
+Third, storage device locality may be irrelevant, if there is little
+difference between random and sequential performance on fast devices.
+However, most existing allocation or scheduling algorithms are
+optimized for data locality, which could limit the concurrency of file
+systems.  For example, to allocate data blocks for a file in Ext3 or
+Ext4, the block group of its parent directory is preferred.  If
+multiple threads allocate blocks for files under the same parent
+directory, a shared bitmap will be updated from multiple cores,
+limiting concurrency.  
+
+We propose randomized algorithms to replace traditional locality based
+algorithms in file systems.  A randomized allocation design can spread
+the metadata updates uniformly across the whole device.  We will
+revisit all the locality-based algorithms in file systems, and replace
+them for better scalability if possible. 
+
+\subsection{Scalable Block Layer}
+The block layer is below the local file system. It is responsible for
+scheduling the low level I/O requests to the storage device.  We are
+interested in two scalability issues in the block layer.  
+
+First, I/O schedulers usually store many pending requests in queues
+before dispatching them, such as CFQ and Deadline.  One potential
+bottleneck is the shared request queue, which is used to buffer all
+the incoming I/O requests.  The shared queue lock is required when the
+block layer does request insertion, request merging, fairness
+scheduling, I/O accounting, and request deletion.  This single point
+processing could be a scalability bottleneck for fast
+devices~\cite{Bjorling+13-SSDSched}.  We are curious to further
+explore other structures and algorithms in the block layer which can
+slow down I/O request processing.  
+
+Second, the block layer also sends device cache flush requests from
+file systems to the underlying device drivers.  For example, a 
+{\tt fsync()} request from an application could force a device cache
+flush for durability of its data.  However, cache flush is
+expensive, and this could cause slowdown for applications.  For a
+highly parallel application, there may be many cache flush requests
+from different threads.  We are interested in investigating new
+techniques to smartly schedule these cache flush requests for both
+durability and scalability.  
+
+\subsection{Scalable Key-Value Stores}
+
+LSM-trees were designed for machines with hard drives, and a small
+number of cores. In WiscKey, we optimize LSM-trees for SSDs by
+separating keys and values. There are many other aspects we can
+further improve WiscKey for SSDs, large memory and many cores. 
+
+In WiscKey, the garbage collection is done by a single background
+thread.  The thread reads a chunk of key-value pairs from the tail of
+the vLog file; then for each key-value pair, it checks the LSM-tree
+for validity; finally, the valid key-value pairs are written back to
+the head of the vLog file. We can improve the garbage collection in
+two ways. First, lookups in the LSM-tree are slow since multiple
+random reads may be required.  To speedup this process, we can use
+multiple threads to do the lookup concurrently for different key-value 
+pairs. Second, we can make garbage collection more effective by
+maintaining a bitmap of invalid key-value pairs in the vLog file. When
+the garbage collection is triggered, it will first reclaim the chunk
+with the highest percentage of free space. 
+
+Another interesting direction to scale LevelDB or WiscKey is
+sharding the database. Many components of LevelDB are single-threaded
+due to a single shared database.  As we discuss before, there is a
+single memtable to buffer writes in memory. When the memtable is full,
+the foreground writes will be stalled until the compaction thread
+flushes the memtable to disk.  In LevelDB, only a single writer can be
+allowed to update the database. The database is protected by a global
+mutex. The background compaction thread also needs to grab this mutex
+when sorting the key-value pairs, competing with the foreground
+writes.  For a multiple writer workload, this architecture can
+unnecessarily block concurrent writes.  One solution is to partition
+the database and related memory structures into multiple smaller
+shards. Each shard's keys will not overlap with others. Under this
+design, writes to different key-value ranges can be done concurrently
+to different shards.  A random lookup can also be distributed to one
+target shard, without searching all shards.  This new design may make
+lookups faster because of a smaller dataset to search.  

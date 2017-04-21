@@ -1,0 +1,75 @@
+\subsection{The Need for Better Tools}
+\label{sec-conc-lessson-tools}
+
+During the course of this dissertation work, we realized that there is
+a need for better frameworks for analyzing, testing, and verifying
+file-system crash consistency. Despite decades of research on file
+systems, there are few open-source tools available for inspecting
+file-system consistency.
+
+\vspace{0.1in} \noindent \textbf{Tools for Analyzing Crash
+  Consistency}. While working on Probabilistic Crash Consistency, we
+had to build a framework to analyze the different ordering
+relationships that need to hold for a journaling file system to remain
+consistent in the event of a crash. Analyzing these relationships
+eventually led us to discover Selective Data
+Journaling~\cite{Chidambaram+13-OptFS}, the precise circumstances in
+which not journaling data blocks provides the same crash-consistency
+guarantees as when data blocks are journaled. Specifically, if the
+data block is not already part of a file, journaling it does not
+provide any additional crash guarantees. Selective Data Journaling
+improves performance significantly for workloads where large files are
+updated atomically via mechanisms such as \texttt{rename()}(\eg in
+text editors such as Gedit~\cite{gedit}).
+
+In multiple interactions, researchers and developers in the
+file-system community have reported that the Selective Data Journaling
+idea was obvious once explained. However, this insight has eluded
+file-system researchers and practitioners for many years (although it
+is known in the software transactional memory
+community~\cite{capturedmem09, Harris06, adl2006compiler}). We believe
+this is due to two reasons: the inherent complexity of protocols like
+journaling, and the complexity associated with implementations such as
+ext4~\cite{newcombe2015amazon}. Without using a framework to analyze
+the guarantees provided by these systems and the requirements for
+those guarantees, even simple insights are hard to obtain. Just as
+practitioners in distributed systems formally specify the design of
+their systems and verify optimizations~\cite{newcombe2015amazon,
+  Lamport02-BookTLA}, we believe a similar effort is required in the
+realm of file systems.
+
+\vspace{0.1in} \noindent \textbf{Tools for Testing Crash Consistency}.
+While building the No-Order File System and the Optimistic File
+System, we needed to test the reliability of the file system. We found
+that there were no open-source tools available to inject either
+targeted failures or random failures. As a consequence, we had to
+develop our own tools for this purpose. We have received requests from
+other universities to share these tools. Although the current versions
+of these tools are specific to NoFS and OptFS, we believe generalized
+versions of these tools would be greatly aid file-system development
+and research. We strongly advocate for better tools that aid
+file-system research to made open-source (\eg the Filebench
+suite~\cite{Filebench05}).
+ 
+\vspace{0.1in} \noindent \textbf{Tools for Verifying Crash
+  Consistency}. Modern storage stacks are complex and consist of many
+layers~\cite{thereska2013ioflow}. Crash consistency of the application
+on top of the stack depends on every layer between the application and
+storage handling requests such as flushes and FUA correctly.
+Configuration options at each layer (\eg journaling mode of file
+system) affects the crash consistency of the application.
+
+We believe that storage stacks have grown so complex that it is not
+feasible for humans to observe the composition of a storage stack and
+reason about whether a given application will obtain crash consistency
+on top of that stack. Furthermore, with customized on-demand
+software-defined storage~\cite{vmware-sds, emc-sds, netapp-sds,
+  vmware-sdspaper}, a human verifying a composed storage stack is not
+practical.
+
+We believe that the design of each layer (the aspects that relate to
+crash consistency) must be formally defined, and that we should
+develop tools to automatically verify the crash guarantees that a
+storage stack claims to provide. We have undertaken initial efforts in
+this direction~\cite{Alagappan+15-verification}.
+  

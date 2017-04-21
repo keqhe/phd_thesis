@@ -1,0 +1,262 @@
+
+% haryadi .. parskip, and parindent
+%\setlength\parindent{0pt}
+%\setlength\parskip{5pt}
+
+
+\newcommand{\beforesec}{\vspace{-.4cm}}
+\newcommand{\aftersec}{\vspace{-.3cm}}
+
+\newcommand{\beforesect}{\vspace{-.1cm}}
+\newcommand{\aftersect}{\vspace{-.3cm}}
+
+\newcommand{\beforesub}{\vspace{-.3cm}}
+\newcommand{\aftersub}{\vspace{-.25cm}}
+
+\newcommand{\beforesubsub}{\vspace{-.2cm}}
+\newcommand{\aftersubsub}{\vspace{-.2cm}}
+
+ \newcommand{\zsubsection}[1]{\section{#1}}
+ \newcommand{\zsubsubsection}[1]{\subsection{#1}}
+ \newcommand{\zsubsubsubsubsection}[1]{\subsubsection{#1}}
+
+\newcommand{\smush}{0.25in}
+
+\newcommand{\figWidthOne}{3.05in} 
+\newcommand{\figWidthHalf}{1.45in} 
+\newcommand{\figWidthTwo}{3.05in} 
+\newcommand{\figWidthTwop}{1.6in} 
+%\newcommand{\figWidthThree}{2.65in} 
+\newcommand{\figWidthThree}{2.2in} 
+\newcommand{\figWidthSix}{1.1in} 
+\newcommand{\figWidthFour}{1.7in} 
+\newcommand{\figHeight}{2.0in}
+\newcommand{\captionText}[2]{\textbf{#1} \textit{\small{#2}}}
+
+\newcommand{\zbullet}{\hspace{-0.1cm}$\bullet$}
+
+\newcommand{\eg}{\textit{e.g.},~}
+\newcommand{\ie}{\textit{i.e.},~}
+\newcommand{\etal}{\textit{et al.}}
+\newcommand{\apriori}{\textit{a priori}}
+
+%-------------------------------------------------------------------
+% haryadi -- new command
+\newcommand{\msub}[1]{\vspace{1pt}\noindent{\bf #1}}
+
+\newcommand{\ts}[1]{{\tt{\small#1}}}
+\newcommand{\tsb}[1]{{\tt{\small{\bf#1}}}}
+\newcommand{\tse}[1]{{\tt{\small{\em#1}}}}
+\newcommand{\tss}[1]{{\tt{\footnotesize#1}}}
+\newcommand{\exc}{$^{\ddag}$}        % except
+\newcommand{\EIO}{\ts{EIO}}
+
+%-------------------------------------------------------------------
+% For reliability table
+\newcommand{\ip}{bad}
+\newcommand{\nullp}{$\emptyset$}
+
+\newcommand{\oops}{o}
+\newcommand{\dead}{$\times$}
+\newcommand{\alive}{$\surd$}
+\newcommand{\unuse}{$\times$}
+
+% Detected or undetected column
+\newcommand{\detected}{$\surd$}
+\newcommand{\undetected}{$\times$}
+
+% Blocks dropped column
+\newcommand{\childinode}{C$^{inode}$}  % child inode
+\newcommand{\parentdir}{P$^{dir}$}  % parent dir
+\newcommand{\childdir}{C$^{dir}$}  % child dir
+\newcommand{\olddir}{O$^{dir}$}  % old parent dir
+\newcommand{\newdir}{N$^{dir}$}  % new parent dir
+\newcommand{\childdata}{C$^{data}$}  % child data block
+\newcommand{\childinddata}{C$^{ind}$}  % child indirect block
+\newcommand{\firstinode}{O$^{inode}$}  % child indirect block
+
+% Error column
+\newcommand{\parentdirbad}{P$^{BD}$}  % Bad dir entry for parent
+\newcommand{\orphanblock}{C$^{OB}$}  % Orphan block
+\newcommand{\orphaninode}{C$^{OI}$}  % Orphan inode
+\newcommand{\childdirbad}{C$^{BD}$}  % Bad dir entry for child
+\newcommand{\olddirbad}{O$^{BD}$}  % Bad dir entry for old inode
+\newcommand{\childinodeincon}{C$^{HL}$}  % Inconsistency in child inode hardlinks
+\newcommand{\sechole}{$\ast$}  % Inconsistency in child inode hardlinks
+\newcommand{\garbage}{C$^{GD}$}  % Garbage data
+\newcommand{\stalepointer}{O$^{TP}$}  % A has a wrong pointer to a block
+
+%Corrective action
+\newcommand{\childinodeerror}{C$^{EI}$}  % Error on accessing child inode
+\newcommand{\reclaim}{R}  % Reclaimed on scan
+\newcommand{\childdirerror}{C$^{ED}$}   % Error on child dir access
+\newcommand{\childblockerror}{C$^{EB}$}   % Error on child block access
+\newcommand{\newdirerror}{C$^{EN}$}   % Error on child dir access via new path
+\newcommand{\olddirerror}{C$^{EO}$}   % Error on child dir access via old path
+\newcommand{\newreaderror}{O$^{ER}$}   % Error on inode A's read access
+\newcommand{\none}{--}  % Reclaimed on scan
+\newcommand{\oldblockerror}{O$^{EB}$}   % Error on block access in old file
+
+\newcommand{\use}{$\surd$}
+\newcommand{\ic}{$\times$}
+\newcommand{\con}{$\surd$}
+\newcommand{\gpf}{G}
+\newcommand{\npe}{null-pointer}
+\newcommand{\usebuta}{$\surd^a$} % unmountable
+\newcommand{\hwdetect}{d}
+
+%% TABLE 2
+\newcommand{\lateoops}{o$^b$}  % oops happens, but late
+\newcommand{\lategpf}{G$^b$}   % gpf, but late
+\newcommand{\iop}{i}           % invalid opcode
+\newcommand{\detects}{d}       % assertion
+\newcommand{\silentret}{s}     % app fails silently
+\newcommand{\errorret}{e}      % app returns an error
+\newcommand{\appworks}{$\surd$}     % app works!
+\newcommand{\usebutar}{$\surd^{ar}$} % read-only and unmountable
+
+\newcommand{\tbls}{\hspace{0.025in}}
+\newcommand{\tblss}{\hspace{0.015in}}
+\newcommand{\shrinkless}{\vspace{-0.01cm}}
+
+%-------------------------------------------------------------------
+
+%-------------------------------------------------------------------
+
+% axes         
+\newcommand{\x}{{\em x}}
+\newcommand{\y}{{\em y}}
+\newcommand{\xaxis}{x-axis}
+\newcommand{\yaxis}{y-axis}
+
+\newcommand{\KB}{~KB}
+\newcommand{\KBs}{~KB/s}
+\newcommand{\Kbs}{~Kbit/s}
+\newcommand{\mbs}{~Mbit/s}
+\newcommand{\MB}{~MB}
+\newcommand{\GB}{~GB}
+\newcommand{\MBs}{~MB/s}
+\newcommand{\mus}{\mbox{$\mu s$}}
+\newcommand{\ms}{\mbox{$ms$}}
+
+
+\newcommand{\unix}{{\sc Unix}}
+%\newcommand{\NULL}{{\sc NULL}}
+
+\newcommand{\bquote}{\vspace{-0.25cm} \begin{quote}}
+\newcommand{\equote}{\end{quote}\vspace{-0.05cm} }
+
+\newcommand{\zquote}[2]{\begin{quote}
+#1 --
+{\em``#2'' }
+%{\bf -- #1 }
+\end{quote}}
+
+
+\newcommand{\XXX}[1]{{\small {\bf (XXX: #1)}}}
+
+\newcommand{\XXXX}{{\bf XXX}}
+\newcommand{\xx}{{\bf XXX}}
+
+% Image caption distance
+\if 0
+\newcommand{\beforecaption}{\vspace{-.35cm}\begin{spacing}{0.80}}
+\newcommand{\aftercaption}{\vspace{-.5cm}\end{spacing}}
+\newcommand{\mycaption}[3]{{\tiny \beforecaption\caption{\label{#1}{#2} {\em #3}}\aftercaption}}
+\fi
+
+% normal
+\newcommand{\beforecaption}{\begin{spacing}{0.90}}
+\newcommand{\aftercaption}{\end{spacing}}
+\newcommand{\mycaption}[3]{{\beforecaption\caption{\label{#1}{\bf #2. } {\em \small #3}}\aftercaption}}
+
+
+% osdi06
+\if 0
+\newcommand{\beforecaption}{\vspace{-.25cm} \begin{spacing}{0.80}}
+\newcommand{\aftercaption}{\vspace{-.1cm} \end{spacing}}
+\newcommand{\mycaption}[3]{{\beforecaption\caption{\label{#1}{\bf #2. } {\em \footnotesize #3}}\aftercaption}}
+\fi
+
+\if 0
+\newcommand{\beforecaption}{\begin{spacing}{0.80}}
+\newcommand{\aftercaption}{\end{spacing}\vspace{-.3cm}}
+\newcommand{\mycaption}[3]{{\beforecaption\caption{\label{#1}{\small \bf #2} {\footnotesize \em #3}}\aftercaption}}
+\fi
+
+
+\newcommand{\sref}[1]{\S\ref{#1}}
+
+\newcommand{\xxx}[1]{  \underline{ {\small {\bf (XXX: #1)}}}}
+
+
+\newenvironment{packeditemize}{
+\begin{itemize}
+  \setlength{\itemsep}{1pt}
+  \setlength{\parskip}{0pt}
+  \setlength{\parsep}{0pt}
+}{\end{itemize}}
+
+\newcommand{\pincon}{$P_{inc}$}
+\newcommand{\pin}{$P_{inc}$}
+\newcommand{\pinmath}{P_{inc}}
+\newcommand{\dt}{$T_{D}$}
+
+\if 0
+\newcommand{\sysfsync}{\texttt{\fontsize{9.2}{5}\selectfont fsync()}}
+\newcommand{\syscsync}{\texttt{\fontsize{9.2}{5}\selectfont osync()}}
+\newcommand{\sysdsync}{\texttt{\fontsize{9.2}{5}\selectfont dsync()}}
+\newcommand{\sysrename}{\texttt{\fontsize{9.2}{5}\selectfont
+    rename()}}
+\newcommand{\fsync}{\sysfsync}
+\newcommand{\writec}{\texttt{\fontsize{9.2}{5}\selectfont write()}}
+\newcommand{\gedit}{{\fontsize{9.2}{5}\selectfont gedit}}
+\fi
+
+\newcommand{\sysfsync}{\texttt{fsync()}}
+\newcommand{\syscsync}{\texttt{osync()}}
+\newcommand{\sysdsync}{\texttt{dsync()}}
+\newcommand{\sysrename}{\texttt{rename()}}
+\newcommand{\fsync}{\sysfsync}
+\newcommand{\writec}{\texttt{write()}}
+\newcommand{\gedit}{\texttt{gedit}}
+\newcommand{\sataflush}{\texttt{FLUSH}}
+
+\newcommand{\smalltt}[1]{\texttt{#1}}
+\newcommand{\fstoolname}{\textsc{Bob}}
+%\newcommand{\toolname}{\mbox{\textsc{Alice}}}
+
+\if 0
+\newcommand{\detected}{$\surd$}
+\newcommand{\undetected}{$\times$}
+\fi
+
+% Stuff from the OSDI paper, shouldn't need all of these.
+\newcommand{\fwrong}{$\times$}
+\newcommand{\verysmalltt}[1]{\texttt{\scriptsize #1}}
+\newcommand*\rot{\rotatebox{90}}
+\newcommand{\Kassandra}{Kassandra}
+\newcommand{\microprogram}{microprogram}
+\newcommand{\microprograms}{microprograms}
+\newcommand{\microinstruction}{microinstruction}
+\newcommand{\microinstructions}{microinstructions}
+\newcommand{\Microinstructions}{Microinstructions}
+\newcommand{\writeSC}{\smalltt{write()}}
+\newcommand{\fsyncSC}{\smalltt{fsync()}}
+\newcommand{\msyncSC}{\smalltt{msync()}}
+\newcommand{\fdatasyncSC}{\smalltt{x fdatasync()}}
+\newcommand{\linkSC}{\smalltt{link()}}
+\newcommand{\mkdirSC}{\smalltt{mkdir()}}
+\newcommand{\fempty}{$\phi$}
+\newcommand{\fexists}{$\surd$}
+\newcommand{\creatSC}{{\smalltt{creat()}}}
+\newcommand{\unlinkSC}{{\smalltt{unlink()}}}
+\newcommand{\renameSC}{{\smalltt{rename()}}}
+
+\newcommand{\totbugs}{60}
+\newcommand{\totapps}{11}
+\newcommand{\totappsw}{eleven}
+
+
+\newcommand{\ifs}{IceFS}
+\newcommand{\toolname}{WiscKey}

@@ -1,0 +1,120 @@
+* Introduction
+* DONE Background
+CLOSED: [2015-07-21 Tue 00:39]
+** Storage Stack
+*** Disk Interface
+** Path of a Write
+** Types of Crashes
+*** Process Crash
+*** System Crash
+** Crash consistency
+*** What is it?
+*** Why applications and file systems need it
+*** How applications achieve crash consistency
+*** Three levels of FS crash consistency: metadata, data, version
+*** The history of crash consistency
+** Crash consistency and ordering
+*** How ordering is achieved at each level in the stack
+*** Talk about fsync()
+*** Talk about FLUSH
+** ext2/3 data structures
+** Standard Journaling
+* DONE Motivation (the problem flushes have caused)
+CLOSED: [2015-07-21 Tue 00:39]
+** Flushing Performance Impact  
+** Developers turning off flushes
+** Drives don't flush when asked to
+** App developers dont use fsync
+** Ordering is end-to-end property
+The Windows stack, virtualbox, etc.
+** Probabilistic Crash Consistency
+*** Quantifying Probabilistic Crash Consistency
+*** Factors affecting P_inc
+*** Summary
+** Summary
+* DONE BOB
+CLOSED: [2015-07-21 Tue 00:39]
+** Background
+*** Application-Level Crash Consistency
+*** Application Update Protocols
+*** Crash States
+** Motivation 
+** Persistence Properties
+*** Intuition
+*** Definition
+** The Tool
+** Study Results
+*** Atomicity
+*** Ordering
+*** Discussion
+* DONE NoFS
+CLOSED: [2015-07-21 Tue 00:39]
+** Motivation
+*** Focus on how stack cannot be trusted to provide ordering
+** Goals
+** Design
+*** Overview
+*** Assumptions
+*** Backpointer-Based Consistency
+*** Non-persistent Allocation Structures
+** Implementation
+*** Operating System Environment
+*** Backpointers 
+*** Non-persistent Allocation Structures
+** Evaluation
+*** Reliability
+*** Performance
+** Proof
+*** Notation
+*** Axioms
+*** Data Consistency
+*** Version Consistency
+** Discussion
+*** Persistence
+*** Limitations
+*** Use Cases
+* DONE OptFS
+CLOSED: [2015-07-21 Tue 00:39]
+** Motivation
+*** Focus on how flushes are too expensive
+*** talk about rename()
+** Design 
+*** Async Durability Notifications
+*** Optimistic Consistency Properties
+*** Optimistic Techniques
+*** Durability vs. Consistency
+** Implementation 
+*** Async Durability Notifications
+*** Handling Data Blocks
+*** Optimistic Techniques
+** Evaluation 
+*** Reliability 
+*** Performance
+*** Resource Consumption
+*** Journal Size
+** Case Studies
+*** Gedit 
+*** SQLite
+* TODO Discussion
+** Comparing OptFS and NoFS 
+*** Hardware Requirements
+*** Usability
+*** Performance
+*** Summary
+** Optimistic Techniques in Other File Systems
+** Optimistic Techniques on Flash and other Media
+** Optimistic Techniques in Distributed Systems
+** Figuring out where osync() should go
+*** talk about the OSDI work here
+* TODO Lessons Learned
+* TODO Future Work
+** OptFS on commodity disk drives
+** Automatically figuring out if fsync() should be replaced by osync()
+** Studying application code - how much osync() in practice?
+* DONE Related Work 
+CLOSED: [2015-07-21 Tue 00:39]
+** rethink the sync
+** featherstitch
+** soft updates
+** recon  
+* Conclusion

@@ -1,0 +1,57 @@
+\section{Testing File Systems}
+\label{sec-related-test}
+
+There have been several efforts to test the reliability of storage
+systems. We discuss the work most closely related to BOB
+(\sref{chap-bob}).
+
+Zheng \etal\ developed a framework for testing whether commercial
+databases violate ACID properties under power failure
+scenarios~\cite{ZhengEtAl14-Torturing}. They trace the writes resulting
+from one of four hand-crafted workloads, and replay different
+sequences of those writes to detect ACID violations. Their framework
+differs from BOB in two significant ways. First, they do root-cause
+analysis on ACID violations to help engineers diagnose the bug. Since
+BOB was not developed for the purpose of diagnosing bugs, it does not
+contain tools for root-cause analysis. Second, their framework is
+limited to SCSI devices (as they modify the iSCSI driver); BOB, on the
+other hand, works above the device-driver level, and therefore works
+on any storage device.
+
+% Explode
+The EXPLODE framework~\cite{YangEtAl06-Explode} systematically checks
+storage systems for errors. It drives the system into rare corner
+cases and tests system behavior. EXPLODE is a powerful framework that
+can be used to test applications, file systems, and software at any
+level of the storage stack for errors. However, for the simple task
+for testing persistence properties of file systems, we feel it is
+needlessly complex. For example, EXPLODE requires developers to
+carefully annotate complex file systems using \textit{choose()} calls.
+BOB, on the other hand, does not require any annotation or specialized
+knowledge of the file system being tested.
+
+% dm-power-fail
+% not testing explicitly persistence properties
+There has been interest in the Linux kernel community towards more
+effective power-failure testing. Josef Basik, a software engineer at
+Facebook, has been developing a tool based on the device mapper to
+easily reproduce power failures~\cite{Basik-power-patch,
+  Basik-power-testing-lwn}. Similar to BOB, the tool logs writes and
+then creates new disk images based on the traces. However, the focus
+of the tool is on whether file systems properly make acknowledged
+writes durable, and not on testing persistence properties.
+
+Zheng \etal\ have tested the reliability of SSDs and disk drives under
+power failure~\cite{ZhengEtAl+13-ssd}. Unlike the other work discussed
+here, they developed hardware to cut power to the devices being tested
+and examined device behavior. Hardware testing is essential for
+testing storage devices, since the firmware is closed-source, and we
+cannot emulate the effects of power loss, as we do for software layers
+in the storage stack. Thus, Zheng \etal's work is complementary to
+tools such as BOB.
+
+We note that none of the tools discussed in this section examine or
+test the persistence properties of file systems. File-system
+persistence behavior was largely unexplored before our work, and BOB
+represents the first step in defining and examining persistence
+properties.  

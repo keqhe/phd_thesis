@@ -1,0 +1,8 @@
+There is a bug in Bibtex in Mac OSX. It does not honor -min-crossrefs.
+http://www.tug.org/pipermail/tex-live/2010-March/025236.html
+
+This means that, for now, I would have to do the compilation (for
+references) on the department computer. This is a pain.
+
+Ignoring this for now. I might setup CrossTex (from Cornell) and use
+that instead. 

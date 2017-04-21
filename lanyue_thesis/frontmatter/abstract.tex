@@ -1,0 +1,67 @@
+
+\svnidlong{$LastChangedBy$}{$LastChangedRevision$}{$LastChangedDate$}{$HeadURL: http://freevariable.com/dissertation/branches/diss-template/frontmatter/abstract.tex $}
+\vcinfo{}
+
+% Don't change anything above this line. It must stay in exactly the
+% same spacing.
+
+
+Digital data is essential to our daily lives and businesses. 
+The amount of data generated each year grows exponentially. Various
+storage systems were developed to meet different data management
+requirements. For decades, researchers and practitioners have been
+trying to overcome a central challenge in these storage systems: how
+to reliably and efficiently access data on different storage devices.  
+
+In the first part of the dissertation, we respond to this challenge
+with a comprehensive study of modern Linux file systems to understand 
+practical reliability and performance problems in existing file
+systems. We analyze eight years of Linux file-system changes across
+5079 patches. We focus on file-system bugs by studying their
+fine-grained patterns, consequences and trends. We find that about
+40\% of patches are bugs, existing in both new and mature
+file systems; they do not diminish despite the stability. Most of the
+bugs lead to system crashes or data corruption. We also exam
+performance and reliability patches. The performance techniques used
+were relatively common and widespread. About a quarter of performance 
+patches reduced synchronization overheads. Reliability techniques
+seemed to be added in a rather ad hoc fashion. 
+
+From the file system study, we find that file systems lack enough
+reliability isolation: a small fault can impact the whole file system.
+To solve this problem, we propose IceFS, a novel file system that
+separates physical structures of the file system for better isolation.
+A new abstraction, the cube, was provided to enable the grouping of
+files and directories inside a physically isolated 
+container.  We show three major benefits of cubes within IceFS:
+localized reaction to faults, fast recovery, and concurrent file-system
+updates. We demonstrate that IceFS is able to localize failures that
+were previously global, and recover quickly using localized online or
+offline fsck. IceFS can also provide specialized journaling to meet diverse
+application requirements for performance and consistency.
+Furthermore, we conduct two cases studies where IceFS is used to
+host multiple virtual machines and is deployed as the local file
+system for HDFS data nodes. IceFS achieves fault isolation and fast
+recovery in both scenarios, proving its usefulness in modern storage 
+environments.
+
+Motivated by physical separation techniques leading to better
+performance in IceFS, we continue to explore similar techniques in
+another important type of storage systems: key-value stores. 
+We present WiscKey, a persistent LSM-tree-based key-value 
+store with a novel performance-oriented data layout that separates
+keys and values to minimize I/O amplification. The data layout and I/O
+patterns of WiscKey are highly optimized for SSD devices. 
+We solve a number of reliability and performance challenges
+introduced by the new key-value separation architecture. We propose a
+parallel range query design to leverage the SSD's internal parallelism
+for better range query performance on unordered datasets. We also
+introduce an online and light-weight garbage collector for WiscKey to
+reclaim the invalid key-value pairs without affecting the foreground
+workloads much. We demonstrate the advantages of WiscKey with both
+microbenchmarks and YCSB workloads. Microbenchmark results show that
+WiscKey is 2.5$\times$ - 111$\times$ faster than LevelDB for loading a
+database and 1.6$\times$ - 14$\times$ faster for random lookups.
+WiscKey is faster than both LevelDB and RocksDB in all six YCSB
+workloads, and follows a trend similar to the microbenchmarks. 
+
