@@ -1,0 +1,7 @@
+raw htb packet drop in 10s
+rate		  8iperfs    16iperfs
+500			3		11
+1000			17		2
+2000			12		58
+4000			12		22
+5000			19		0

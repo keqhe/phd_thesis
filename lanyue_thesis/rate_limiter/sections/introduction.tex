@@ -1,0 +1,93 @@
+\section{Introduction}
+\label{rate-limiter:sec:introduction}
+
+Bandwidth allocation is an indispensable feature in multi-tenant clouds. 
+It guarantees the performance of various applications from multiple tenants running on the same physical server. 
+Bandwidth allocation is often implemented by \textit{software rate limiters\footnote{In this chapter,
+we use software rate limiter and rate limiter interchangeably.}} 
+in the operating system (e.g., Linux Hierarchical Token Bucket, aka HTB) due to their flexibility and scalability.
+However, rate limiters either uses traffic policing (i.e., dropping packets when
+packet arrival rate is above the desired rate) or traffic shaping (i.e., queueing packets in a large
+queue to absorb burst and send packets to the network based on token and bucket algorithms).
+Thus, bandwidth allocation, low latency and low loss rate can be not achieved at the same time. 
+We conduct performance measurements in a public cloud platform (CloudLab~\cite{cloudlab}) and 
+find that one of the most widely used software rate limiters, HTB, dramatically increases network latency.
+
+Previous work mainly focused on solving ``in-network'' queueing latency (i.e., latency in 
+switches)~\cite{alizadeh2010data,he2016ac,mittal2015timely}, but little research effort has been
+done to solve the latency, packet loss and burstiness issues for the software rate limiters on the end-host.
+To this end, we explore how we can address the performance issues associated with rate limiters on the end-host in this chapter.
+Inspired by the efforts to reduce queueing latency in hardware switches, 
+we first extend ECN into software rate limiters and configure DCTCP on the end-points. 
+However, in our tests, we find simply applying DCTCP+ECN on the end-host causes a problem \textemdash\xspace 
+TCP throughput tends to oscillate (between 50\% to 95\% in some cases, see Section~\ref{rate-limiter:sec:measurement}). 
+And throughput oscillation would significantly degrade application performance. 
+
+There are two issues with simply applying DCTCP+ECN on end-host rate limiters. The first is that, different from
+hardware switches in the network, end-hosts process TCP segments instead of MTU-sized packets. 
+TCP Segmentation Offload (TSO)~\cite{tcp-segment-offload} is an optimization technique 
+that is widely used in modern operating systems to reduce CPU overhead
+for fast speed networks. TSO is enabled in Linux by default. Because of TSO, TCP segment size can reach
+64KB in the default setting. That means, if we mark the ECN bits in one TCP segment, a bunch of 
+consecutive MTU-sized packets are marked because the ECN bits in the header are copied into each packet in the NIC.
+On the other hand, if a TCP segment is not marked, then none of the packets in this segment is marked. This kind of 
+coarse-grained segment-level marking leads to an inaccurate estimation of congestion level, and consequently 
+leads to throughput oscillation.
+The second issue with DCTCP+ECN is that its congestion control loop latency is large. There are three types of 
+traffic in datacenter networks \textemdash\xspace 1) intra-datacenter traffic (i.e., east-west traffic) 2) inter-datacenter
+traffic and 3) traffic that goes across WANs to remote clients. DCTCP+ECN's control loop latency is one RTT.
+But RTT is affected by many factors. For intra-datacenter traffic, RTT is affected by ``in-network'' congestion.
+For traffic that goes across WANs to remote clients, its RTT can be tens of milliseconds.
+Congestion control loop latency is not bounded and congestion control actions can rely on stale congestion feedback.
+The long congestion control loop latency is further exacerbated by the fact that traffic on the end-host is bursty
+because of TCP windowing scheme and TSO optimizations~\cite{kapoor2013bullet}.
+
+
+To address the shortcomings of DCTCP+ECN, 
+we design our first mechanism \textemdash\xspace \textit{direct ECE marking (\nameone)}. 
+In \nameone, when an ACK is received, \nameone checks the real-time queue length in its corresponding rate limiter, 
+and if the queue length exceeds a pre-configured threshold, \nameone \textit{marks the ACK packet instead of data packets}. 
+By marking TCP ACK, we mean set TCP ACK's ECN-Echo (ECE) bit.
+Directly marking TCP ECE avoids the two shortcomings in DCTCP+ECN. First, the congestion control loop
+latency is almost reduced to 0 because it is based on real-time queue length, not the queue length one RTT ago.
+Second, it avoids coarse-grained segment-level ECN marking on the transmitting path.
+Our design (Section~\ref{rate-limiter:sec:design}) and experiment (Section~\ref{rate-limiter:sec:evaluation}) show that 
+DEM eliminates throughput oscillation.
+ 
+
+There is a prerequisite to deploying \nameone \textemdash\xspace end-hosts are able to react to ECN marking correctly 
+(e.g., DCTCP). However, in public clouds, this prerequisite does not always hold 
+because the cloud operator does not have access to the network stack configuration in tenants' VMs. 
+Even the tenant VM is configured with DCTCP, not all the flows are ECN-capable. For example,
+TCP flows between cloud and clients are usually not ECN-capable because ECN is not widely used in WANs~\cite{kuhlewind2013state}.
+To make our solution more generic, we adopt the mechanism from AC/DC~\cite{he2016ac}, 
+i.e., performing TCP \cwnd computation outside of tenants' VMs and enforcing congestion control decisions via 
+rewriting \rwnd. We also design and implement a window-based TIMELY~\cite{mittal2015timely}-like congestion control algorithm. 
+We name this mechanism \nametwo. \nametwo completely gets rid of ECN marking and can work for 
+both ECN-capable and non ECN-capable flows. 
+\nametwo also avoids the two issues that DCTCP+ECN has because for each return ACK, 
+we compute \cwnd according to instantaneous rate limiter queue length and queue length gradient and 
+rewrite \rwnd in TCP ACK header. 
+
+The contributions of this chapter are as follows:
+\begin{enumerate}
+\item We point out and measure the latency caused by software rate limiters on the end-host in multi-tenant clouds, 
+and also show that simply applying DCTCP+ECN is not sufficient to achieve constant bandwidth saturation.
+
+\item We identify the limitations of DCTCP+ECN in end-host networking and 
+propose \nameone to solve the throughput oscillation problem.
+We also propose \nametwo to make the solution more generic and deployable.
+
+\item We perform a preliminary evaluation to show our solutions can achieve high bandwidth saturation, 
+low latency, low oscillation and throughput fairness with negligible CPU overhead.
+
+\iffalse
+\item We measure the performance (latency and packet loss) of software rate limiters. We show that software rate limiters can greatly increase end-to-end latency for multi-tenant cloud networks. 
+We also show that simply extending ECN in software rate limiter queues and enabling DCTCP on the end-points (i.e., VMs or Container) give sub-optimal performance. 
+
+\item We propose two techniques (\nameone and \nametwo) to enable high throughput, low oscillation, low latency and generic software rate limiters for multi-tenant cloud networks.
+
+\item We evaluate the performance of \nameone and \nametwo. The experiment results demonstrate that the proposed solutions achieve our design goals.
+\fi
+\end{enumerate}
+

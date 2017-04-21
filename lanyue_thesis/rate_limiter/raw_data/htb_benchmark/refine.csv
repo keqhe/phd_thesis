@@ -1,0 +1,8 @@
+1,1,1,1,htb_supplement/htb1iperf/1iperfhtb1Gbps.log,1ratelimiter/1iperf/sockperf1G.log
+1,1,2,2,htb_supplement/htb1iperf/1iperfhtb2Gbps.log,1ratelimiter/1iperf/sockperf2G.log
+1,1,4,4,htb_supplement/htb1iperf/1iperfhtb4Gbps.log,1ratelimiter/1iperf/sockperf4G.log
+1,1,8,8,htb_supplement/htb1iperf/1iperfhtb8Gbps.log,1ratelimiter/1iperf/sockperf8G.log
+1,2,1,1,htb_supplement/htb2iperf/2iperfhtb1Gbps.log,1ratelimiter/2iperfs/sockperf1G.log
+1,2,2,2,htb_supplement/htb2iperf/2iperfhtb2Gbps.log,1ratelimiter/2iperfs/sockperf2G.log
+1,2,4,4,htb_supplement/htb2iperf/2iperfhtb4Gbps.log,1ratelimiter/2iperfs/sockperf4G.log
+1,2,8,8,htb_supplement/htb2iperf/2iperfhtb8Gbps.log,1ratelimiter/2iperfs/sockperf8G.log

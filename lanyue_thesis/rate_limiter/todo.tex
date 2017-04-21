@@ -1,0 +1,88 @@
+\ifdefined\draft
+\section*{TO-DO List}
+\subsection{Discussion}
+\Q{Do we try all clouds to motivate this problem? We can try Google cloud, 
+Amazon Web Service, Windows Azure and cloud lab.}
+\A{CloudLab first, our own testbed, and pick a few public clouds maybe?}
+
+\Q{Another question is if ovs can apply qos policy on flow level as~\cite{ovs-qos} shows, is it still a problem?}
+\A{As the cloud provider, how can we assign the flows into appropriate queues? 
+Because we do not know which flows are important, which are not.
+What cloud provider can do probably is to provide a minimum-maximum bandwidth allocation 
+for each VM or container. But tries to absorb bursty traffic 
+(i.e., ingress policy does not work well because it drops packets) 
+and minimize the impact of queuing latency (the bad side of egress QoS).
+
+If the cloud has only one tenant, they may know which kind of flows are important, which are not. 
+But for multi-tenant cloud, per-VM and per-container bandwidth allocation 
+is a practical problem.}
+
+\Q{The missing part for me is why ovs brings the latency problem, 
+our solution is sort of active queue management at end-host, 
+but which queue we are trying to control, and what's the intuition to solve this problem?}
+\A{The qdisc in Figure 1 of~\cite{endhost-queue}.
+The intuition is to keep the queue, but try to minimize the queueing occupancy.
+The idea is to dynamically perform ECN marking (for containers) and change TCP ACK's RWND field (for VMs) 
+based on qdisc length. This is a proactive method to let TCP send less (dropping is a reactive method, which is bad).}
+
+\Q{We should somehow relate this problem to virtualization}
+\A{Bandwidth allocation is done in the virtualization layer 
+(using virtual switch to configure QoS might be the most widely used method to achieve bandwidth allocation).
+A better terminology is ``software dataplanes''~\cite{wu2015perfsight}}
+
+\Q{If one VM only runs one application, ideally one flow, and the bandwidth allocation is per VM based, then this won't be a problem, is this true?}
+\A{Yeah, it is not a problem if there is only 1 flow; when two flows from the same VM are put into the same queue, any latency sensitive flow suffers.}
+\Q{Ok, so the problem comes from different types of flows on the same VM.}
+\A{Yeah}
+\Q{Is it a common sense, or we need to prove a VM always has different types of flows}
+\A{Say, the VM needs to process RPC requests, but it also needs to backup data every night}
+\Q{Backup data only happens for a short time...any other example?}
+\A{Figure 6 of~\cite{roy2015inside} could be used to support this.}
+
+\Q{Why we can not use PIAS~\cite{bai2015information}?}
+\A{The basic idea of PIAS: ``flow is gradually demoted from higher-priority queues 
+to lower-priority queues based on the number of bytes it has sent. 
+As a result, short flows are likely to be finished in the first few high-priority queues 
+and thus be prioritized over long flows in general, 
+which enables PIAS to emulate SJF without knowing flow sizes beforehand.'' 
+So the question is whether PIAS can cause starvation for large flows in case of massive mice flows.
+One view is that whether priority-based scheduling methods can support bandwidth allocation. 
+Priority-based scheduling scheme is suitable for each tenant, 
+but can not easily be adopted to do bandwidth allocation among multiple tenants.}
+
+\Q{Is this idea novel? What's the difference from DCTCP~\cite{alizadeh2010data} and AC/DC TCP~\cite{he2016ac}?}
+
+\subsection{Thoughts}
+\begin{enumerate}
+\item OVS's egress QoS feature rate-limits each VM or container's throughput while helping smooth bursty traffic via
+traffic shaping. It has been observed that traffic shaping helps reduce packet loss especially today's datacenter
+networks are equipped with shallow buffered switches\cite{alizadeh2012less,traffic-shaping-ovs}.
+
+\item This work is not only about reducing end-host side latency, it also enables lossless 
+virtual network (or we call it software dataplanes) because our solution maintains buffers 
+but tries to minimize buffer occupancy. Packet burst is absorbed by the 
+buffer while our congestion handling schemes (ecn marking and modifying rwnd) 
+ensures that TCP will slow down. It shares the similar high level motivation as~\cite{crisan2013got}. 
+Both low latency and lossless are important to datacenter networks.
+
+\item  I found~\cite{linux-qdisc} very useful to understand queue disciplines in Linux. 
+So far I confirmed that ingress policing does NOT have queue at all, 
+it just drops packets when the rate is higher than the specified rate. 
+Egress qos calls queue disciplines to shape traffic.
+\end{enumerate}
+
+\section*{Plan}
+\begin{enumerate}
+\item Draw figures: latency changes with the rate-limiter's rate.
+\item Figure: different buffer length leading to different loss and latency.
+\item Run DCTCP~\cite{alizadeh2010data} congestion control algorithm on the end-host. 
+Find a way to get the qdisc length, based on the qdisc length, 
+perform ECN marking in OVS~\cite{he2016ac,cronkite2016virtualized}. If we can observe that latency is reduced, 
+then that implies our solution works. Actually this is what exactly we will do for containers.
+
+\item In long paper, verify the assumption, incoming ACK is in a fine granularity stream.
+\end{enumerate}
+
+
+\pagebreak
+\fi

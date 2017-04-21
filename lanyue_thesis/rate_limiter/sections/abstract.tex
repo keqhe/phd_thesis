@@ -1,0 +1,19 @@
+\begin{abstract}
+
+A lot of recent work has been focusing on solving in network latency in datacenter networks. 
+In this paper, we focus on a less explored topic \textemdash\xspace latency 
+increase caused by rate limiters on the end-host. 
+We show that latency can be increased by an order of magnitude 
+by the rate limiters in cloud networks, 
+and simply extending ECN into rate limiters is not sufficient. 
+To this end, we propose two techniques \textemdash\xspace~\dem{} and~\spring{} to improve the performance of rate limiters. 
+Our experiment results demonstrate that~\dem{} and~\spring{} enabled 
+rate limiters can achieve high (and stable) throughput and low latency.
+
+\iffalse
+Bandwidth guarantee is an essential feature to satisfy tenants' QoS requirement in clouds. However, its token-buffer-based implementation is not compatible with other aspects of QoS, i.e., latency and packet loss. In this paper, we propose to \name, which guarantees bandwidth allocation, low latency and little packet loss. The main idea is to maintain a large token buffer to tolerate traffic burst and keep low buffer occupancy to obtain low queuing latency. The low occupancy is achieved by carefully adjust traversing flows' sending rate. We implement \name in two ways for different virtualized environments: 
+(1) adjust flows' congestion window directly at token buffers according to instantaneous queue length, which suits VM-based clouds,  (2) enable ECN at token buffers and leverage DCTCP for congestion control at end points, which suits container-based clouds. We integrate \name into a widely used virtual switch \textemdash\xspace OVS, so that \name can be deployed without any changes to OS kernels. And our evaluation shows \wenfei{result}.
+
+\fi
+
+\end{abstract}

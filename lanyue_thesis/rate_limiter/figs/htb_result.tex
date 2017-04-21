@@ -1,0 +1,43 @@
+\begin{table*}[!tb]
+\centering
+\tiny
+{\setlength{\tabcolsep}{1pt}
+\begin{tabular}{|l|l|llll|llll|llll|llll|}
+\hline
+numReceiver          & 1   & 1    & 1    & 1   & 1    & 1    & 1    & 1    & 1   & 1    & 1     & 1      & 1       & 1    & 1    & 1      & 1       \\
+numFlows/receiver    & -   & 1    & 1    & 1   & 1    & 2    & 2    & 2    & 2   & 8    & 8     & 8      & 8       & 16   & 16   & 16     & 16      \\
+rate/receiver (Gbps) & -   & 1    & 2    & 4   & 8    & 1    & 2    & 4    & 8   & 1    & 2     & 4      & 8       & 1    & 2    & 4      & 8       \\
+total rate (Gbps)    & -   & 1    & 2    & 4   & 8    & 1    & 2    & 4    & 8   & 1    & 2     & 4      & 8       & 1    & 2    & 4      & 8       \\
+\hline
+total tput (mbps)    & -   & 951  & 1910 & 3820 & 7380  & 945  & 1910 & 3820 & 7500 & 958  & 1915  & 3827   & 7627    & 960  & 1920 & 3829   & 7655    \\
+b/w saturation (\%)  & -   & 95.1 & 95.5 & 95.5 & 95.3  & 94.5 & 95.5 & 95.5 & 93.8 & 95.8 & 95.8  & 95.7   & 95.3    & 96   & 96   & 95.7   & 95.7 \\
+\hline
+50\% RTT (us)        & 116 & 957  & 883  & 643 & 1583 & 1513 & 1078 & 1047 & 853 & 2316 & 1766  & 1529   & 1110    & 3192 & 2373 & 1880   & 1262    \\
+99.9\% RTT (us)      & 237 & 1115 & 1000 & 706 & 1673 & 1701 & 1203 & 1132 & 933 & 2527 & 1939  & 1637   & 1208    & 3320 & 2511 & 2016   & 1486   \\
+\hline
+\end{tabular}}
+\caption{HTB experiments for one receiver VM}
+\label{tbl:htb-1rec}
+\end{table*}
+
+\begin{table*}[!tb]
+\centering
+\tiny
+
+{\setlength{\tabcolsep}{1pt}
+\begin{tabular}{|l|l|llll|llll|llll|llll|}
+\hline
+numReceiver          & 2   & 2    & 2    & 2    & 2    & 2    & 2    & 2    & 2    & 2     & 2     & 2     & 2     & 2     & 2     & 2     & 2     \\
+numFlows/receiver    & -   & 1    & 1    & 1    & 1    & 2    & 2    & 2    & 2    & 8     & 8     & 8     & 8     & 16    & 16    & 16    & 16    \\
+rate/receiver (Gbps) & -   & 2    & 3    & 4    & 5    & 2    & 3    & 4    & 5    & 2     & 3     & 4     & 5     & 2     & 3     & 4     & 5     \\
+total rate (Gbps)    & -   & 10   & 10   & 10   & 10   & 10   & 10   & 10   & 10   & 10    & 10    & 10    & 10    & 10    & 10    & 10    & 10    \\
+\hline
+total tput (mbps)    & -   & 9420 & 9420 & 9410 & 9410 & 9410 & 9420 & 9420 & 9420 & 9224  & 9392  & 9321  & 9401  & 9182  & 9161  & 9225  & 9296  \\
+b/w saturation (\%)  & -   & 94.2 & 94.2 & 94.1 & 94.1 & 94.1 & 94.2 & 94.2 & 94.2 & 92.2  & 93.9  & 93.2  & 94.0  & 91.8  & 91.6  & 92.3  & 93.0 \\ \hline
+50\% RTT (us)        & 118 & 475  & 797  & 1515 & 1658 & 699  & 916  & 1006 & 1036 & 1512  & 1407  & 1410  & 1587  & 2023  & 2040  & 2064  & 1986  \\
+99.9\% RTT (us)      & 135 & 551  & 849  & 1626 & 1751 & 983  & 989  & 1102 & 1115 & 1697  & 1673  & 1532  & 1768  & 2147  & 2182  & 2185  & 2100 \\
+\hline
+\end{tabular}}
+\caption{HTB experiments for two receiver VMs}
+\label{tbl:htb-2rec} 
+\end{table*}

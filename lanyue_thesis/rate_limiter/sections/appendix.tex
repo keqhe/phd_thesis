@@ -1,0 +1,37 @@
+\ifdefined\draft
+
+\appendix
+
+\iffalse
+\subsection{Code to Get Qdisc Length}
+\label{ssec:code} \mylabel{ssec:code}
+
+\begin{lstlisting}[language=c, basicstyle=\scriptsize, 
+	upquote=true, numbers=left, numbersep=0.5em, 
+	breaklines=true, showstringspaces=false, 
+	keywordstyle=\color{blue}\textbf, 
+	commentstyle=\color{purple}\textit]
+#include <linux/netdevice.h>
+#include <linux/rcupdate.h>
+#include <net/sch_generic.h>
+// kernel 4.2
+// http://lxr.free-electrons.com/source/net/core/dev.c?v=4.2#L3036
+int GetQdiscLength(struct sk_buff *skb)
+{
+    struct net_device *dev = skb->dev;
+    struct netdev_queue *txq;
+    struct Qdisc *q;
+    struct sock *sk = skb->sk;
+    int ret = -1;
+    if(sk==NULL) goto qdisc_end;
+    int queue_index =  sk->sk_tx_queue_mapping ;
+    txq = &dev->_tx[queue_index];
+    q = rcu_dereference_bh(txq->qdisc);
+    if (q!=NULL && q->enqueue) ret = qdisc_qlen(q);
+qdisc_end:
+    // printk(KERN_ALERT "net_device is %s, qdisc_length is %d\n", dev->name, ret);
+    return ret;
+}
+\end{lstlisting}
+\fi
+\fi

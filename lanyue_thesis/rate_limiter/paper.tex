@@ -1,0 +1,92 @@
+\documentclass{apnet17}
+\input{header.tex}
+\usepackage{times}
+%\usepackage{epsfig}
+%\usepackage[TABBOTCAP]{subfigure}
+%\usepackage{tabularx}
+\usepackage{graphicx}
+%\usepackage{color}
+%\usepackage{xspace}
+%\usepackage{thumbpdf}
+\usepackage{listings}
+%\usepackage{verbatim}
+%\usepackage{hyperref}
+%\usepackage{booktabs}
+%\usepackage{colortbl}
+
+\usepackage{amssymb}% http://ctan.org/pkg/amssymb
+\usepackage{pifont}% http://ctan.org/pkg/pifont
+
+\hypersetup{pdfstartview=FitH,pdfpagelayout=SinglePage}
+\setlength\paperheight {11in}
+\setlength\paperwidth {8.5in}
+\setlength{\textwidth}{7in}
+\setlength{\textheight}{9.25in}
+\setlength{\oddsidemargin}{-.25in}
+\setlength{\evensidemargin}{-.25in}
+%\setlength{\headsep}{0in}
+\pagenumbering{arabic}
+
+\begin{document}
+
+\def\draft{1}
+
+\newcommand{\note}[1]{\textcolor{red}{[note: #1]}}
+\ifdefined\draft
+\newcommand{\mylabel}[1]{\textcolor{blue}{LABEL: #1}}
+\newcommand{\wenfei}[1]{\textcolor{red}{[Wenfei: #1]}}
+\newcommand{\keqhe}[1]{\textcolor{blue}{[keqhe: #1]}}
+\else
+\newcommand{\mylabel}[1]{}
+\newcommand{\wenfei}[1]{}
+\newcommand{\keqhe}[1]{}
+\fi
+
+\newcommand{\name}{$C^3$\xspace}
+\newcommand{\dem}{DEM\xspace}
+\newcommand{\spring}{SPRING\xspace}
+\newcommand{\nameone}{DEM\xspace}
+\newcommand{\nametwo}{SPRING\xspace}
+\newcommand{\tightparagraph}[1]{\vspace{5pt}\noindent\textbf{#1}\ }
+\newcommand{\cmark}{\ding{51}}%
+\newcommand{\xmark}{\ding{55}}%
+
+\conferenceinfo{APNet 2017} {}
+\CopyrightYear{2017}
+\crdata{X}
+\date{}
+
+%%%%%%%%%%%% THIS IS WHERE WE PUT IN THE TITLE AND AUTHORS %%%%%%%%%%%%
+
+\title{Low Latency Software Rate Limiters for Cloud Networks}
+\author{\#xxx, xxx pages}
+
+\maketitle
+
+%\thispagestyle{empty}
+
+%%%%%%%%%%%%%  ABSTRACT GOES HERE %%%%%%%%%%%%%%
+
+
+\input{sections/abstract.tex}
+\input{sections/introduction.tex}
+\input{sections/background.tex}
+\input{sections/measurement.tex}
+%\input{sections/overview.tex}
+\input{sections/design.tex}
+%\input{sections/implementation.tex}
+\input{sections/evaluation.tex}
+\input{sections/conclusion.tex}
+%\input{todo.tex}
+%\input{sections/appendix.tex}
+
+%\section*{Acknowledgments}
+
+\bibliographystyle{abbrv}
+%\begin{small}
+\bibliography{paper}
+%\end{small}
+\label{last-page}
+
+\end{document}
+
