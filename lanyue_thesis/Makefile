@@ -21,4 +21,4 @@ $(MAIN).aux: $(MAIN).tex
 	pdflatex $(MAIN)	
 
 clean:
-	rm -rf *.aux *.log *.bbl *.toc *.lof *.pdf *.xml
+	rm -rf *.idx *.blg *.aux *.log *.bbl *.toc *.lof *.pdf *.xml

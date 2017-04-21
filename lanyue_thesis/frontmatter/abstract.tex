@@ -6,62 +6,81 @@
 % same spacing.
 
 
-Digital data is essential to our daily lives and businesses. 
-The amount of data generated each year grows exponentially. Various
-storage systems were developed to meet different data management
-requirements. For decades, researchers and practitioners have been
-trying to overcome a central challenge in these storage systems: how
-to reliably and efficiently access data on different storage devices.  
+Datacenter networks are critical building blocks for modern cloud computing 
+infrastructures. The capability of a datacenter network affects the performance of 
+applications and services running in datacenters. Today's applications are 
+becoming more and more demanding, requiring low latency, high throughput and low packet 
+loss rate. 
+Thus improving datacenter network performance is an important and timely research direction.
 
-In the first part of the dissertation, we respond to this challenge
-with a comprehensive study of modern Linux file systems to understand 
-practical reliability and performance problems in existing file
-systems. We analyze eight years of Linux file-system changes across
-5079 patches. We focus on file-system bugs by studying their
-fine-grained patterns, consequences and trends. We find that about
-40\% of patches are bugs, existing in both new and mature
-file systems; they do not diminish despite the stability. Most of the
-bugs lead to system crashes or data corruption. We also exam
-performance and reliability patches. The performance techniques used
-were relatively common and widespread. About a quarter of performance 
-patches reduced synchronization overheads. Reliability techniques
-seemed to be added in a rather ad hoc fashion. 
+Datacenter networks are complicated systems with many functionalities or components. 
+Any less optimized functionality can degrade network performance and affect applications.
+In this dissertation, we discuss how we can leverage the flexibility and high 
+programmability of software-defined network edge (i.e., end-host networking) to 
+improve traffic load balancing, congestion control and rate limiting functionalities in datacenter networks.
 
-From the file system study, we find that file systems lack enough
-reliability isolation: a small fault can impact the whole file system.
-To solve this problem, we propose IceFS, a novel file system that
-separates physical structures of the file system for better isolation.
-A new abstraction, the cube, was provided to enable the grouping of
-files and directories inside a physically isolated 
-container.  We show three major benefits of cubes within IceFS:
-localized reaction to faults, fast recovery, and concurrent file-system
-updates. We demonstrate that IceFS is able to localize failures that
-were previously global, and recover quickly using localized online or
-offline fsck. IceFS can also provide specialized journaling to meet diverse
-application requirements for performance and consistency.
-Furthermore, we conduct two cases studies where IceFS is used to
-host multiple virtual machines and is deployed as the local file
-system for HDFS data nodes. IceFS achieves fault isolation and fast
-recovery in both scenarios, proving its usefulness in modern storage 
-environments.
+We first look into traffic load balancing functionality in datacenter networks.
+Modern datacenter networks need to deal with a variety of workloads, ranging
+from latency-sensitive small flows to bandwidth-hungry
+large flows. Load balancing schemes based on flow hashing,
+e.g., ECMP, cause congestion when hash collisions occur
+and can perform poorly in asymmetric topologies. Recent
+proposals to load balance the network require centralized
+traffic engineering, multipath-aware transport, or expensive
+specialized hardware. We propose a mechanism that
+avoids these limitations by (i) pushing load-balancing functionality
+into the soft network edge (e.g., virtual switches)
+such that no changes are required in the transport layer, customer
+VMs, or networking hardware, and (ii) load balancing
+on fine-grained, near-uniform units of data (flowcells)
+that fit within end-host segment offload optimizations used
+to support fast networking speeds. We design and implement
+such a soft-edge load balancing scheme called Presto, and
+evaluate it on a 10 Gbps physical testbed. We demonstrate
+the computational impact of packet reordering on receivers
+and propose a mechanism to handle reordering in the TCP
+receive offload functionality. Presto's performance closely
+tracks that of a single, non-blocking switch over many workloads
+and is adaptive to failures and topology asymmetry.
 
-Motivated by physical separation techniques leading to better
-performance in IceFS, we continue to explore similar techniques in
-another important type of storage systems: key-value stores. 
-We present WiscKey, a persistent LSM-tree-based key-value 
-store with a novel performance-oriented data layout that separates
-keys and values to minimize I/O amplification. The data layout and I/O
-patterns of WiscKey are highly optimized for SSD devices. 
-We solve a number of reliability and performance challenges
-introduced by the new key-value separation architecture. We propose a
-parallel range query design to leverage the SSD's internal parallelism
-for better range query performance on unordered datasets. We also
-introduce an online and light-weight garbage collector for WiscKey to
-reclaim the invalid key-value pairs without affecting the foreground
-workloads much. We demonstrate the advantages of WiscKey with both
-microbenchmarks and YCSB workloads. Microbenchmark results show that
-WiscKey is 2.5$\times$ - 111$\times$ faster than LevelDB for loading a
-database and 1.6$\times$ - 14$\times$ faster for random lookups.
-WiscKey is faster than both LevelDB and RocksDB in all six YCSB
-workloads, and follows a trend similar to the microbenchmarks. 
+Optimized traffic load balancing alone is not sufficient to 
+guarantee high-performance datacenter networks. 
+%In multi-tenant datacenters, tenants can
+%seamlessly port their applications and services to the cloud.
+Virtual Machine (VM) technology plays an integral role in
+modern multi-tenant clouds by enabling a diverse set of software to be run
+on a unified underlying framework. This flexibility, however,
+comes at the cost of dealing with outdated, inefficient,
+or misconfigured TCP stacks implemented in the VMs. we
+ investigate if cloud providers can take control of a VM's
+TCP congestion control algorithm without making changes
+to the VM or network hardware. We propose a network edge-based 
+ congestion control virtualization technique called AC/DC TCP.
+AC/DC TCP exerts fine-grained control over arbitrary tenant
+TCP stacks by enforcing per-flow congestion control in
+the virtual switch (vSwitch) in the hypervisor. AC/DC TCP is light-weight,
+flexible, scalable and can police non-conforming flows. Our experiment results demonstrate that 
+implementing an administrator-defined congestion control algorithm in the
+vSwitch (i.e., DCTCP) closely tracks its native performance,
+regardless of the VM's TCP stack.
+
+Presto and AC/DC TCP help reduce queueing latency in 
+network switches (i.e., ``in network'' latency), but we observe that 
+rate limiters on end-hosts can increase network latency by an order of magnitude or even more. 
+Rate limiters are employed to provide bandwidth allocation functionality, 
+which is an indispensable feature of multi-tenant clouds. Rate limiters
+maintain a queue of outstanding packets and control the speed at which
+packets are dequeued into the network. This queuing introduces
+additional network latency. For example, in our experiments, we find
+that software rate limiting (HTB) increases latency by 1-3 milliseconds
+across a range of different environment settings. 
+We find that simply extending ECN into rate limiters is not sufficient. 
+To this end, we propose two techniques \textemdash\xspace~\dem{} and~\spring{} to 
+improve the performance of rate limiters.
+Our experiment results demonstrate that~\dem{} and~\spring{}-enabled
+rate limiters can achieve high stable throughput and low latency.
+
+
+
+
 
