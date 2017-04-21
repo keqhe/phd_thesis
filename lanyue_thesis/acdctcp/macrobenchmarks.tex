@@ -22,19 +22,19 @@
 
 \begin{figure*}[!t]
         \centering
-        \begin{subfigure}[b]{0.3\textwidth}
+        \begin{subfigure}[b]{0.45\textwidth}
                 \centering
                 \includegraphics[width=\textwidth]{acdctcp/figures/incast/plots9k/incast_sockperf50th_vary_sender.pdf}
                 \caption{50$^{th}$ percentile RTT.}
                 \label{incast_9k_50th_sockperf}
         \end{subfigure}
-        \begin{subfigure}[b]{0.3\textwidth}
+        \begin{subfigure}[b]{0.45\textwidth}
                 \centering
                 \includegraphics[width=\textwidth]{acdctcp/figures/incast/plots9k/incast_sockperf999th_vary_sender.pdf}
                 \caption{99.9$^{th}$ percentile RTT.}
                 \label{incast_9k_999th_sockperf}
         \end{subfigure}
-        \begin{subfigure}[b]{0.3\textwidth}
+        \begin{subfigure}[b]{0.45\textwidth}
                 \centering
                 \includegraphics[width=\textwidth]{acdctcp/figures/incast/plots9k/incast_droprate_vary_sender.pdf}
                 \caption{Packet drop rate.}
@@ -52,64 +52,6 @@
         \label{sockperf_pressure_incast}
 \end{figure}
 
-%
-%
-
-\iffalse
-\begin{figure*}[!t]
-        \centering
-        \begin{subfigure}[b]{0.45\textwidth}
-                \centering
-                \includegraphics[width=\textwidth]{acdctcp/figures/macro_benchmarks/macro_4stride/stride4_mice16KB_fct.pdf}
-                \caption{Mice flow completion times.}
-                \label{macro_4stride_mice_fct}
-        \end{subfigure}
-        \begin{subfigure}[b]{0.45\textwidth}
-                \centering
-                \includegraphics[width=\textwidth]{acdctcp/figures/macro_benchmarks/macro_4stride/stride4_big512MB_fct.pdf}
-                \caption{Background flow completion times.}
-                \label{macro_4stride_background_fct}
-        \end{subfigure}
-        \caption{CDF of mice and background FCTs in concurrent stride workload.}
-        \label{macro_4stride_fct}
-\end{figure*}
-
-\begin{figure*}[!t]
-        \centering
-        \begin{subfigure}[b]{0.45\textwidth}
-                \centering
-                \includegraphics[width=\textwidth]{acdctcp/figures/macro_benchmarks/shuffle_17hosts/shuffle_mice16KB_fct.pdf}
-                \caption{Mice flow completion times.}
-                \label{macro_shuffle_mice_fct}
-        \end{subfigure}
-        \begin{subfigure}[b]{0.45\textwidth}
-                \centering
-                \includegraphics[width=\textwidth]{acdctcp/figures/macro_benchmarks/shuffle_17hosts/shuffle_big512MB_fct.pdf}
-                \caption{Background flow completion times.}
-                \label{macro_shuffle_background_fct}
-        \end{subfigure}
-        \caption{CDF of mice and background FCTs in shuffle workload.}
-        \label{macro_shuffle_fct}
-\end{figure*}
-
-\begin{figure*}[!t]
-        \centering
-        \begin{subfigure}[b]{0.45\textwidth}
-                \centering
-                \includegraphics[width=\textwidth]{acdctcp/figures/macro_benchmarks/trace-driven/trace_driven_workload_dctcp_senders5_10points.pdf}
-                \caption{Web-search workload.}
-                \label{trace-driven-searching-fct}
-        \end{subfigure}
-        \begin{subfigure}[b]{0.45\textwidth}
-                \centering
-                \includegraphics[width=\textwidth]{acdctcp/figures/macro_benchmarks/trace-driven/trace_driven_workload_conga_senders5_10points.pdf}
-                \caption{Data-mining workload.}
-                \label{trace-driven-data-mining-fct}
-        \end{subfigure}
-        \caption{CDF of mice ($<$10KB) FCT in web-search and data-mining workloads.}
-        \label{macro-trace-driven-fct}
-\end{figure*}
-\fi
 
 
 In this section we attach all servers to a single switch and
@@ -157,13 +99,13 @@ The packet drop rate for both DCTCP and~\acdc{} is 0\%.
 
 \begin{figure*}[!t]
         \centering
-        \begin{subfigure}[b]{0.45\textwidth}
+        \begin{subfigure}[b]{0.7\textwidth}
                 \centering
                 \includegraphics[width=\textwidth]{acdctcp/figures/macro_benchmarks/macro_4stride/stride4_mice16KB_fct.pdf}
                 \caption{Mice flow completion times.}
                 \label{macro_4stride_mice_fct}
         \end{subfigure}
-        \begin{subfigure}[b]{0.45\textwidth}
+        \begin{subfigure}[b]{0.7\textwidth}
                 \centering
                 \includegraphics[width=\textwidth]{acdctcp/figures/macro_benchmarks/macro_4stride/stride4_big512MB_fct.pdf}
                 \caption{Background flow completion times.}
@@ -175,13 +117,13 @@ The packet drop rate for both DCTCP and~\acdc{} is 0\%.
 
 \begin{figure*}[!t]
         \centering
-        \begin{subfigure}[b]{0.45\textwidth}
+        \begin{subfigure}[b]{0.7\textwidth}
                 \centering
                 \includegraphics[width=\textwidth]{acdctcp/figures/macro_benchmarks/shuffle_17hosts/shuffle_mice16KB_fct.pdf}
                 \caption{Mice flow completion times.}
                 \label{macro_shuffle_mice_fct}
         \end{subfigure}
-        \begin{subfigure}[b]{0.45\textwidth}
+        \begin{subfigure}[b]{0.7\textwidth}
                 \centering
                 \includegraphics[width=\textwidth]{acdctcp/figures/macro_benchmarks/shuffle_17hosts/shuffle_big512MB_fct.pdf}
                 \caption{Background flow completion times.}
@@ -193,13 +135,13 @@ The packet drop rate for both DCTCP and~\acdc{} is 0\%.
 
 \begin{figure*}[!t]
         \centering
-        \begin{subfigure}[b]{0.45\textwidth}
+        \begin{subfigure}[b]{0.7\textwidth}
                 \centering
                 \includegraphics[width=\textwidth]{acdctcp/figures/macro_benchmarks/trace-driven/trace_driven_workload_dctcp_senders5_10points.pdf}
                 \caption{Web-search workload.}
                 \label{trace-driven-searching-fct}
         \end{subfigure}
-        \begin{subfigure}[b]{0.45\textwidth}
+        \begin{subfigure}[b]{0.7\textwidth}
                 \centering
                 \includegraphics[width=\textwidth]{acdctcp/figures/macro_benchmarks/trace-driven/trace_driven_workload_conga_senders5_10points.pdf}
                 \caption{Data-mining workload.}

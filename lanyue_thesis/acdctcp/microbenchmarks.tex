@@ -2,13 +2,13 @@
 \label{micro}
 \begin{figure}[!t]
         \centering
-        \begin{subfigure}[b]{0.45\textwidth}
+        \begin{subfigure}[b]{0.7\textwidth}
                 \centering
                 \includegraphics[width=0.7\textwidth]{acdctcp/figures/dumbbell_topology.pdf}
                 \caption{Dumbbell topology.}
                 \label{dumbbell_topology}
         \end{subfigure}
-        \begin{subfigure}[b]{0.45\textwidth}
+        \begin{subfigure}[b]{0.7\textwidth}
                 \centering
                 \includegraphics[width=0.7\textwidth]{acdctcp/figures/parkinglot_topology.pdf}
                 \caption{Multi-hop, multi-bottleneck (parking lot) topology.}
@@ -191,23 +191,23 @@ The results are shown with 1.5KB MTU because smaller packets incur higher overhe
 \begin{table*}[!t]
 \tiny
 \begin{center}
-\begin{tabular}{ |c|c|c|c|c|c|c|c|c| }
+\begin{tabular}{ |c|c|c|c|c|c|c| }
  \hline
- \multirow{2}{*}{CC Variants} & \multicolumn{2}{|c|}{50$^{th}$ percentile RTT ($\mu$s)} & \multicolumn{2}{|c|}{99$^{th}$ percentile RTT ($\mu$s)} & \multicolumn{2}{|c|}{Avg Tput (Gbps)} & \multicolumn{2}{|c|}{Fairness Index}\\
- \cline{2-9}
-       &  mtu=1.5KB & mtu=9KB & mtu=1.5KB & mtu=9KB & mtu=1.5KB & mtu=9KB & mtu=1.5KB & mtu=9KB\\
- \hline
- \hline
- CUBIC* &  3232     &   3448    &   3641     &  3865     &   1.89    & 1.98   &  0.85   &   0.98\\
- DCTCP* &  128      &   142    &   232    &   259    &   1.89    &   1.98  &  0.99    &   0.99\\
+ \multirow{2}{*}{CC Variants} & \multicolumn{2}{|c|}{50$^{th}$ percentile RTT ($\mu$s)} & \multicolumn{2}{|c|}{99$^{th}$ percentile RTT ($\mu$s)} & \multicolumn{2}{|c|}{Avg Tput (Gbps)}\\
+ \cline{2-7}
+       &  mtu=1.5KB & mtu=9KB & mtu=1.5KB & mtu=9KB & mtu=1.5KB & mtu=9KB \\
  \hline
  \hline
- CUBIC &   128     &   142    &    231    &   252    &   1.89    &  1.98   &  0.99    &  0.99 \\
- Reno  &   120     &   149    &    235    &   248    &   1.89    &  1.97   &  0.99    &  0.99 \\
-DCTCP  &   129     &   149    &    232    &   266    &   1.88    &  1.98   &  0.99    &  0.99 \\
-Illinois  &   134     &   152    &    215    &  262     &   1.89    &  1.97   &  0.99    &  0.99 \\
-HighSpeed  &   119     &  147     &    224    &  252     &   1.88    & 1.97    &  0.99    & 0.99  \\
- Vegas  &   126     &   143    &    216    &    251   &   1.89    &  1.97   &  0.99    &  0.99 \\
+ CUBIC* &  3232     &   3448    &   3641     &  3865     &   1.89    & 1.98   \\
+ DCTCP* &  128      &   142    &   232    &   259    &   1.89    &   1.98  \\
+ \hline
+ \hline
+ CUBIC &   128     &   142    &    231    &   252    &   1.89    &  1.98   \\
+ Reno  &   120     &   149    &    235    &   248    &   1.89    &  1.97   \\
+DCTCP  &   129     &   149    &    232    &   266    &   1.88    &  1.98    \\
+Illinois  &   134     &   152    &    215    &  262     &   1.89    &  1.97    \\
+HighSpeed  &   119     &  147     &    224    &  252     &   1.88    & 1.97     \\
+ Vegas  &   126     &   143    &    216    &    251   &   1.89    &  1.97   \\
 
  \hline
 
@@ -223,19 +223,19 @@ HighSpeed  &   119     &  147     &    224    &  252     &   1.88    & 1.97    &
 %%%convergence %%%
 \begin{figure*}[!t]
         \centering
-        \begin{subfigure}[b]{0.3\textwidth}
+        \begin{subfigure}[b]{0.45\textwidth}
                 \centering
                 \includegraphics[width=\textwidth]{acdctcp/figures/convergence/flowcontrolOFF/tcp_flowcontrolOFF_convergence.pdf}
                 \caption{CUBIC convergence test.}
                 \label{cubic_convergence}
         \end{subfigure}
-        \begin{subfigure}[b]{0.3\textwidth}
+        \begin{subfigure}[b]{0.45\textwidth}
                 \centering
                 \includegraphics[width=\textwidth]{acdctcp/figures/convergence/flowcontrolOFF/dctcp_flowcontrolOFF_convergence.pdf}
                 \caption{DCTCP convergence test.}
                 \label{dctcp_convergence}
         \end{subfigure}
-        \begin{subfigure}[b]{0.3\textwidth}
+        \begin{subfigure}[b]{0.45\textwidth}
                 \centering
                 \includegraphics[width=\textwidth]{acdctcp/figures/convergence/flowcontrolOFF/ovsdctcp_flowcontrolOFF_convergence.pdf}
                 \caption{\acdc{} convergence test.}
