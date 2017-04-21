@@ -106,7 +106,7 @@ A vSwitch-based approach can assign WAN flows to a congestion control algorithm 
 datacenter flows to one that optimizes datacenter performance, even if these flows originate from the same VM (\eg{}, a webserver).
 %This severely limits flexibility and forces tenants to optimize the performance of a subset of its flows. For example, a web server may choose a TCP stack to optimize
 %WAN performance~\cite{tan2006compound,flach2013reducing} at the cost of harming back-end performance within the datacenter.~\eric{still need to clean}
-Additionally, as shown in \cref{ss:cc-qos}, a flexible congestion control algorithm can provide relative bandwidth allocations to flows.
+Additionally, as shown in \sref{ss:cc-qos}, a flexible congestion control algorithm can provide relative bandwidth allocations to flows.
 This is useful when tenants or administrators want to prioritize flows assigned to the same quality-of-service class.
 In short, adjusting congestion control algorithms on a per-flow basis allows for 
 enhanced flexibility and performance.

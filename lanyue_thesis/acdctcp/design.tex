@@ -179,7 +179,7 @@ data. In practice, most feedback takes the form of PACKs.
 Once the fraction of ECN-marked packets is obtained, implementing DCTCP's logic is straightforward.
 Figure~\ref{acdc_cc} shows the high-level design. 
 First, congestion control (CC) information is extracted from FACKs and PACKs. Connection tracking
-variables (described in \cref{ss:tcpstate}) are updated based on the ACK. The variable
+variables (described in \sref{ss:tcpstate}) are updated based on the ACK. The variable
 $\alpha$ is an EWMA of the fraction of packets that experienced congestion and is updated roughly
 once per RTT. If congestion was not encountered (no loss or ECN), then {\tt tcp\_cong\_avoid} advances~\cwnd{}
 based on TCP New Reno's algorithm, using slow start or congestion avoidance as needed. If congestion was

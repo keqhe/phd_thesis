@@ -6,7 +6,7 @@ added about 1200 lines of code (many are debug/comments).
 A high-level overview follows.
 \crs{
 A hash table is added to OVS, and flows are hashed on a 5-tuple (IP addresses, ports and VLAN) to obtain a flow's state.
-The flow entry state is 320 bytes and is used to maintain the congestion control state mentioned in \cref{design}.
+The flow entry state is 320 bytes and is used to maintain the congestion control state mentioned in \sref{design}.
 SYN packets are used to create flow entries, and FIN packets, coupled with a course-grained garbage
 collector, are used to remove flow entries. Other TCP packets, such as data and ACKs, trigger 
 updates to flow entries.
@@ -21,7 +21,7 @@ for multiple flow entries to be updated simultaneously.
 Putting it together, the high-level operation on a data packet is as follows. An application on the sender generates a packet
 that is pushed down the network stack to OVS. The packet is intercepted in {\tt  ovs\_dp\_process\_packet}, where the
 packet's flow entry is obtained from the hash table. Sequence number state is updated in the flow entry and ECN bits are set on
-the packet if needed (see \cref{design}).
+the packet if needed (see \sref{design}).
 If the packet's header changes, the IP checksum is recalculated. Note TCP checksumming is offloaded to the NIC.
 The packet is sent over the wire and received at the receiver's OVS. The receiver updates congestion-related state, strips
 off ECN bits, recomputes the IP checksum, and pushes the packet up the stack. ACKs eventually triggered by the packet
@@ -32,7 +32,7 @@ Since TCP connections are bi-directional, two flow entries are maintained for ea
 }
 
 \crs{
-Our experiments in~\cref{micro} show the CPU overhead of~\acdc{} is small and several implementation details
+Our experiments in~\sref{micro} show the CPU overhead of~\acdc{} is small and several implementation details
 help reduce computational overhead. First, OVS sits 
 above NIC offloading features (\ie{}, TSO and GRO/LRO) in the networking stack. Briefly, NIC offloads allow 
 the host to pass large data segments along the TCP/IP stack and only deal with MTU-sized packets in the NIC. Thus,~\acdc{}
