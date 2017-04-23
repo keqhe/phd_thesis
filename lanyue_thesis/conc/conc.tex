@@ -1,14 +1,67 @@
 
 \section{Conclusion}
 
-This dissertation is mainly composed of three closely related research projects --- traffic 
-load balancing for datacenter networks, virtualized congestion control for multi-tenant 
-clouds and low latency software rate limiters for cloud networks. All these projects 
-leverage the flexibility and high programmability of software-defined network 
-edge (i.e., end-host networking) to improve network performance for datacenter networks. 
-As far as we know, the techniques and mechanisms proposed in this dissertation are novel and original. 
-We believe they  will be valuable to the computer networking research community. 
-In the following, we provide a short conclusion for each work in turn.
+In this dissertation, we present three research projects --- 1) an edge-based traffic 
+load balancing system (i.e., Presto) for datacenter networks, 2) virtualized congestion 
+control technique for multi-tenant clouds (~\acdc TCP) and 3) low latency software rate 
+limiters for cloud networks. All of them leverage the flexibility and high 
+programmability of software-defined network edge (i.e., end-host networking) to improve 
+the performance of datacenter networks. Each of these three projects focuses on one 
+crucial functionality in datacenter networks. In the following, we provide a short 
+conclusion for each project in turn.
 
+
+{\bf Presto: Edge-based Load Balancing for Fast Datacenter Networks.} 
+Modern datacenter networks are built with multi-stage Clos networks. There are 
+usually tens to hundreds of network paths between two servers in the same datacenter.
+The state-of-the-art traffic load balancing uses flow-level schemes (e.g., ECMP and WCMP). 
+However, flow-level load balancing schemes suffer from the elephant flow collision problem. 
+Elephant flow collisions lead to reduced throughput and increased latency. 
+We propose Presto to address this classic problem. Presto is an end-host-based traffic 
+load balancing system. At the sender side, Presto uses virtual switch (OVS) to 
+chunk elephant flows into flowcell (a flowcell consists of multiple consecutive 
+TCP segments and its maximum size is 64KB) and spread the flowcells evenly over 
+multiple network paths. At the receiver side, we design and implement improved Generic 
+Receive Offload (GRO) functionality in Linux networking subsystem to mask packet reordering for TCP. 
+Presto makes sure mice flows (smaller than or equal to 64KB in size) are not exposed to packet 
+ordering issue. Note that in realistic datacenter networks, the overwhelming majority of the 
+flows are mice flows. For elephant flows, Presto's improved GRO logic puts flowcells in 
+order before they are pushed up to TCP. Presto eliminates the elephant flow collision 
+problem and demonstrates that subflow-level traffic load balancing is possible and effective. 
+
+
+{\bf ~\acdc{} TCP: Virtual Congestion Control Enforcement for Datacenter Networks.}
+ In multi-tenant clouds, tenants manage their own Virtual Machines (VMs). VM TCP stacks' congestion 
+control algorithms can be outdated, inefficient or even misconfigured. Those outdated, inefficient 
+or even misconfigured VM TCP stacks can cause severe network congestion and throughput fairness issue. 
+Network congestion and throughput unfairness affect the performance of the applications running in 
+clouds (e.g., increased task completion time). To address this problem, we present~\acdc{} TCP, 
+a virtual congestion control enforcement technique for datacenter networks. The key idea of~\acdc{} TCP 
+is to implement an intended congestion control algorithm (i.e., DCTCP) in the virtual switch in the hypervisor 
+and the congestion control decisions are enforced via modifying TCP header's~\rwnd{} field. 
+Our experiment results show that enforcing an intended congestion control algorithm in 
+the network virtualization layer can greatly reduce network latency and throughput fairness. 
+Also,~\acdc{} TCP's CPU and memory overhead is negligible.  
+
+{\bf Low Latency Software Rate Limiters for Cloud Networks.}
+ Rate limiters are employed to provide bandwidth allocation feature in multi-tenant clouds. 
+For example, in Google Cloud Platform, different kinds of VMs are allocated with 
+different maximum bandwidth. However, we find that rate limiters can increase network latency 
+by an order of magnitude or even higher. That is because traffic shaping 
+(the underlying mechanism of rate limiters) maintains a queue to absorb bursty traffic 
+and dequeues packets into the network based on preconfigured rate. To solve this 
+problem, we first extend ECN into rate limiter queues and apply DCTCP on the end-host. 
+Though this straightforward scheme reduces network latency significantly, it can also 
+lead to TCP throughput oscillation because of coarse-grained segment-level ECN marking 
+and long congestion control loop latency. To address the shortcomings of the straightforward scheme, 
+we present~\dem{}, which directly sets TCP ECE bit in reverse ACKs and~\spring{} which runs 
+a queue-length-based congestion control algorithm and enforces congestion control decisions 
+via modifying~\rwnd{} field in reverse ACKs. Both~\dem{} and~\spring{} enable low latency, 
+high network saturation rate limiters.~\dem{} relies on ECN support while~\spring{} is 
+generic and can handle both ECN flows and non-ECN flows.
+
+The techniques and mechanisms proposed in this dissertation are original. 
+We believe the research work presented in this dissertation will be valuable to 
+the computer networking research community.
 
 %\cite{example}
