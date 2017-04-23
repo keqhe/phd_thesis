@@ -95,20 +95,21 @@ we analyze whether traffic loads can be predictable or not. If so, we can utiliz
 big-data systems and machine learning techniques to help us apply better traffic load 
 balancing schemes to reduce the possibility of network congestion and improve the 
 performance of applications. We believe such a machine-learning-aided load balancing 
-system can be applied to different scenarios. For example, it can be applied for 
+system can be applied to different scenarios. For example, it can be applied in 
 both intra-datacenter networks and wide-area inter-datacenter networks.
 
 {\bf Near Real Time Network Congestion Monitoring.}
-Network congestion is a crucial performance hurdle for high performance cloud computing services like big data analytics.
+Network congestion is a crucial performance hurdle for high performance cloud computing services like 
+search, query and remote procedure calls.
 Studies have shown that end-to-end network latency (TCP RTT) can be increased by tens of milliseconds due to network congestion. Such a huge network latency can affect customer's experience and can have significant negative impacts on revenue.
 Therefore, one research question is whether we can monitor network congestion in (near) real time manner.
 If the answer is yes, how we should provide such information to network administrators or developers
 in the cloud? How we can quickly reroute network traffic to bypass congested network paths?
-This research question is challenging because network congestion information should be obtained in
+This research problem is challenging because network congestion information should be obtained in
 (near) real time manner such that application traffic can be rerouted to avoid buffer building up.
 In today's data center networks, the base line end-to-end latency is around 40 to
 200 microseconds, so we need to reduce the ``monitoring and action''
-control loop well below such as a bound.
-To achieve this goal, we may need to explore recent advances in fast software packet processing and
-modern hardware features on the switch.
+control loop latency as small as possible.
+To achieve this goal, we may need to explore recent advances in fast software packet processing 
+(e.g., DPDK~\cite{intel-dpdk}) and modern hardware features on the switch.
 %\cite{example}

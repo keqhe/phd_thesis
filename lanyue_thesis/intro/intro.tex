@@ -8,7 +8,7 @@ business model and are deploying highly advanced cloud computing infrastructures
 Market analysis~\cite{cloud-market2020}
 has predicted that the global cloud computing market will
 reach \$270 billion by 2020. The success of cloud computing is
-not accidental \textemdash\xspace it is rooted in many advantages that cloud computing offers
+not accidental \textemdash\xspace it is rooted in many advantages cloud computing offers
 over traditional computing model. The most notable feature is that tenants
 (customers) who rent the computing resources (e.g., CPUs, memory, storage, and network) can get equivalent computing power
 with \emph{lower cost}. This is because the computing resources are shared among multiple users and
@@ -23,8 +23,8 @@ rapidly growing businesses.
 Datacenter networks are important components in modern cloud computing infrastructures. 
 High-performance cloud computing infrastructures require high-speed, low latency, scalable and 
 highly robust datacenter networking solutions to support a massive amount of traffic. 
-Cisco Global Cloud Index~\cite{cisco-predict} predicts that annual global datacenter IP traffic will 
-reach 15.3 zettabytes (ZB) by 2020, which is 3 times large as 2015's (4.7 ZB). 
+Cisco Global Cloud Index~\cite{cisco-predict} predicts that the annual global datacenter IP traffic will 
+reach 15.3 zettabytes (ZB) by 2020, which is 3 times as large as 2015's (4.7 ZB). 
 The tremendous growth of datacenter traffic drives the need for high-performance 
 datacenter networking solutions. 
 
@@ -50,16 +50,15 @@ and it was increasingly harder for networking researchers to invent and test new
 techniques on existing networking devices. Their white paper~\cite{McKeown08} described the initial motivation 
 for OpenFlow. Ethane and OpenFlow started the revolution of Software-defined Networking (SDN). 
 Later on, an open source implementation of SDN-capable virtual switch, Open vSwitch (OVS)~\cite{Pfaff2015ovs}, was released. 
-OVS is now maintained by VMware. 
-OVS is widely deployed in cloud computing platforms to support network virtualization functionalities and 
+OVS has been widely deployed in cloud computing platforms to support network virtualization functionalities and 
 meet SDN-style network management requirements.
-OVS opened the door of software-define network edge (i.e., end-host network) in datacenter environments.
+OVS opened the door of software-define network edge (i.e., end-host networking) in datacenter environments.
 End-host networking covers many components, for example, TCP/IP stack, virtual switch, rate limiters and NIC hardware. 
 In a datacenter network, all the servers (and hypervisors) are managed by a single entity 
 (i.e., the cloud provider), therefore, there are a lof of opportunities for innovations, 
 especially the innovations in end-host networking.
 
-In this thesis, I will present our research works on improving datacenter networking performance. 
+In this thesis, I will present our research work on improving datacenter networking performance. 
 Performance here refers to network throughput, latency and packet loss etc. 
 The major theme of this thesis is to leverage the intelligent software-defined network 
 edge (i.e., end-host networking) to improve the performance for datacenter networks.
@@ -71,7 +70,7 @@ low latency software rate limiters for cloud networks.
 \section{Edge-based Traffic Load Balancing}
 
 Modern datacenter networks are built with multi-stage Clos networks. 
-A good example of such topologies is Google's Jupiter topology~\cite{singh2015jupiter}. 
+An example of such topologies is Google's Jupiter topology~\cite{singh2015jupiter}. 
 A nice property of multi-stage Clos network is that there are tens to hundreds of 
 network paths between any two servers in the datacenter. Path diversity is good for network 
 reliability and traffic load balancing. The state-of-the-art approach of traffic load balancing 
@@ -224,8 +223,8 @@ to provide congestion control virtualization for multi-tenant clouds.
 To the best of our knowledge, we are one of the first two research teams\footnote{The other team is from 
 Stanford, VMware and Israel Institute of Technology~\cite{vcc}; we invented the same technique independently.} in the world to 
 propose the congestion control virtualization technique for cloud networks. 
-We validate its feasibility on a real testbed and demonstrate that it provides similar 
-performance as the intended congestion control algorithm. Chapter~\ref{thesis:chapter:acdctcp} covers the details of AC/DC TCP.
+We validate its feasibility on a real testbed and demonstrate that it closely tracks the performance of
+the native congestion control algorithm (e.g., DCTCP). Chapter~\ref{thesis:chapter:acdctcp} covers the details of AC/DC TCP.
  
 \item Low Latency Software Rate Limiters. Rate limiters are important 
 components for multi-tenant clouds. We conduct experiments to show that network latency 
