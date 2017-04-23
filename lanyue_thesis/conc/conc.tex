@@ -19,7 +19,7 @@ However, flow-level load balancing schemes suffer from the elephant flow collisi
 Elephant flow collisions lead to reduced throughput and increased latency. 
 We propose Presto to address this classic problem. Presto is an end-host-based traffic 
 load balancing system. At the sender side, Presto uses virtual switch (OVS) to 
-chunk elephant flows into flowcell (a flowcell consists of multiple consecutive 
+chunk elephant flows into flowcells (a flowcell consists of multiple consecutive 
 TCP segments and its maximum size is 64KB) and spread the flowcells evenly over 
 multiple network paths. At the receiver side, we design and implement improved Generic 
 Receive Offload (GRO) functionality in Linux networking subsystem to mask packet reordering for TCP. 
@@ -40,16 +40,18 @@ a virtual congestion control enforcement technique for datacenter networks. The 
 is to implement an intended congestion control algorithm (i.e., DCTCP) in the virtual switch in the hypervisor 
 and the congestion control decisions are enforced via modifying TCP header's~\rwnd{} field. 
 Our experiment results show that enforcing an intended congestion control algorithm in 
-the network virtualization layer can greatly reduce network latency and throughput fairness. 
+the network virtualization layer can greatly reduce network latency and improve throughput fairness. 
 Also,~\acdc{} TCP's CPU and memory overhead is negligible.  
 
 {\bf Low Latency Software Rate Limiters for Cloud Networks.}
  Rate limiters are employed to provide bandwidth allocation feature in multi-tenant clouds. 
 For example, in Google Cloud Platform, different kinds of VMs are allocated with 
-different maximum bandwidth. However, we find that rate limiters can increase network latency 
+different maximum bandwidths. However, we find that rate limiters can increase network latency 
 by an order of magnitude or even higher. That is because traffic shaping 
 (the underlying mechanism of rate limiters) maintains a queue to absorb bursty traffic 
-and dequeues packets into the network based on preconfigured rate. To solve this 
+and dequeues packets into the network based on preconfigured rate. 
+Queueing latency in rate limiter queue inflates end-to-end network latency.
+To solve this 
 problem, we first extend ECN into rate limiter queues and apply DCTCP on the end-host. 
 Though this straightforward scheme reduces network latency significantly, it can also 
 lead to TCP throughput oscillation because of coarse-grained segment-level ECN marking 
@@ -64,4 +66,49 @@ The techniques and mechanisms proposed in this dissertation are original.
 We believe the research work presented in this dissertation will be valuable to 
 the computer networking research community.
 
+\section{Future Work}
+In the following, we list potential research topics in datacenter networking we may explore in the future.
+
+{\bf Automatic Datacenter Network Topology Analysis.}
+Datacenter network topology determines how scalable the network is,
+how resilient it is to link or switch failures and how easily the network
+can be incrementally deployed. Today's practice is that network architects need to
+manually infer (usually based on experiences) many key characteristics related to
+the candidate network topologies. So we lack a scientific and formal method to
+evaluate different network topologies. Therefore, there is a need to build a network
+topology analysis framework to help network architect analyze and compare
+candidate network topologies. To compare different network topologies, we need to
+set up metrics to quantify different network topologies. Our first goal is to
+identify a set of metrics (e.g., cost, wiring complexity, bandwidth, reliability, routing convergence) that
+can accurately quantify datacenter network topologies.  Also, we need to define a set of workloads
+and traffic patterns to run against the network. 
+Next, we want to investigate whether we can design and implement
+an automatic topology analysis framework to gain more insights and help design better network topologies.
+
+{\bf Applying Machine Learning Techniques for Traffic Load Balancing.}
+Datacenter networks are shared by a large amount of applications hosted in clouds. 
+Based on the fact that traffic is multiplexed and the conjecture that the majority of traffic 
+should be used by some top applications, predictable traffic patterns may 
+exist in the datacenter networks. First, we want to measure traffic load on each link 
+in a real datacenter network for a long time (e.g., a few months). Based on the measurement data, 
+we analyze whether traffic loads can be predictable or not. If so, we can utilize 
+big-data systems and machine learning techniques to help us apply better traffic load 
+balancing schemes to reduce the possibility of network congestion and improve the 
+performance of applications. We believe such a machine-learning-aided load balancing 
+system can be applied to different scenarios. For example, it can be applied for 
+both intra-datacenter networks and wide-area inter-datacenter networks.
+
+{\bf Near Real Time Network Congestion Monitoring.}
+Network congestion is a crucial performance hurdle for high performance cloud computing services like big data analytics.
+Studies have shown that end-to-end network latency (TCP RTT) can be increased by tens of milliseconds due to network congestion. Such a huge network latency can affect customer's experience and can have significant negative impacts on revenue.
+Therefore, one research question is whether we can monitor network congestion in (near) real time manner.
+If the answer is yes, how we should provide such information to network administrators or developers
+in the cloud? How we can quickly reroute network traffic to bypass congested network paths?
+This research question is challenging because network congestion information should be obtained in
+(near) real time manner such that application traffic can be rerouted to avoid buffer building up.
+In today's data center networks, the base line end-to-end latency is around 40 to
+200 microseconds, so we need to reduce the ``monitoring and action''
+control loop well below such as a bound.
+To achieve this goal, we may need to explore recent advances in fast software packet processing and
+modern hardware features on the switch.
 %\cite{example}
