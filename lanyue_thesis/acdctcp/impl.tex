@@ -1,8 +1,8 @@
 \section{Implementation}
 \label{impl}
-This section outlines relevant implementation details. We
-implemented~\acdc{} in Open vSwitch (OVS) v2.3.2~\cite{ovs-website} and
-added about 1200 lines of code (many are debug/comments). 
+This section outlines relevant implementation details.~\acdc{} was implemented 
+in Open vSwitch (OVS) v2.3.2~\cite{ovs-website} and
+about 1200 lines of code (many are debug/comments) were added. 
 A high-level overview follows.
 \crs{
 A hash table is added to OVS, and flows are hashed on a 5-tuple (IP addresses, ports and VLAN) to obtain a flow's state.
@@ -19,7 +19,8 @@ for multiple flow entries to be updated simultaneously.
 
 \crs{
 Putting it together, the high-level operation on a data packet is as follows. An application on the sender generates a packet
-that is pushed down the network stack to OVS. The packet is intercepted in {\tt  ovs\_dp\_process\_packet}, where the
+that is pushed down the network stack to OVS. The packet is intercepted in 
+the function {\tt  ovs\_dp\_process\_packet}, where the
 packet's flow entry is obtained from the hash table. Sequence number state is updated in the flow entry and ECN bits are set on
 the packet if needed (see \sref{design}).
 If the packet's header changes, the IP checksum is recalculated. Note TCP checksumming is offloaded to the NIC.

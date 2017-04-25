@@ -92,7 +92,7 @@ ECN is not widely supported in WAN traffic~\cite{kuhlewind2013state}.
 To address the limitations and make our solution more generic, we present~\spring{} (shown in Algorithm~\ref{alg:algorithm3}).
 
 ~\spring{} modifies TCP ACK's receiver's 
-advertised window size (RWND) to enforce congestion control~\cite{he2016ac,vcc}.
+advertised window size (also known as~\rwnd{}) to enforce congestion control~\cite{he2016ac,vcc}.
 It uses real-time rate limiter queue length as congestion control signal and 
 a TIMELY-like~\cite{mittal2015timely} congestion control law.
 For each packet, 

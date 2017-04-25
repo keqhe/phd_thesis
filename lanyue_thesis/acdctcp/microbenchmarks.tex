@@ -129,7 +129,7 @@ The 50$^{th}$ and 99.9$^{th}$ percentile RTT for
 \end{figure}
 
 \tightparagraph{Tracking window sizes}
-Next, we aim to understand how accurately~\acdc{} tracks DCTCP's performance at a finer level. The host's TCP
+Next, we aim to understand how accurately our~\acdc{} tracks DCTCP's performance at a finer level. The host's TCP
 stack is set to DCTCP and our scheme runs in the vSwitch.
 We repeat the experiment in Figure~\ref{dumbbell_topology} and measure the~\rwnd{} calculated by~\acdc{}. Instead
 of over-writing the~\rwnd{} value in the ACKs, we simply log the value to a file. Thus, congestion is enforced by DCTCP
@@ -216,7 +216,7 @@ HighSpeed  &   119     &  147     &    224    &  252     &   1.88    & 1.97     
 %~\crs{Legend:}
         CUBIC*: CUBIC + standard OVS, switch WRED/ECN marking off.
         DCTCP*: DCTCP + standard OVS, switch WRED/ECN marking on.
-        Others: different CCs + \acdc{}, switch WRED/ECN marking on.}
+        Others: different congestion control algorithms + \acdc{}, switch WRED/ECN marking on.}
 \label{other_cc_variants}
 \end{center}
 \end{table*}

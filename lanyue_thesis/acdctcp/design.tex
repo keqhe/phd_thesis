@@ -239,7 +239,8 @@ additional details can be referenced externally~\cite{alizadeh2011data,ietf-tcpm
 
 \subsection{Enforcing Congestion Control}
 \label{ss:enforce}
-There must be a mechanism to ensure a VM's TCP flow adheres to the~\cwnd{} determined in the vSwitch.
+There must be a mechanism to ensure a VM's TCP flow adheres to the 
+congestion control window size determined in the vSwitch.
 Luckily, TCP provides built-in functionality that can be reprovisioned for~\acdc{}. Specifically,
 TCP's flow control allows a receiver to advertise the amount of data it is willing to process via
 a receive window (\rwnd{}).~\crs{Similar to other works~\cite{Kalampoukas02,Spring00}, the vSwitch overwrites~\rwnd{} with its calculated~\cwnd{}}.
@@ -341,7 +342,7 @@ datacenter may be set to DCTCP.
 Administrators can also enable per-flow bandwidth allocation schemes.
 A simple scheme enforces an upper-bound
 on a flow's bandwidth. Traditionally, an upper-bound on a flow's~\cwnd{} can be
-specified by {\tt snd\_cwnd\_clamp} in Linux.~\acdc{} can provide similar functionality
+specified by the parameter {\tt snd\_cwnd\_clamp} in Linux.~\acdc{} can provide similar functionality
 by bounding~\rwnd{}. Figure~\ref{rwnd_effectiveness} shows the behavior is equivalent. This 
 graph can also be used to convert a desired upper-bound on bandwidth into an appropriate maximum~\rwnd{} (the
 graph is created on an uncongested link to provide a lower bound on RTT). 

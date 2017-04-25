@@ -77,7 +77,7 @@ For example, with the marking threshold set to 60KB, median TCP RTT is 224us (Fi
 which is less than 1/4 of native HTB's (957us). A smaller ECN marking threshold 
 can achieve even lower latency \textemdash\xspace with the threshold from 100KB to 20KB, median TCP RTT is reduced from 375 us to 93us.
 
-While latency can be improved, we observe a negative effect of DCTCP+ECN on the throughput, as shown in Figure~\ref{fig:dctcp}.
+While latency can be improved, we observe a negative effect of DCTCP + ECN on the throughput, as shown in Figure~\ref{fig:dctcp}.
 TCP throughput appears to have large oscillation, 
 which implies applications cannot get constantly high throughput and the bandwidth is not fully utilized. 
 For example, with 2Gbps rate limiting (Figure~\ref{fig:dctcp-2g}), 

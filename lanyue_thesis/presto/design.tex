@@ -329,7 +329,8 @@ work over a wide range of parameters and set both of them to 2 in our experiment
 
 
 %\textcolor{blue}{
-\tightparagraph{How to Handle Retransmissions?} Retransmitted TCP packets are pushed up immediately in order to allow the TCP stack to react without delay. 
+\tightparagraph{How to Handle Retransmissions?} Retransmitted packets are 
+pushed up immediately in order to allow the TCP stack to react without delay. 
 If the flowcell ID of the retransmission is the same as the expected flowcell ID, then 
 the retransmission will be pushed up immediately because its sequence number will be $\leq f.expSeq$. 
 If the flowcell ID is larger
