@@ -1,5 +1,5 @@
 
-Cloud computing has been changing the way computing is conducted since a few years ago.
+Cloud computing has changed the way computing is conducted.
 It is a rapidly growing business and many industry leaders
 (\eg{}, Amazon~\cite{amazon-aws}, Google~\cite{google-compute}, 
 IBM~\cite{ibm-softlayer,ibm-bluemix} and
@@ -28,9 +28,9 @@ reach 15.3 zettabytes (ZB) by 2020, which is 3 times as large as 2015's (4.7 ZB)
 The tremendous growth of datacenter traffic drives the need for high-performance 
 datacenter networking solutions. 
 
-Datacenter network is a complicated system and it covers many 
+The datacenter network is a complicated system and it covers many 
 aspects of computer networking, ranging from TCP congestion control algorithms to switch hardware design. 
-In the past 10 years, datacenter networking technologies have been advanced significantly. 
+In the past 10 years, datacenter networking technologies have advanced significantly. 
 For example, starting in 2009 - 2010, seminal works on datacenter network topology designs such as 
 FatTree~\cite{fattree} and VL2~\cite{vl2} were published. 
 These works proposed to use multi-stage Clos networks to 
@@ -39,6 +39,16 @@ Recently (in 2016), Microsoft published their congestion control solution for
 RDMA deployments in Azure networks~\cite{zhu2015congestion}. 
 Despite these advances, there are still a lot of unsolved research challenges in datacenter networking.
 
+In virtualized datacenters such as Amazon Web Service, Google Cloud Platform and Microsoft Azure, 
+multiple Virtual Machines (VMs) or containers run on the same physical server and these VMs/containers 
+are connected to the virtual switch (e.g., Open vSwitch~\cite{Pfaff2015ovs}) in the virtualization layer. 
+Typically all the servers (and hypervisors) in the datacenter are managed by a single entity (i.e., the cloud provider) 
+and the software network edge can easily manage and modify traffic going out to the datacenter network core.
+Also, software network edge is flexible and highly programmable. Therefore, there are a lot of 
+opportunities for innovations at the datacenter software network edge.
+
+
+\iffalse
 In cloud computing, one of the key technology trends is software-defined datacenters. 
 In particular, Software-defined Networking (SDN) technology has been widely 
 applied in datacenter environments and has enhanced the agility and performance of datacenter networks.
@@ -57,23 +67,34 @@ End-host networking covers many components, for example, TCP/IP stack, virtual s
 In a datacenter network, all the servers (and hypervisors) are managed by a single entity 
 (i.e., the cloud provider), therefore, there are a lof of opportunities for innovations, 
 especially the innovations in end-host networking.
+\fi
 
 In this thesis, I will present our research work on improving datacenter networking performance. 
-Performance here refers to network throughput, latency and packet loss etc. 
+%Performance here refers to network throughput, latency and packet loss etc. 
 The major theme of this thesis is to leverage the intelligent software-defined network 
-edge (i.e., end-host networking) to improve the performance for datacenter networks.
+edge (i.e., end-host networking) to improve the performance (e.g., network throughput, latency and packet loss) 
+for datacenter networks.
 In the following of this chapter, I will briefly introduce three research projects I worked on 
-during my PhD study, they are \textemdash\xspace edge-based traffic load balancing for 
+during my Ph.D. study \textemdash\xspace edge-based traffic load balancing for 
 datacenter networks, congestion control virtualization for multi-tenant clouds and 
 low latency software rate limiters for cloud networks.
+Each of them improves the performance of one key functionality of datacenter networking and
+they can work together to ensure low latency, high throughput and low packet loss rate
+datacenter networks. 
 
 \section{Edge-based Traffic Load Balancing}
 
+\iffalse
 Modern datacenter networks are built with multi-stage Clos networks. 
 An example of such topologies is Google's Jupiter topology~\cite{singh2015jupiter}. 
 A nice property of multi-stage Clos network is that there are tens to hundreds of 
 network paths between any two servers in the datacenter. Path diversity is good for network 
-reliability and traffic load balancing. The state-of-the-art approach of traffic load balancing 
+reliability and traffic load balancing. 
+\fi
+Traffic load balancing is an important functionality in datacenter networks. 
+The goal of traffic load balancing is to minimize traffic imbalance on different network links and 
+avoid network congestion as much as possible.
+The state-of-the-art approach to traffic load balancing in datacenter networks 
 is called Equal Cost Multipathing (ECMP). When a data packet arrives at a switch, 
 there are many paths to the destination. The switch applies a hash function to several 
 fields in the packet header, for example, source IP address, destination IP address, 
@@ -85,8 +106,10 @@ Datacenter networks need to support various kinds of network traffic generated b
 a diverse set of applications and services running in the datacenters. For example, flows generated 
 by search, email, query and remote procedure calls tend to be short and small, and we call such flows mice flows. 
 On the other hand, flows generated by big data ingestion and data backup tend to be long and large, 
-so we call such flows elephant flows. A classic problem of ECMP and WCMP is that if two elephant flows 
-are hashed onto the same network path, then flows of both types suffer. First, elephant flows' throughputs are reduced. 
+so we call such flows elephant flows. A classic problem of ECMP and WCMP is that if two or more elephant flows 
+are hashed onto the same network path, then {\emph {network congestion occurs because of elephant 
+hash collision}}~\cite{hedera,rasley2014planck}.
+Elephant hash collision leads to two types of performance issues. First, elephant flows' throughputs are reduced. 
 Second, mice flows suffer from head-of-line blocking issue and their latency can be increased to 
 tens of milliseconds~\cite{alizadeh2012less}. 
 Note that the baseline TCP RTT in the datacenter network environment is around 200 microseconds~\cite{he2016ac}. 
