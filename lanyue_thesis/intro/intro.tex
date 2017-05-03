@@ -129,6 +129,8 @@ We will discuss the details of Presto in Chapter~\ref{thesis:chapter:presto}.
 
 
 \section{Congestion Control Virtualization}
+
+\iffalse
 TCP congestion control is a long-lasting research problem in computer networking. 
 The first TCP congestion control algorithm (TCP Reno) was proposed by Jacobson et al in 1988~\cite{jacobson1988congestion}. 
 Since then a lot of research work has been done to optimize congestion control algorithms. 
@@ -141,8 +143,19 @@ control \textemdash\xspace Datacenter TCP (aka DCTCP)~\cite{alizadeh2010data}.
 DCTCP utilizes ECN (Explicit Congestion Notification) in 
 modern switches and adjusts TCP's congestion window based on the fraction of 
 packets that are ECN-marked by the switches. DCTCP effectively reduces datacenter network latency, especially tail latency.
+\fi
 
-However, we still face a practical unsolved problem. Most of today's public clouds, e.g., 
+As observed by some of the largest datacenter network operators such as Google~\cite{singh2015jupiter}, 
+network congestion is not rare in datacenter networks. Network congestion significantly inflates latency 
+in datacenter networks, especially the tail latency. It has been observed that the 99.9th percentile latency 
+is orders of magnitude of the median latency in datacenter networks~\cite{mogul2015inferring} and queueing latency 
+is believed to be the major contributor of the tail latency~\cite{jang2015silo}. To this end, a lot of datacenter TCP 
+congestion control algorithms have been proposed in recent years, e.g., 
+DCTCP~\cite{alizadeh2010data}, TIMELY~\cite{mittal2015timely}, DCQCN~\cite{zhu2015congestion},
+TCP-Bolt~\cite{stephens2014practical}, and ICTCP~\cite{wu2010ictcp}. 
+ 
+Despite the recent advances in datacenter network congestion control,
+we still face a practical unsolved problem. Most of today's public clouds, e.g., 
 Google Cloud Platform, Microsoft Azure and Amazon Web Services (AWS), are multi-tenant clouds. 
 The computing resources (e.g., CPUs, memory, storage and network) are rented to 
 tenants (i.e., customers) in the form of Virtual Machines (VMs). The practical problem is 
@@ -227,7 +240,9 @@ We will discuss the details of low latency software rate limiters in Chapter~\re
 
 \section{Summary of Contributions and Overview}
 
-The contributions of this dissertation are summarized in the following. 
+At a high level, we show that using the intelligent software network edge, 
+we can improve the performance of key functionalities of datacenter networks. In particular, 
+the specific contributions of this dissertation are summarized in the following. 
 This section also serves as an outline for the rest of this dissertation.
 
 \begin{itemize}
