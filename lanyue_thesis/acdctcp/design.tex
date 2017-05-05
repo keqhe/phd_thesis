@@ -121,11 +121,11 @@ the total and ECN-marked bytes received for a flow. Receivers piggy-back the
 reported totals on ACKs by adding an additional 8 bytes as a TCP Option. This is called 
 a Piggy-backed ACK (PACK). The PACK is created by moving the IP and TCP headers into
 the ACK packet's {\tt skb} headroom~\cite{kernel-skb}. The totals are inserted into the vacated space and the memory
-consumed by the rest of the packet (\ie{}, the payload) is left as is. The IP header checksum, IP packet length and TCP Data Offset fields are recomputed and the 
+consumed by the rest of the packet (\ie{}the payload) is left as is. The IP header checksum, IP packet length and TCP Data Offset fields are recomputed and the 
 TCP checksum is calculated by the NIC. The PACK option is stripped at the
 sender so it is not exposed to the VM's TCP stack. 
 
-If adding a PACK creates a packet larger than the MTU, the NIC offload feature (\ie{}, TSO)
+If adding a PACK creates a packet larger than the MTU, the NIC offload feature (\ie{}TSO)
 will replicate the feedback information over multiple packets, which skews the feedback.
 Therefore, a dedicated feedback packet called a Fake ACK (FACK) is sent when the MTU
 will be violated. The FACK is sent in addition to the real TCP ACK.
@@ -186,7 +186,7 @@ based on TCP New Reno's algorithm, using slow start or congestion avoidance as n
 experienced, then~\cwnd{} must be reduced. DCTCP's instructions indicate the window should
 be cut at most once per RTT.
 Our implementation closely tracks the Linux source code, and
-additional details can be referenced externally~\cite{alizadeh2011data,ietf-tcpm-dctcp}.
+additional details can be referenced externally~\cite{dctcp,ietf-tcpm-dctcp}.
 
 
 %\begin{algorithm}[!tbh]
@@ -265,7 +265,7 @@ While simple, this scheme provides a surprising amount of flexibility. For examp
 a receiver to send a TCP Window Update to update~\rwnd{}~\cite{RFC5681}.~\acdc{}
 can create these packets to update windows without relying on ACKs.
 Additionally, the sender module can generate duplicate ACKs to to trigger retransmissions. This is useful when 
-the VM's TCP stack has a larger timeout value than~\acdc{} (\eg{}, small timeout values
+the VM's TCP stack has a larger timeout value than~\acdc{} (\eg{}small timeout values
 have been recommended for incast~\cite{vasudevan2009safe}). 
 %In this case, the vSwitch can send three dup-ACKs (with
 %an appropiate~\rwnd{}) to trigger the VM's TCP flow to retransmit.
@@ -285,12 +285,12 @@ Traditional software-based rate limiting schemes, like Linux's Hierarchical Toke
 incur high overhead due to frequent interrupts and contention~\cite{radhakrishnan2014senic} and
 therefore do not scale gracefully. NIC or switch-based rate limiters are low-overhead, but typically
 only provide a handful of queues. Our enforcement algorithm does not rate limit or buffer packets because it exploits TCP
-flow control. Therefore, rate limiting schemes can be used at a coarser granularity (\eg{}, VM-level).
+flow control. Therefore, rate limiting schemes can be used at a coarser granularity (\eg{}VM-level).
 
 
 ~\crs{
 Finally, we outline~\acdc{}'s limitations. 
-Since~\acdc{} relies on sniffing traffic, schemes that encrypt TCP headers (\eg{}, IPSec) are not supported. Our implementation only supports TCP, but we believe it can be extended to handle UDP similar to
+Since~\acdc{} relies on sniffing traffic, schemes that encrypt TCP headers (\eg{}IPSec) are not supported. Our implementation only supports TCP, but we believe it can be extended to handle UDP similar to
 prior schemes~\cite{shieh2011sharing,jeyakumar2013eyeq}.
 Implementing per-flow DCTCP-friendly UDP tunnels and studying its impact remains future work, however. And finally, 
 while MPTCP supports per-subflow~\rwnd{}~\cite{RFC6824}, it is not included in our case study and a more detailed analysis

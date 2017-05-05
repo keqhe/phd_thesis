@@ -62,13 +62,13 @@ For a fixed dequeue speed, larger enqueue speed implies higher latency.
 
 \subsection{Strawman Solution: DCTCP + ECN}
 \input{rate_limiter/figs/dctcp.tex}
-Inspired by solutions to reduce queueing latency in switches~\cite{alizadeh2010data}, 
+Inspired by solutions to reduce queueing latency in switches~\cite{dctcp}, 
 we test a strawman solution. In the strawman solution, 
 we implement ECN marking in Linux HTB queues and enable DCTCP at the end-points. 
 For ECN marking, there is a tunable parameter \textemdash\xspace \textit{marking threshold}. 
 When the queue length exceeds the marking threshold, 
 all enqueued packets would have their ECN bits set; otherwise, packets are not modified. 
-DCTCP reacts to ECN marking and adjusts sender's congestion window based on the ratio of marked packets~\cite{alizadeh2010data}.
+DCTCP reacts to ECN marking and adjusts sender's congestion window based on the ratio of marked packets~\cite{dctcp}.
 
 We set up experiments with one sender and one receiver. We configure the HTB rate limiter to be 1Gbps and 2Gbps, 
 and vary ECN marking threshold. The experiment results are shown in Figure~\ref{fig:dctcp}. 
@@ -81,7 +81,7 @@ While latency can be improved, we observe a negative effect of DCTCP + ECN on th
 TCP throughput appears to have large oscillation, 
 which implies applications cannot get constantly high throughput and the bandwidth is not fully utilized. 
 For example, with 2Gbps rate limiting (Figure~\ref{fig:dctcp-2g}), 
-even we set the threshold to be 100KB (much larger than the best theoretical value according to~\cite{alizadeh2010data}), 
+even we set the threshold to be 100KB (much larger than the best theoretical value according to~\cite{dctcp}), 
 there is still occasional low throughput (e.g., 1000Mbps) within a 20-second experiment duration.
 
 \subsection{Throughput Oscillation Analysis}

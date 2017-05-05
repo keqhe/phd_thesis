@@ -27,9 +27,9 @@ Datacenter networks need to support high throughput, low latency, and low loss r
 meet various kinds of application's SLAs. 
 There have been many research work about reducing ``in-network'' 
 latency and packet loss rate caused by network 
-congestion~\cite{alizadeh2010data,he2016ac,mittal2015timely,zhu2015congestion,bai2015information,grosvenor2015queues}.
+congestion~\cite{dctcp,he2016ac,mittal2015timely,zhu2015congestion,bai2015information,grosvenor2015queues}.
 The work on reducing datacenter network latency can be roughly classified into two categories:
-1) congestion control based such as DCTCP~\cite{alizadeh2010data} and DCQCN~\cite{zhu2015congestion}
+1) congestion control based such as DCTCP~\cite{dctcp} and DCQCN~\cite{zhu2015congestion}
 and 2) priority-based such as PIAS~\cite{bai2015information} and QJUMP~\cite{grosvenor2015queues}. 
 However, for bandwidth allocation functionality, prioritizing some flows is not realistic in a 
 virtualized setting because the hypervisor has 
@@ -70,7 +70,7 @@ and shaping at egress? This is not explained at OVS web page. Any answer? Keqian
 in this paper, we do not spend time on it.}
 Packet loss has to be recovered from end-to-end, therefore it can lead to 
 large flow completion times and the lost packets may need to wait for a coarse-grained 
-TCP RTO to be retransmitted~\cite{alizadeh2010data,vasudevan2009safe}. 
+TCP RTO to be retransmitted~\cite{dctcp,vasudevan2009safe}. 
 The second and more effective approach is egress QoS 
 (i.e., traffic shaping). Open vSwitch's egress QoS calls Linux queueing disciplines such as 
 Hierarchical Token Bucket (HTB) to perform traffic shaping. Egress QoS absorbs bursty traffic 

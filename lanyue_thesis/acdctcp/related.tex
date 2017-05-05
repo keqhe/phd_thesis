@@ -5,7 +5,7 @@ This section discusses different classes of related work.
 \tightparagraph{Congestion control for DCNs}
 \crs{Rather than proposing a new congestion control algorithm, our work investigates if congestion control can be moved to the vSwitch.
 Thus, many of the following schemes are complimentary.}
-DCTCP~\cite{alizadeh2011data} is a seminal TCP variant for datacenter networks.
+DCTCP~\cite{dctcp} is a seminal TCP variant for datacenter networks.
 Judd~\cite{judd2015nsdi} proposed simple yet practical fixes to enable DCTCP in production networks.
 TCP-Bolt~\cite{stephens2014practical} is a variant of DCTCP for PFC-enabled lossless Ethernet.
 %DCQCN~\cite{zhu2015congestion} is a rate-based congestion control scheme implemented in NICs
@@ -40,8 +40,8 @@ algorithm, coupled with a fine-grained packet pacer. As discussed in~\sref{backg
 
 \tightparagraph{Rate limiters} 
 SENIC~\cite{niranjan2013fastrak} 
-identifies the limitations of NIC hardware rate limiters (\ie{}, not scalable) and 
-software rate limiters (\ie{}, high CPU overhead) and uses the CPU to enqueue packets 
+identifies the limitations of NIC hardware rate limiters (\ie{}not scalable) and 
+software rate limiters (\ie{}high CPU overhead) and uses the CPU to enqueue packets 
 in host memory and the NIC. Silo's pacer injects void packets into 
 an original packet sequence to achieve pacing. FasTrack~\cite{niranjan2013fastrak} offloads
 functionality from the server into the switch for certain flows.~\acdc{} prevents

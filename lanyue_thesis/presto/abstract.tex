@@ -2,12 +2,12 @@
 
 Datacenter networks deal with a variety of workloads, 
 ranging from latency-sensitive small flows to bandwidth-hungry large flows. 
-Load balancing schemes based on flow hashing, \eg{}, ECMP, cause congestion 
+Load balancing schemes based on flow hashing, \eg{}ECMP, cause congestion 
 when hash collisions occur and can perform poorly in asymmetric topologies. 
 Recent proposals to load balance the network require centralized traffic engineering, multipath-aware
 transport, or expensive specialized hardware.
 We propose a mechanism that avoids these limitations by (i) pushing
-load-balancing functionality into the soft network edge (\eg{},
+load-balancing functionality into the soft network edge (\eg{}
 virtual switches) such that no changes are required in the transport
 layer, customer VMs, or networking hardware, and (ii) load balancing
 on fine-grained, near-uniform units of data (flowcells) that fit

@@ -65,7 +65,7 @@ This setup can cause reordering for each flow, so
 we compare Presto's GRO to
 an unmodified GRO, denoted "Official GRO". 
 The amount of reordering exposed to TCP is presented in Figure~\ref{gro_effectiveness_on_reordering}.
-To quantify packet reordering, we show a CDF of the {\em out-of-order segment count}: ~\ie{},
+To quantify packet reordering, we show a CDF of the {\em out-of-order segment count}: ~\ie{}
 the number of segments from other flowcells between the first packet and last packet of each flowcell. A value of zero
 means there is no reordering and larger values mean more reordering. The figure shows Presto's GRO can completely mask reordering
 while official GRO incurs significant reordering. As shown in Section~\ref{sec:background}, reordering can

@@ -35,14 +35,14 @@ Since TCP connections are bi-directional, two flow entries are maintained for ea
 \crs{
 Our experiments in~\sref{micro} show the CPU overhead of~\acdc{} is small and several implementation details
 help reduce computational overhead. First, OVS sits 
-above NIC offloading features (\ie{}, TSO and GRO/LRO) in the networking stack. Briefly, NIC offloads allow 
+above NIC offloading features (\ie{}TSO and GRO/LRO) in the networking stack. Briefly, NIC offloads allow 
 the host to pass large data segments along the TCP/IP stack and only deal with MTU-sized packets in the NIC. Thus,~\acdc{}
 operates on a segment, rather than a per-packet, basis. Second, 
 congestion control is a relatively simple algorithm, and thus the computational burden is not high. Finally,
 while~\acdc{} is implemented in software, it may be possible to further reduce the
 overhead with a NIC implementation. Today, "smart-NICs"
 implement OVS-offload functionality~\cite{cavium-nic,netronome-nic},  
-naturally providing a mechanism to reduce overhead and support hypervisor bypass (\eg{}, SR-IOV). 
+naturally providing a mechanism to reduce overhead and support hypervisor bypass (\eg{}SR-IOV). 
 }
 %We have also considered designing an~\acdc{}-enabled middlebox to support
 %legacy systems that do not run OVS and cannot upgrade their NICs.

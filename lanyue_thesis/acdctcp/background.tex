@@ -11,7 +11,7 @@ Today's datacenters host applications such as search,
 advertising, analytics and retail that require high bandwidth and low latency.
 %Large tail latencies often violate the tight timing constraints required by SLAs at scale, and
 %have been shown to impact customer experience, result in
-%revenue loss~\cite{alizadeh2011data,dean2013tail}, and degrade application performance~\cite{jang2015silo,qjump}.
+%revenue loss~\cite{dctcp,dean2013tail}, and degrade application performance~\cite{jang2015silo,qjump}.
 %Tail latencies are often caused by network congestion.
 %The latency of traversing a single switch, NIC and OS network stack is 10--30$\mu$s,
 %2.5--32$\mu$s and 15$\mu$s respectively, but a congested port
@@ -24,7 +24,7 @@ congestion-based drops were observed when network utilization approached 25\%~\c
 Other studies have shown high variance and substantial increase in the 99.9$^{th}$ percentile latency
 for round-trip times in today's datacenters~\cite{wang2010impact,mogul2015inferring}. 
 Large tail latencies impact customer experience, result in
-revenue loss~\cite{alizadeh2011data,dean2013tail}, and degrade application performance~\cite{jang2015silo,qjump}.
+revenue loss~\cite{dctcp,dean2013tail}, and degrade application performance~\cite{jang2015silo,qjump}.
 Therefore, significant motivation exists to reduce congestion in datacenter fabrics.
 
 %Studies have shown that while CUBIC can achieve
@@ -32,11 +32,11 @@ Therefore, significant motivation exists to reduce congestion in datacenter fabr
 TCP's congestion control algorithm is
 known to significantly impact network performance.
 As a result, datacenter TCP performance has been widely
-studied and many new protocols have been proposed~\cite{alizadeh2011data, stephens2014practical, wu2010ictcp,
-mittal2015timely, jose2015high}. Specifically, DCTCP~\cite{alizadeh2011data} adjusts a TCP sender's rate based on the fraction of packets experiencing congestion. In DCTCP,
+studied and many new protocols have been proposed~\cite{dctcp, stephens2014practical, wu2010ictcp,
+mittal2015timely, jose2015high}. Specifically, DCTCP~\cite{dctcp} adjusts a TCP sender's rate based on the fraction of packets experiencing congestion. In DCTCP,
 the switches are configured to mark packets with an ECN bit when their queue lengths exceed a threshold. By proportionally
 adjusting the rate of the sender based on the fraction of ECN bits received, DCTCP can keep queue lengths low, 
-maintain high throughput, and increase fairness and stability over traditional schemes~\cite{alizadeh2011data,judd2015nsdi}.
+maintain high throughput, and increase fairness and stability over traditional schemes~\cite{dctcp,judd2015nsdi}.
 \crs{For these reasons, we implement DCTCP as the vSwitch congestion control algorithm in~\acdc{}.}
 
 \subsection{Benefits of~\acdc{}}
@@ -103,14 +103,14 @@ same stack (Figure~\ref{unfairness_all_cubic}).
 Another benefit of~\acdc{} is it allows for different congestion control algorithms to be assigned on
 a per-flow basis. %Today, TCP congestion control is configured at an OS-level, so all of an OS's flows are forced to use the same congestion control algorithm.
 A vSwitch-based approach can assign WAN flows to a congestion control algorithm that optimizes WAN performance~\cite{tan2006compound,flach2013reducing} and
-datacenter flows to one that optimizes datacenter performance, even if these flows originate from the same VM (\eg{}, a webserver).
+datacenter flows to one that optimizes datacenter performance, even if these flows originate from the same VM (\eg{}a webserver).
 %This severely limits flexibility and forces tenants to optimize the performance of a subset of its flows. For example, a web server may choose a TCP stack to optimize
 %WAN performance~\cite{tan2006compound,flach2013reducing} at the cost of harming back-end performance within the datacenter.~\eric{still need to clean}
 Additionally, as shown in \sref{ss:cc-qos}, a flexible congestion control algorithm can provide relative bandwidth allocations to flows.
 This is useful when tenants or administrators want to prioritize flows assigned to the same quality-of-service class.
 In short, adjusting congestion control algorithms on a per-flow basis allows for 
 enhanced flexibility and performance.
-%As studies have shown that TCP can be optimized for datacenters~\cite{alizadeh2011data, stephens2014practical, wu2010ictcp,
+%As studies have shown that TCP can be optimized for datacenters~\cite{dctcp, stephens2014practical, wu2010ictcp,
 %mittal2015timely, jose2015high}, WAN environments~\keqiang{cite Compound TCP?}, and even
 %~\eric{one more example, wireless/60Ghz/free-space optics?}, selecting a per-flow TCP stack has the potential to
 %enhance network performance. By moving congestion control to the vSwitch, administrators can assign a specific congestion control
@@ -150,7 +150,7 @@ Guo2010Secondnet,Popa2012Faircloud,Xie2012Proteus,Lam2012NetShare,jang2015silo}.
 %the latency caused by queueing heavily depends on the deployed TCP stack. We show this in Figure~\eric{cubic-fill}.
 %CUBIC~\cite{ha2008cubic}, the default TCP congestion control algorithm in Linux, will aggressively fill
 %the buffer of the congested output port, causing latencies to significantly increase. DCTCP, however, is able
-%to keep buffers low~\cite{alizadeh2011data}, allowing for a queueing latency that is an order of magnitude lower than CUBIC's. These differences exist despite the fact
+%to keep buffers low~\cite{dctcp}, allowing for a queueing latency that is an order of magnitude lower than CUBIC's. These differences exist despite the fact
 %that each scheme is able to achieve the same throughput over the congested link (Section~\ref{results}~\eric{Table 1}).
 %Note that in Figure~\ref{cubic-fill}, DCTCP is run in the absence of a static rate limiter, meaning that it is effective
 %in mitigating congestion's impact on latency. 
@@ -225,7 +225,7 @@ control.
 
 In summary, our vision regards enforcing tenant congestion control and bandwidth allocation as {\em complimentary} and we claim 
 an administrator should be able to
-combine any congestion control (\eg{}, DCTCP) with any bandwidth allocation scheme (\eg{}, EyeQ). 
+combine any congestion control (\eg{}DCTCP) with any bandwidth allocation scheme (\eg{}EyeQ). 
 Flow-level congestion control and tenant performance isolation need not be solved by the same scheme,
 so~\acdc{}'s design goal is to be modular in nature so it can co-exist with any bandwidth allocation scheme
 and its associated rate limiter (and also in the absence of both). 

@@ -90,7 +90,7 @@ Each vSwitch is assigned one shadow MAC per spanning tree.
 Note Shadow MACs are extremely scalable on
 existing chipsets because they utilize the large L2 forwarding table. For example,
 Trident II-based switches~\cite{trident2,smart-table,arista} have 288k L2 table entries and 
-thus 8-way multipathing (\ie{}, each vSwitch has 8 disjoint spanning trees)
+thus 8-way multipathing (\ie{}each vSwitch has 8 disjoint spanning trees)
 can scale up to 36,000 physical servers. 
 %\textcolor{blue}{which covers an overwhelming fraction of enterprise deployments~\cite{conga}.
 To increase scalability, shadow MAC tunnels can be implemented from 
@@ -154,7 +154,7 @@ After the controller installs the shadow MAC forwarding rules into the network, 
 from each physical destination MAC address to a list of corresponding shadow MAC addresses. These mappings
 provide a way to send traffic to a specific destination over different spanning trees. 
 The mappings are pushed from the controller to each vSwitch in the network, either on-demand or preemptively.
-In Presto, the vSwitch on the sender monitors outgoing traffic (\ie{}, maintains a per-flow counter in the datapath) 
+In Presto, the vSwitch on the sender monitors outgoing traffic (\ie{}maintains a per-flow counter in the datapath) 
 and rewrites the destination MAC
 address with one of the corresponding shadow MAC addresses.
 The vSwitch assigns the same shadow MAC address to all consecutive segments until the 64 KB limit is reached.
@@ -176,7 +176,7 @@ the sender also includes a sequentially increasing {\em flowcell ID} into each s
 In our setup the controller installs forwarding rules solely on the destination MAC address and
 ARP is handled in a centralized manner. Therefore,
 the source MAC address can be used to hold the flowcell ID. Other options are possible, 
-\eg{}, some schemes include load balancing metadata in the reserved bits of the VXLAN header~\cite{nvo3}
+\eg{}some schemes include load balancing metadata in the reserved bits of the VXLAN header~\cite{nvo3}
 and implementations could also stash flowcell IDs into large IPv6 header fields.\footnote{In our
 implementation, TCP options hold the flowcell ID for simplicity and ease of debugging.}
 Note that since the flowcell ID and the shadow MAC address are modified before a segment is handed to the NIC,

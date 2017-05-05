@@ -83,11 +83,11 @@ We verified modifying~\acdc{}'s lower bound caused identical behavior.
 
 
 {\crs The second test aims to put pressure on the switch's dynamic 
-buffer allocation scheme, similar to an experiment in the DCTCP paper~\cite{alizadeh2011data}.} To this end, we aim to congest every switch port.
+buffer allocation scheme, similar to an experiment in the DCTCP paper~\cite{dctcp}.} To this end, we aim to congest every switch port.
 The 48 NICs are split into 2 groups: group $A$ and $B$. 
 Group $A$ has 46 NICs and $B$ has 2 (denoted $B_1$ and $B_2$). 
 Each of the 46 NICs in $A$ sends and receives 4 concurrent flows within $A$ 
-(\ie{}, NIC $i$ sends to [$i+1$, $i+4$] mod 46). 
+(\ie{}NIC $i$ sends to [$i+1$, $i+4$] mod 46). 
 Meanwhile, all of the NICs in $A$ send to $B_1$, creating a 46-to-1 incast. 
 This workload congests 47 out of 48 switch ports. 
 We measure the TCP RTT between $B_2$ and $B_1$ (i.e., TCP RTT of the traffic traversing the most congested port) and 
