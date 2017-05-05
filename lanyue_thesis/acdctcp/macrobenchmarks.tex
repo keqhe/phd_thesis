@@ -187,7 +187,7 @@ An application on each server builds a long-lived TCP connection with every othe
 Message sizes are sampled from a trace and sent to a random destination in sequential fashion. Five
 concurrent applications on each server are run to increase network load. Message
 sizes are sampled from a web-search~\cite{dctcp}
-and a data-mining workload~\cite{greenberg2009vl2,alizadeh2014conga}, whose flow size distribution has a heavier tail.
+and a data-mining workload~\cite{vl2,conga}, whose flow size distribution has a heavier tail.
 Figure~\ref{macro-trace-driven-fct} shows a CDF of FCTs for mice flows (smaller than 10KB) 
 in the web-search and data-mining workloads.
 In the web-search workload,

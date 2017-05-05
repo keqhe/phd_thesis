@@ -41,7 +41,7 @@ DeTail~\cite{detail} is a cross-layer network stack designed to reduce the tail 
 DCTCP~\cite{dctcp} is a transport protocol that uses the portion of marked packets 
 by ECN to adaptively adjust sender's TCP's congestion window to reduce switch buffer occupancy.
 %Thus, DCTCP can reduce switch buffer occupancy and reduce flow completion time.
-HULL~\cite{hull} uses Phantom Queues and congestion notifications to cap link utilization and prevent congestion.
+HULL~\cite{alizadeh2012less} uses Phantom Queues and congestion notifications to cap link utilization and prevent congestion.
 %HULL uses packet pacing to combat with traffic burstiness in order to leave "bandwidth headroom".
 In contrast, Presto is a load balancing system that naturally improves 
 the tail latencies of mice flows by uniformly spreading traffic in 
@@ -132,8 +132,8 @@ algorithm, coupled with a fine-grained packet pacer.
 
 {\bf Rate limiters}
 SENIC~\cite{niranjan2013fastrak}
-identifies the limitations of NIC hardware rate limiters (\ie{}, not scalable) and
-software rate limiters (\ie{}, high CPU overhead) and uses the CPU to enqueue packets
+identifies the limitations of NIC hardware rate limiters (\ie{}not scalable) and
+software rate limiters (\ie{}high CPU overhead) and uses the CPU to enqueue packets
 in host memory and the NIC. Silo's pacer injects void packets into
 an original packet sequence to achieve pacing. FasTrack~\cite{niranjan2013fastrak} offloads
 functionality from the server into the switch for certain flows.

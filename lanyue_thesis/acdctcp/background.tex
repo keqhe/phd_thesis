@@ -17,7 +17,7 @@ advertising, analytics and retail that require high bandwidth and low latency.
 %2.5--32$\mu$s and 15$\mu$s respectively, but a congested port
 %on a network switch can consume significant shared memory, causing orders-of-magnitude
 %higer latency~\cite{rumble2011s}.
-Network congestion, caused by imperfect load balancing~\cite{al2010hedera},
+Network congestion, caused by imperfect load balancing~\cite{hedera},
 network upgrades or failures, can adversely impact these services. Unfortunately, congestion is
 not rare in datacenters. For example, recently Google reported 
 congestion-based drops were observed when network utilization approached 25\%~\cite{singh2015jupiter}.
@@ -172,7 +172,7 @@ operate on flow-level granularity.
 For example, the single switch abstraction
 in EyeQ~\cite{jeyakumar2013eyeq} and Gatekeeper~\cite{rodrigues2011gatekeeper} explicitly assumes a congestion-free 
 fabric for optimal bandwidth allocation between pairs of VMs. This abstraction doesn't hold in multi-pathed
-topologies when failure, traffic patterns or ECMP hash collisions~\cite{al2010hedera} cause congestion in the core.
+topologies when failure, traffic patterns or ECMP hash collisions~\cite{hedera} cause congestion in the core.
 Communication between a pair of VMs may consist of
 multiple flows, each of which may traverse a distinct path. Therefore,
 enforcing rate limits on a VM-to-VM level is too coarse-grained to determine how specific flows should adapt in
