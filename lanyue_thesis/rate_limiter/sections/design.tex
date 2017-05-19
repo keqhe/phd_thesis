@@ -69,13 +69,13 @@ congestion control and is complementary with ``in network'' congestion control s
 \STATE f.rwnd $\leftarrow$ f.rwnd + MSS
 \ELSIF {current\_qlen $>$ {\emph {K2}}}
 \STATE f.ssthresh $\leftarrow$ f.rwnd
-\STATE f.rwnd $\leftarrow$ f.rwnd*(1 -- $\beta$*(1 -- $\frac{current\_qlen}{K2}$))
-\STATE f.rwnd $\leftarrow$ min(f.rwnd, MSS)
+\STATE f.rwnd $\leftarrow$ f.rwnd*(1 -- $\beta$*(1 -- $\frac{K2}{current\_qlen}$))
+\STATE f.rwnd $\leftarrow$ max(f.rwnd, MSS)
 \ELSIF {q.gradient $\le$ 0}
 \STATE f.rwnd $\leftarrow$ f.rwnd + MSS
 \ELSE
 \STATE f.rwnd $\leftarrow$ f.rwnd*(1 -- $\beta$*q.normalized\_gradient)
-\STATE f.rwnd $\leftarrow$ min(f.rwnd, MSS)
+\STATE f.rwnd $\leftarrow$ max(f.rwnd, MSS)
 \ENDIF
 \ENDIF
 \ENDFOR
