@@ -117,8 +117,9 @@ To solve this problem, we propose Presto. Presto has two novel components. At th
 we utilize the virtual switch (e.g., OVS) in the hypervisor to break elephant flows into small chunks 
 called flowcells. A flowcell consists of several TCP segments and its maximum size is bounded to be the 
 maximum TCP Segment Offload (TSO)~\cite{tcp-segment-offload} size, 
-which is 64KB by default in Linux. In this way, packets of a mice flow whose size 
-is smaller than or equal to 64KB always go through the same network path, so there is no packet reordering issue. 
+which is 64KB by default in Linux. A mice flow whose size is smaller than or equal to 64KB
+is one flowcell and its packets go through the same network path. So there is no packet reordering issue
+for flows whose sizes are smaller than or equal to 64KB. 
 For the flows that are larger than 64KB, packets may go through different paths and packet reordering 
 issue may arise if the congestion level on different network paths is different. 
 Therefore at the receiver side, we modify the Generic Receive Offload (GRO) functionality in the network stack to 
@@ -235,7 +236,8 @@ In this way, congestion control loop latency is reduced to almost 0. Also coarse
 ~\spring{} runs a queue-length-based congestion control algorithm and enforces congestion control decisions via modifying
 the~\rwnd{} field in the TCP header. Similar to~\dem{},~\spring{} also avoids the two shortcomings of DCTCP+ECN. 
 Compared with~\dem{},~\spring{}
-is more generic and deployable because it does not rely on ECN support.
+modifies~\rwnd{} to enforce congestion control and does not rely on ECN support, so
+is more generic and can handle both ECN and non-ECN flows.
 We will discuss the details of low latency software rate limiters in Chapter~\ref{thesis:chapter:rate_limiter}.
 
 \section{Summary of Contributions and Overview}
