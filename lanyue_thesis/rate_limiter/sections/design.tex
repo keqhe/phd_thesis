@@ -16,7 +16,7 @@
 \end{algorithm}
 
 In this subsection, we introduce a technique called Direct ECE Marking (DEM). 
-DEM assumes that VMs and containers are configured with DCTCP congestion control algorithm. 
+DEM requires that VMs and containers are configured with DCTCP congestion control algorithm. 
 In~\dem{}, we monitor rate limiter queue occupancy and process each incoming TCP ACK. 
 If the current rate limiter queue occupancy is above a threshold $K$, 
 we directly set the ACK's TCP ECE (ECN Echo) bit to 1.
@@ -117,7 +117,8 @@ increase RWND by one MSS. Otherwise, we multiplicatively decrease the RWND based
 
 Note that TIMELY~\cite{mittal2015timely} is a rate-based congestion control algorithm while~\spring{} is a window-based.
 TIMELY uses accurate latency measurement provided by the NIC while~\spring{} performs congestion control based on 
-real-time rate limiter queue length. Because congestion control decisions are enforced via modifying RWND field in TCP ACK headers,~\spring{} has the following good properties: 
+real-time rate limiter queue length because ~\spring{} checks the rate limiter queue length when receiving 
+incoming TCP ACKs. Because congestion control decisions are enforced via modifying RWND field in TCP ACK headers,~\spring{} has the following good properties: 
 1) the solution does not relies on DCTCP transport in VMs and ECN support in the network, 
 so it is generic and can support not only east-west traffic (i.e., intra-datacenter traffic) but also north-south traffic
 (i.e., inter-datacenter traffic and traffic between cloud and clients). 

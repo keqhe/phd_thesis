@@ -45,12 +45,13 @@ because of TCP windowing scheme and TSO optimizations~\cite{kapoor2013bullet}.
 
 To address the shortcomings of DCTCP+ECN, 
 we design our first mechanism \textemdash\xspace \textit{direct ECE marking (\nameone)}. 
-In \nameone, when an ACK is received, \nameone checks the real-time queue length in its corresponding rate limiter, 
+In \nameone, when an ACK is received, \nameone checks the real-time queue length in its corresponding rate limiter
+in the virtual switch, 
 and if the queue length exceeds a pre-configured threshold, \nameone \textit{marks the ACK packet instead of data packets}. 
 By marking TCP ACK, we mean set TCP ACK's ECN-Echo (ECE) bit.
 Directly marking TCP ECE avoids the two shortcomings in DCTCP+ECN. First, the congestion control loop
 latency is almost reduced to 0 because it is based on real-time queue length, not the queue length one RTT ago.
-Second, it avoids coarse-grained segment-level ECN marking on the transmitting path.
+Second, it can avoid coarse-grained segment-level ECN marking on the transmitting path.
 Our design (Section~\ref{rate-limiter:sec:design}) and experiment (Section~\ref{rate-limiter:sec:evaluation}) show that 
 DEM eliminates throughput oscillation.
  

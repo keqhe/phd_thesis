@@ -65,7 +65,7 @@ We evaluate Presto on various performance metrics, including:
 round trip time (a single TCP packet, measured by {\tt sockperf}~\cite{sockperf}), 
 throughput (measured by {\tt nuttcp}),
 mice flow completion time (time to send a 50 KB flow and receive an application-layer acknowledgement), packet loss (measured from switch counters), 
-and fairness (Jain's fairness index~\cite{jain-fair} over flow throughputs).  Mice flows are sent every 100 ms and elephant flows last 10 seconds. 
+and fairness (Jain's fairness index~\cite{jain-fair} over flow throughputs).  Mice flows (50KB) are sent every 100 ms and elephant flows last 10 seconds. 
 Each experiment is run for 10 seconds over 20 runs. Error bars on graphs denote
 the highest and lowest value over all runs.
 

@@ -159,7 +159,8 @@ load balanced on a sub-flow level and need not be exposed to reordering.
 The shortcomings of the previous approaches lead us to reconsider on what granularity
 load balancing should occur. 
 %We take motivation from a best-case ECMP scenario. 
-Ideally, sub-flow load balancing should be done on near uniform sizes.
+Ideally, sub-flow load balancing should be done on near uniform sizes so that
+the network paths have a near equal amount of loads.
 %independent of traffic patterns on the sender to avoid long tails. 
 Also, the unit of load balancing should be small to
 allow for fine-grained load balancing, but not so small as to break small flows into 

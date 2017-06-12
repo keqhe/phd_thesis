@@ -120,15 +120,15 @@ Since the VM's TCP stack may not support ECN, the~\acdc{} receiver module monito
 the total and ECN-marked bytes received for a flow. Receivers piggy-back the
 reported totals on ACKs by adding an additional 8 bytes as a TCP Option. This is called 
 a Piggy-backed ACK (PACK). The PACK is created by moving the IP and TCP headers into
-the ACK packet's {\tt skb} headroom~\cite{kernel-skb}. The totals are inserted into the vacated space and the memory
-consumed by the rest of the packet (\ie{}the payload) is left as is. The IP header checksum, IP packet length and TCP Data Offset fields are recomputed and the 
+the ACK packet's {\tt skb} headroom in Linux~\cite{kernel-skb}. The totals are inserted into the vacated space and the memory
+consumed by the rest of the packet (\ie{}the payload) is left as is. The IP header checksum, IP packet length and TCP Data Offset fields are recomputed by the virtual switch and the 
 TCP checksum is calculated by the NIC. The PACK option is stripped at the
 sender so it is not exposed to the VM's TCP stack. 
 
 If adding a PACK creates a packet larger than the MTU, the NIC offload feature (\ie{}TSO)
 will replicate the feedback information over multiple packets, which skews the feedback.
 Therefore, a dedicated feedback packet called a Fake ACK (FACK) is sent when the MTU
-will be violated. The FACK is sent in addition to the real TCP ACK.
+will be violated (i.e., the orginal packet size plus the number of embeded bytes are larger than the MTU size). The FACK is sent in addition to the real TCP ACK.
 FACKs are also discarded by the sender after logging the included
 data. In practice, most feedback takes the form of PACKs.
 
@@ -351,12 +351,19 @@ In a similar fashion, administrators can assign different bandwidth priorities t
 congestion control algorithm. Providing differentiated services via congestion control has 
 been studied~\cite{Venkataramani2002tcpnice,shieh2011sharing}. Such schemes are useful because networks
 typically contain only a limited number of service classes and bandwidth may need to be allocated on
-a finer-granularity. We propose a unique priority-based congestion control algorithm for~\acdc{}.
+a finer-granularity. The the following equation is the original DCCP congestion control law, where
+$\alpha{}$ is a parameter in DCTCP congestion control algorithm and it is basically a measure of the extent of congestion in the network.
+\begin{equation}
+cwnd = cwnd (1 - \frac{\alpha{}}{2})
+\label{eqn:dctcp}
+\end{equation}
+We propose a unique priority-based congestion control scheme for~\acdc{}.
 Specifically, DCTCP's congestion control algorithm is modified to incorporate a priority, $\beta \in [0,1]$:
 \begin{equation}
 rwnd = rwnd (1 - (\alpha - \frac{\alpha{}\beta}{2}))
 \label{eqn:cc-qos}
 \end{equation}
+
 Higher values of $\beta$ give higher priority. 
 When $\beta{}=1$, Equation~\ref{eqn:cc-qos} simply converts to DCTCP congestion control. When
 $\beta{}=0$, flows aggressively back-off (\rwnd{} is bounded by 1 MSS to avoid starvation). This equation

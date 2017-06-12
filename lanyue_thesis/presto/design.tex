@@ -294,7 +294,8 @@ segments immediately so that TCP can react to the loss as quickly as possible.
 To solve this problem, we leverage the fact that all packets carrying the same flowcell ID traverse the 
 same path and should be in-order.
 This means incoming sequence numbers can be monitored to check for
-gaps. A sequence number gap within the same flowcell ID is assumed to be a loss, and not reordering,
+gaps. A sequence number gap within the same flowcell ID is assumed to be a loss (because all the
+packets in the same flowcell should go through the same network path), and not reordering,
 so those packets are pushed up immediately (lines 3-5).
 Note that because a flowcell consists of many packets (a 64 KB flowcell consists
 of roughly 42 1500 byte packets), when there is a loss it is likely that it occurs within flowcell boundaries. 

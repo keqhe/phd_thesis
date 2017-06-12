@@ -173,7 +173,7 @@ is effective at reducing loss and~\acdc{} hides ECN feedback from the host TCP s
 \tightparagraph{CPU overhead}
 We measure the CPU overhead of~\acdc{} by connecting two servers to a single switch. 
 Multiple simultaneous TCP flows are started from one server to the other and the total CPU utilization
-is measured on the sender and receiver using {\tt sar}. Each flow is given time to perform the TCP handshake
+is measured on the sender and receiver using {\tt sar} utility in Linux. Each flow is given time to perform the TCP handshake
 and when all are connected, each TCP client sends with a demand of 10 Mbps by sending 128KB bursts every 100 milliseconds (so 1,000 connections saturate the 10 Gbps link). 
 The~\crs{system-wide} CPU overhead of~\acdc{} compared to the~\crs{system-wide} CPU overhead of baseline (\ie{}just OVS) 
 is shown for the sender in Figure~\ref{cpu_overhead_sender_15k}
