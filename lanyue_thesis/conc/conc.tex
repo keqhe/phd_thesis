@@ -70,16 +70,16 @@ the computer networking research community.
 {\bf Darkness Is Before the Dawn.}
 The first important thing I learned during my Ph.D. study is that sometimes 
 we have to go through the darkness before the dawn. The Presto project is such an example. 
-Initially, we only implemented the Presto sender side logic, but we found that even on a simple topology, 
+Initially, we only implemented the Presto sender side logic, but we found that even in a simple topology, 
 network throughput could not reach 9.3Gbps. We later found that it was caused by packet reordering. 
 Before starting the project, we thought modern TCP stacks should be smart enough to tolerate 
 a certain amount of packet reordering. However, we found it was not the case for high speed networks. 
 I did extensive experiments to figure out how to improve the performance. 
-Frankly speaking, at the time, I did not know whether I could find one solution or not. 
+%Frankly speaking, at the time, I did not know whether I could find one solution or not. 
 After exploring in the darkness for around 2 months, we finally designed the first version of the 
-improved GRO logic to mark packet reordering for TCP. And finally, Presto got accepted in 
-SIGCOMM 2015 with just one try. The story tells me sometimes doing research is just like 
-walking in the darkness, but we should not lose hope. We will be fine if we keep exploring in the right direction.
+improved GRO logic to mark packet reordering for TCP. 
+The story tells me sometimes doing research is just like 
+walking in the dark, but we should not lose hope. We will be fine if we keep exploring in the right direction.
 
 {\bf Simple Things Can Work Well.}
 I also learned that simple things can work pretty well in practice, maybe this is 
@@ -89,22 +89,24 @@ all of techniques or mechanisms introduced in this thesis are simple, especially
 We find simple things can boost performance significantly. I like simple and elegant solutions a lot. 
 
 {\bf Start Simple and Build Software Step by Step.}
-We need to write code to validate our ideas. But as graduate students, I could not say 
-most of us are very experienced programmers. So a key thing I learned is that we should start small and 
+We need to write code to validate our ideas. 
+A key thing I learned is that we should start small and 
 build our prototypes step by step. Once we finish a small step, we can check whether 
 the code we wrote works or not. In this way, we can have a deep understanding of the code we wrote. 
 Also we can find bugs or performance issues at the early stage. 
 All the projects presented in this thesis involve some kernel level programming. 
 The practice works pretty well for me.
 
+\iffalse
 {\bf Thinking Twice Before Starting a New Project.}
 Choosing a project is as important as finishing it. Finding a promising project is not always easy. 
 The lesson I learned is that we should think twice before starting a new project and once we start it, we  should 
 try our best. An example is the AC/DC TCP project. 
-Actually, at that time, we have around 10 topics we might want to explore. 
+Actually, at that time, we had a few topics we might want to explore. 
 I spent around one month to think which topic was more promising. I actually built a sketch in my head and 
 thought what were the major steps and major challenges in a each project. 
 This helps reduce the risk of starting an ambitious project.
+\fi
 
 {\bf Old Ideas or Techniques Can Reborn in New Use Cases.}
 TCP was born in the late 1980s. But we observe TCP can not meet our performance goals in datacenters networks. 
