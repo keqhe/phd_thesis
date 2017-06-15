@@ -1,0 +1,102 @@
+
+\svnidlong{$LastChangedBy$}{$LastChangedRevision$}{$LastChangedDate$}{$HeadURL: http://freevariable.com/dissertation/branches/diss-template/frontmatter/abstract.tex $}
+\vcinfo{}
+
+% Don't change anything above this line. It must stay in exactly the
+% same spacing.
+
+
+Datacenter networks are critical building blocks for modern cloud computing 
+infrastructures. The datacenter network directly impacts the performance of 
+applications and services running in datacenters. Today's applications are 
+becoming more and more demanding, requiring low latency, high throughput and low packet 
+loss rate. 
+Thus improving datacenter network performance is both timely and important.
+
+Datacenter networks are complicated systems with many functionalities and components
+spread across hardware and software. 
+Any suboptimal functionality or component can significantly degrade network performance 
+and affect applications.
+In this dissertation, we show that simple software-only solutions can go a long way to 
+ensuring good datacenter network performance, specifically, we show how we can leverage 
+the flexibility and high programmability of software-defined network edge 
+(i.e., end-host networking)~\cite{ovs-extending,pfaff2015design} to 
+improve the performance of three key functionalities in datacenter networks --- traffic load balancing, 
+congestion control and rate limiting.
+
+We start from low layers and move up the stack.
+We first look into traffic load balancing functionality in datacenter networks.
+Modern datacenter networks need to deal with a variety of workloads, ranging
+from latency-sensitive small flows to bandwidth-hungry
+large flows. In-network hardware-based load balancing schemes which are based on flow hashing,
+e.g., ECMP, cause congestion when hash collisions occur
+and can perform poorly in asymmetric topologies. Recent
+proposals to load balance the network require centralized
+traffic engineering, multipath-aware transport, or expensive
+specialized hardware. We propose a pure software-edge-based mechanism that
+avoids these limitations by (i) pushing load-balancing functionality
+into the soft network edge (e.g., virtual switches)
+such that no changes are required in the transport layer, customer
+VMs, or networking hardware, and (ii) load balancing
+on fine-grained, near-uniform units of data (flowcells)
+that fit within end-host segment offload optimizations used
+to support fast networking speeds. We design and implement
+such a soft-edge load balancing scheme called Presto, and
+evaluate it on a 10 Gbps physical testbed. We demonstrate
+the computational impact of packet reordering on receivers
+and propose a mechanism to handle reordering in the TCP
+receive offload functionality. Presto's performance closely
+tracks that of a single, non-blocking switch over many workloads
+and is adaptive to failures and topology asymmetry.
+
+Optimized traffic load balancing alone is not sufficient to 
+guarantee high-performance datacenter networks. 
+%In multi-tenant datacenters, tenants can
+%seamlessly port their applications and services to the cloud.
+Virtual Machine (VM) technology plays an integral role in
+modern multi-tenant clouds by enabling a diverse set of software to be run
+on a unified underlying framework. This flexibility, however,
+comes at the cost of dealing with outdated, inefficient,
+or misconfigured TCP stacks implemented in the VMs. We investigate if cloud providers can take control of a VM's
+TCP congestion control algorithm without making changes
+to the VM or network hardware. 
+Again, we leverage the flexibility of software network edge and propose 
+a congestion control virtualization technique called AC/DC TCP.
+AC/DC TCP exerts fine-grained control over arbitrary tenant
+TCP stacks by enforcing per-flow congestion control in
+the virtual switch (vSwitch) in the hypervisor. AC/DC TCP is light-weight,
+flexible, scalable and can police non-conforming flows. Our experiment results demonstrate that 
+implementing an administrator-defined congestion control algorithm in the
+vSwitch (i.e., DCTCP~\cite{dctcp}) closely tracks its native performance,
+regardless of the VM's TCP stack.
+
+Presto and AC/DC TCP help reduce queueing latency in 
+network switches (i.e., ``in network'' latency), but we observe that 
+rate limiters on end-hosts can also increase network latency by an order of magnitude or even more. 
+Rate limiters are employed to provide bandwidth allocation functionality, 
+which is an indispensable feature of multi-tenant clouds. Rate limiters
+maintain a queue of outstanding packets and control the speed at which
+packets are dequeued into the network. This queueing introduces
+additional network latency. For example, in our experiments, we find
+that software rate limiting (HTB) increases latency by 1-3 milliseconds
+across a range of different environment settings. 
+To solve
+this problem, we extend ECN marking into rate limiters and use a datacenter
+congestion control algorithm (DCTCP). Unfortunately, while this reduces
+latency, it also leads to throughput oscillation. Thus, this solution is
+not sufficient.
+To this end, we propose two techniques \textemdash\xspace~\dem{} and~\spring{} to 
+improve the performance of rate limiters.
+Our experiment results demonstrate that~\dem{} and~\spring{}-enabled
+rate limiters can achieve high stable throughput and low latency.
+
+Presto load balances the traffic generated by the endpoints (i.e., VMs, containers or bare-metal servers) 
+as evenly as possible and minimize the possibility of network congestion. AC/DC TCP reduces TCP sender's 
+speed when congestion happens in the network. Both Presto and AC/DC TCP reduce queueing latency in switches. 
+DEM and SPRING reduce the latency caused by rate limiters on the end-hosts. They are complementary 
+and can work together to ensure low end-to-end latency, high throughput and low packet loss rate 
+in datacenter networks.
+
+
+
+
