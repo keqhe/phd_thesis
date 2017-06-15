@@ -17,11 +17,11 @@ Datacenter networks need to deal with a variety of workloads, ranging
 from latency-sensitive small flows to bandwidth-hungry
 large flows. In-network hardware-based load balancing schemes which are based on flow hashing,
 e.g., ECMP, cause congestion when hash collisions occur. 
-We propose a soft-edge load balancing scheme called Presto.
+To solve this problem, we propose a soft-edge load balancing scheme called Presto.
 Presto load-balances on near uniform-sized small data units (flowcells) and 
-spread flowcells across the symmetric network via the virtual switches on the senders.
+spreads flowcells across the symmetric network via the virtual switches on the senders.
 Because of fine-grained flowcell-level load balancing, packets may arrive out of order
-at the receiver side, so propose a mechanism to handle reordering in the 
+at the receiver side, so we propose a mechanism to handle reordering in the 
 Generic Receive Offload (GRO) functionality below the TCP layer.
 Presto avoids the hash collision problem and improves traffic load balancing performance significantly.
 
